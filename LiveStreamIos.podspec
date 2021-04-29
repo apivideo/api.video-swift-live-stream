@@ -5,11 +5,11 @@ Pod::Spec.new do |spec|
 
   spec.name         = "LiveStreamIos"
   spec.version      = "0.0.1"
-  spec.summary      = "a native iOS library to stream on api.video"
+  spec.summary      = "a native iOS library from api.video"
 
   
   spec.description  = <<-DESC
-    a native iOS library to stream on api.video
+    a native iOS library to stream on api.video, feel free to use it
                    DESC
 
   spec.homepage     = "https://github.com/apivideo/LiveStreamIos"
@@ -17,7 +17,7 @@ Pod::Spec.new do |spec|
 
 
   
-  spec.license      = { :type => "MIT", :file => "FILE_LICENSE" }
+  spec.license      = { :type => "MIT", :file => "LICENSE.md" }
 
   spec.author             = { "api.video" => "hello@api.video" }
   spec.social_media_url   = "https://twitter.com/api_video"
