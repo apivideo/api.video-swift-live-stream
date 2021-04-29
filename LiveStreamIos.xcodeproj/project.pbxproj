@@ -7,9 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		71039BE341FC6BA287181FC0 /* Pods_LiveStreamIos_LiveStreamIosTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 965FD763AD3C4DD1CBC514B7 /* Pods_LiveStreamIos_LiveStreamIosTests.framework */; };
+		C779BB79263AD53C00C09C68 /* ApiVideoLiveStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = C779BB78263AD53C00C09C68 /* ApiVideoLiveStream.swift */; };
 		C78C2016263AD01D0022A7BC /* LiveStreamIos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C78C200C263AD01C0022A7BC /* LiveStreamIos.framework */; };
 		C78C201B263AD01D0022A7BC /* LiveStreamIosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78C201A263AD01D0022A7BC /* LiveStreamIosTests.swift */; };
 		C78C201D263AD01D0022A7BC /* LiveStreamIos.h in Headers */ = {isa = PBXBuildFile; fileRef = C78C200F263AD01C0022A7BC /* LiveStreamIos.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ECF0BC32172920E73112134F /* Pods_LiveStreamIos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40300BBD039129E014F23443 /* Pods_LiveStreamIos.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -23,6 +26,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		40300BBD039129E014F23443 /* Pods_LiveStreamIos.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LiveStreamIos.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5DCA9BB8D6B8EB8E5E733B36 /* Pods-LiveStreamIos.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveStreamIos.debug.xcconfig"; path = "Target Support Files/Pods-LiveStreamIos/Pods-LiveStreamIos.debug.xcconfig"; sourceTree = "<group>"; };
+		7A44BBF29B88C0F6E7B4EB1A /* Pods-LiveStreamIos.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveStreamIos.release.xcconfig"; path = "Target Support Files/Pods-LiveStreamIos/Pods-LiveStreamIos.release.xcconfig"; sourceTree = "<group>"; };
+		965FD763AD3C4DD1CBC514B7 /* Pods_LiveStreamIos_LiveStreamIosTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LiveStreamIos_LiveStreamIosTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AF8718C5017ABA72A1AC05F5 /* Pods-LiveStreamIos-LiveStreamIosTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveStreamIos-LiveStreamIosTests.debug.xcconfig"; path = "Target Support Files/Pods-LiveStreamIos-LiveStreamIosTests/Pods-LiveStreamIos-LiveStreamIosTests.debug.xcconfig"; sourceTree = "<group>"; };
+		B9D1A6C21ACD3E2A043DF978 /* Pods-LiveStreamIos-LiveStreamIosTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveStreamIos-LiveStreamIosTests.release.xcconfig"; path = "Target Support Files/Pods-LiveStreamIos-LiveStreamIosTests/Pods-LiveStreamIos-LiveStreamIosTests.release.xcconfig"; sourceTree = "<group>"; };
+		C779BB78263AD53C00C09C68 /* ApiVideoLiveStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiVideoLiveStream.swift; sourceTree = "<group>"; };
 		C78C200C263AD01C0022A7BC /* LiveStreamIos.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LiveStreamIos.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C78C200F263AD01C0022A7BC /* LiveStreamIos.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiveStreamIos.h; sourceTree = "<group>"; };
 		C78C2010263AD01C0022A7BC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -36,6 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ECF0BC32172920E73112134F /* Pods_LiveStreamIos.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,18 +55,41 @@
 			buildActionMask = 2147483647;
 			files = (
 				C78C2016263AD01D0022A7BC /* LiveStreamIos.framework in Frameworks */,
+				71039BE341FC6BA287181FC0 /* Pods_LiveStreamIos_LiveStreamIosTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		10EE33244CA761067BD50413 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				40300BBD039129E014F23443 /* Pods_LiveStreamIos.framework */,
+				965FD763AD3C4DD1CBC514B7 /* Pods_LiveStreamIos_LiveStreamIosTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		38F3C53AFC2DFE01D14EA6D0 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				5DCA9BB8D6B8EB8E5E733B36 /* Pods-LiveStreamIos.debug.xcconfig */,
+				7A44BBF29B88C0F6E7B4EB1A /* Pods-LiveStreamIos.release.xcconfig */,
+				AF8718C5017ABA72A1AC05F5 /* Pods-LiveStreamIos-LiveStreamIosTests.debug.xcconfig */,
+				B9D1A6C21ACD3E2A043DF978 /* Pods-LiveStreamIos-LiveStreamIosTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		C78C2002263AD01C0022A7BC = {
 			isa = PBXGroup;
 			children = (
 				C78C200E263AD01C0022A7BC /* LiveStreamIos */,
 				C78C2019263AD01D0022A7BC /* LiveStreamIosTests */,
 				C78C200D263AD01C0022A7BC /* Products */,
+				38F3C53AFC2DFE01D14EA6D0 /* Pods */,
+				10EE33244CA761067BD50413 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -73,6 +107,7 @@
 			children = (
 				C78C200F263AD01C0022A7BC /* LiveStreamIos.h */,
 				C78C2010263AD01C0022A7BC /* Info.plist */,
+				C779BB78263AD53C00C09C68 /* ApiVideoLiveStream.swift */,
 			);
 			path = LiveStreamIos;
 			sourceTree = "<group>";
@@ -104,6 +139,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C78C2020263AD01D0022A7BC /* Build configuration list for PBXNativeTarget "LiveStreamIos" */;
 			buildPhases = (
+				B678DB2F5435E82668DE244F /* [CP] Check Pods Manifest.lock */,
 				C78C2007263AD01C0022A7BC /* Headers */,
 				C78C2008263AD01C0022A7BC /* Sources */,
 				C78C2009263AD01C0022A7BC /* Frameworks */,
@@ -122,6 +158,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C78C2023263AD01D0022A7BC /* Build configuration list for PBXNativeTarget "LiveStreamIosTests" */;
 			buildPhases = (
+				71E0BDF90B6E35FEEF6A462A /* [CP] Check Pods Manifest.lock */,
 				C78C2011263AD01D0022A7BC /* Sources */,
 				C78C2012263AD01D0022A7BC /* Frameworks */,
 				C78C2013263AD01D0022A7BC /* Resources */,
@@ -147,6 +184,7 @@
 				TargetAttributes = {
 					C78C200B263AD01C0022A7BC = {
 						CreatedOnToolsVersion = 12.5;
+						LastSwiftMigration = 1250;
 					};
 					C78C2014263AD01D0022A7BC = {
 						CreatedOnToolsVersion = 12.5;
@@ -189,11 +227,59 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		71E0BDF90B6E35FEEF6A462A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-LiveStreamIos-LiveStreamIosTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B678DB2F5435E82668DE244F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-LiveStreamIos-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		C78C2008263AD01C0022A7BC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C779BB79263AD53C00C09C68 /* ApiVideoLiveStream.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,7 +426,9 @@
 		};
 		C78C2021263AD01D0022A7BC /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5DCA9BB8D6B8EB8E5E733B36 /* Pods-LiveStreamIos.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = VY3VXRC7P4;
@@ -357,6 +445,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = video.api.LiveStreamIos;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -364,7 +453,9 @@
 		};
 		C78C2022263AD01D0022A7BC /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7A44BBF29B88C0F6E7B4EB1A /* Pods-LiveStreamIos.release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = VY3VXRC7P4;
@@ -388,7 +479,9 @@
 		};
 		C78C2024263AD01D0022A7BC /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AF8718C5017ABA72A1AC05F5 /* Pods-LiveStreamIos-LiveStreamIosTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VY3VXRC7P4;
 				INFOPLIST_FILE = LiveStreamIosTests/Info.plist;
@@ -406,7 +499,9 @@
 		};
 		C78C2025263AD01D0022A7BC /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B9D1A6C21ACD3E2A043DF978 /* Pods-LiveStreamIos-LiveStreamIosTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = VY3VXRC7P4;
 				INFOPLIST_FILE = LiveStreamIosTests/Info.plist;
