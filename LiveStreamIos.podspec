@@ -17,9 +17,9 @@ Pod::Spec.new do |spec|
 
 
   
-  spec.license      = { :type => "MIT", :file => "LICENSE.md" }
+  spec.license      = "Apache License, Version 2.0"
 
-  spec.author             = { "api.video" => "hello@api.video" }
+  spec.author             = { "romain petit" => "contact.romain.petit@gmail.com" }
   spec.social_media_url   = "https://twitter.com/api_video"
 
   spec.platform     = :ios, "12.0"

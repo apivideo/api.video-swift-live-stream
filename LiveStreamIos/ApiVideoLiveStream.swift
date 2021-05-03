@@ -18,7 +18,7 @@ public class ApiVideoLiveStream{
     private var retryCount: Int = 0
     private static let maxRetryCount: Int = 5
     
-    public func startLiveStreamFlux(liveStreamKey: String, captureQuality: String, streamQuality: String, fps: Float64) -> Void{
+    public func startLiveStreamFlux(liveStreamKey: String, captureQuality: String, streamQuality: String, fps: Float64, view: UIView) -> Void{
         self.livestreamkey = liveStreamKey
         
         rtmpConnection.connect("rtmp://broadcast.api.video/s")
@@ -39,6 +39,13 @@ public class ApiVideoLiveStream{
             print("======== Camera Flux Error ==========")
             print(error.description)
         }
+        
+        DispatchQueue.main.sync(execute: { [self] in
+            let hkView = HKView(frame: view.bounds)
+            hkView.videoGravity = AVLayerVideoGravity.resizeAspectFill
+            hkView.attachStream(rtmpStream)
+            hkView.addSubview(view)
+        })
         
         
         setCaptureVideo(quality: captureQuality, fps: fps)

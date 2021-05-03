@@ -196,7 +196,7 @@
 		21AFF55B065DC70FF894C334B084A184 /* NetSocket.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NetSocket.swift; path = Sources/Net/NetSocket.swift; sourceTree = "<group>"; };
 		2337F095E79B84DFF135C7C277E919F8 /* HTTPResponse.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HTTPResponse.swift; path = Sources/HTTP/HTTPResponse.swift; sourceTree = "<group>"; };
 		2541EE1737516D83F13BE48F799CB0B9 /* AudioIOComponent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AudioIOComponent.swift; path = Sources/Media/AudioIOComponent.swift; sourceTree = "<group>"; };
-		25BFFBE6D90519C6BE2EBFA4D388AED0 /* HaishinKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = HaishinKit.framework; path = HaishinKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		25BFFBE6D90519C6BE2EBFA4D388AED0 /* HaishinKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HaishinKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2986677C09C5397B4344BEC85069D97F /* HKPictureInPicureController+Extension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "HKPictureInPicureController+Extension.swift"; path = "Sources/PiP/HKPictureInPicureController+Extension.swift"; sourceTree = "<group>"; };
 		2A7A29A4D161F2A046D54B27F4DF4F2F /* Logboard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Logboard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3348FF611DD90B012C317F07BD207AAF /* SoundTransform.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SoundTransform.swift; path = Sources/Media/SoundTransform.swift; sourceTree = "<group>"; };
@@ -244,7 +244,7 @@
 		85AA84E9FE6448620D505890A154F068 /* AnyUtil.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AnyUtil.swift; path = Sources/Util/AnyUtil.swift; sourceTree = "<group>"; };
 		865C2D661A38DC2FD89A4B7F8EAEB3A8 /* Pods-LiveStreamIos-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-LiveStreamIos-acknowledgements.markdown"; sourceTree = "<group>"; };
 		875FF2D7D971FD25293E09DE5D515721 /* RTMPChunk.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RTMPChunk.swift; path = Sources/RTMP/RTMPChunk.swift; sourceTree = "<group>"; };
-		882E184E6F15359E33970C1D7120B55A /* Pods_LiveStreamIos_LiveStreamIosTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_LiveStreamIos_LiveStreamIosTests.framework; path = "Pods-LiveStreamIos-LiveStreamIosTests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		882E184E6F15359E33970C1D7120B55A /* Pods_LiveStreamIos_LiveStreamIosTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LiveStreamIos_LiveStreamIosTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		890368D0F8ACCB13FF9C106761951322 /* FLVSoundSize.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FLVSoundSize.swift; path = Sources/FLV/FLVSoundSize.swift; sourceTree = "<group>"; };
 		89E60AB7669E96971399DAFD65107809 /* RTMPSharedObject.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RTMPSharedObject.swift; path = Sources/RTMP/RTMPSharedObject.swift; sourceTree = "<group>"; };
 		8E2D40CEC563F07A3FFCBCB0A1558C8E /* FLVTagType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FLVTagType.swift; path = Sources/FLV/FLVTagType.swift; sourceTree = "<group>"; };
@@ -258,7 +258,7 @@
 		97BB622DB735FD16649363F8AAB2AEF2 /* URL+Extension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "URL+Extension.swift"; path = "Sources/Extension/URL+Extension.swift"; sourceTree = "<group>"; };
 		984AEE3FEAF713A03B585653DD86C1A1 /* HTTPRequest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HTTPRequest.swift; path = Sources/HTTP/HTTPRequest.swift; sourceTree = "<group>"; };
 		9B01E916FA61B87EDF3ACA7DE0144CBD /* AudioConverter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AudioConverter.swift; path = Sources/Codec/AudioConverter.swift; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9DDD2F930F81CD8D62B43DFF48B25912 /* Pods-LiveStreamIos-LiveStreamIosTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-LiveStreamIos-LiveStreamIosTests-dummy.m"; sourceTree = "<group>"; };
 		9F0F157BF549EE7207A0A5F1C8BBFD2F /* NetClient.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NetClient.swift; path = Sources/Net/NetClient.swift; sourceTree = "<group>"; };
 		9FD4A10DC770CDBF302D0453ED7E4378 /* Logboard.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = Logboard.modulemap; sourceTree = "<group>"; };
@@ -279,7 +279,7 @@
 		B6036107AD523F612CADE75AFD06B5F1 /* NetStreamRenderer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NetStreamRenderer.swift; path = Sources/Net/NetStreamRenderer.swift; sourceTree = "<group>"; };
 		B896CB7342E1BDB2963DC689B3EB30A6 /* AudioConverter.Destination.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AudioConverter.Destination.swift; path = Sources/Codec/AudioConverter.Destination.swift; sourceTree = "<group>"; };
 		B9FB6C5A136C8DFD2504AF40AEDB5974 /* DataConvertible.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DataConvertible.swift; path = Sources/Util/DataConvertible.swift; sourceTree = "<group>"; };
-		BBF3C907BB548DD1552305E79C7836C3 /* Logboard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Logboard.framework; path = Logboard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BBF3C907BB548DD1552305E79C7836C3 /* Logboard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Logboard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC40ECC39C79B85978DD9D73FD4EBAE5 /* VideoEffect.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = VideoEffect.swift; path = Sources/Media/VideoEffect.swift; sourceTree = "<group>"; };
 		BC6B234A61E8FC8529BF595B4B3B6B9D /* MIME.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MIME.swift; path = Sources/Net/MIME.swift; sourceTree = "<group>"; };
 		C1AB36133068902ACC748948156B05A4 /* MP4Sampler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MP4Sampler.swift; path = Sources/ISO/MP4Sampler.swift; sourceTree = "<group>"; };
@@ -308,7 +308,7 @@
 		DC6AE729B9EABC244B1F93C321295703 /* Pods-LiveStreamIos.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-LiveStreamIos.release.xcconfig"; sourceTree = "<group>"; };
 		DD6044BFFC20C1C8E09EB21C3927168C /* H264Decoder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = H264Decoder.swift; path = Sources/Codec/H264Decoder.swift; sourceTree = "<group>"; };
 		DEEDE54CBAA890EBB017B2AA13119C6A /* HKPictureInPicureController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HKPictureInPicureController.swift; path = Sources/PiP/HKPictureInPicureController.swift; sourceTree = "<group>"; };
-		DFC17B5CCF8B3DB4BCD78093C2E23364 /* Pods_LiveStreamIos.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_LiveStreamIos.framework; path = "Pods-LiveStreamIos.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DFC17B5CCF8B3DB4BCD78093C2E23364 /* Pods_LiveStreamIos.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LiveStreamIos.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DFDFFB942B99B4DEBB345F7789EDDC99 /* Logboard.Data.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Logboard.Data.swift; path = Sources/Logboard/Logboard.Data.swift; sourceTree = "<group>"; };
 		E2776A146424143D275EF1B24A2C8491 /* Running.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Running.swift; path = Sources/Util/Running.swift; sourceTree = "<group>"; };
 		E2ED0C60B19E8870BD8A4D2413B3AFF3 /* Pods-LiveStreamIos-LiveStreamIosTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-LiveStreamIos-LiveStreamIosTests-acknowledgements.markdown"; sourceTree = "<group>"; };
@@ -445,7 +445,6 @@
 				0194AE74D99C4EC487F0C67CBCE49E26 /* SocketAppender.swift */,
 				BE11031342FF8788275C2D8F9A577A4E /* Support Files */,
 			);
-			name = Logboard;
 			path = Logboard;
 			sourceTree = "<group>";
 		};
@@ -574,7 +573,6 @@
 				F585585358AAA76A2E7CF43A35C7BCDF /* VTSessionPropertyKey.swift */,
 				1ACA3DA922D6A943660E4C32FC93FCA0 /* Support Files */,
 			);
-			name = HaishinKit;
 			path = HaishinKit;
 			sourceTree = "<group>";
 		};
@@ -739,7 +737,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1100;
-				LastUpgradeCheck = 1100;
+				LastUpgradeCheck = 1250;
 			};
 			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 9.3";
@@ -988,7 +986,7 @@
 				GCC_PREFIX_HEADER = "Target Support Files/HaishinKit/HaishinKit-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/HaishinKit/HaishinKit-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1058,7 +1056,7 @@
 				GCC_PREFIX_HEADER = "Target Support Files/HaishinKit/HaishinKit-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/HaishinKit/HaishinKit-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1168,7 +1166,7 @@
 				GCC_PREFIX_HEADER = "Target Support Files/Logboard/Logboard-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/Logboard/Logboard-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1203,7 +1201,7 @@
 				GCC_PREFIX_HEADER = "Target Support Files/Logboard/Logboard-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/Logboard/Logboard-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
