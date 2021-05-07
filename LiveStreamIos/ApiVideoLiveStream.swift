@@ -10,24 +10,15 @@ import Foundation
 import VideoToolbox
 
 public class ApiVideoLiveStream{
-    public init(){}
-    private var livestreamkey: String?
-    private var rtmpStream: RTMPStream!
-    private var rtmpConnection = RTMPConnection()
-    private var currentPosition: AVCaptureDevice.Position = .back
-    private var retryCount: Int = 0
-    private static let maxRetryCount: Int = 5
-    
-    public func startLiveStreamFlux(liveStreamKey: String, captureQuality: String, streamQuality: String, fps: Float64, view: UIView) -> Void{
-        self.livestreamkey = liveStreamKey
-        
-        rtmpConnection.connect("rtmp://broadcast.api.video/s")
+
+    public init(videoResolution: String, videoFps: Double, view: UIView?){
         rtmpStream = RTMPStream(connection: rtmpConnection)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(on(_:)), name: UIDevice.orientationDidChangeNotification, object: nil)
         DispatchQueue.main.async {
             if let orientation = DeviceUtil.videoOrientation(by: UIApplication.shared.statusBarOrientation) {
                 self.rtmpStream.orientation = orientation
-                    }
+            }
         }
         
         rtmpStream.setZoomFactor(CGFloat(0), ramping: true, withRate: 5.0)
@@ -40,22 +31,38 @@ public class ApiVideoLiveStream{
             print(error.description)
         }
         
-        DispatchQueue.main.sync(execute: { [self] in
-            let hkView = HKView(frame: view.bounds)
+        if (view != nil) {
+            let hkView = MTHKView(frame: view!.bounds)
+            hkView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             hkView.videoGravity = AVLayerVideoGravity.resizeAspectFill
             hkView.attachStream(rtmpStream)
-            hkView.addSubview(view)
-        })
-        
-        
-        setCaptureVideo(quality: captureQuality, fps: fps)
-        setStreamVideoQuality(quality: streamQuality)
-        
+            view!.addSubview(hkView)
+            
+            setCaptureVideo(quality: videoResolution, fps: videoFps)
+            setStreamVideoQuality(quality: videoResolution)
+        }
+    }
+    private var livestreamkey: String?
+    private var rtmpStream: RTMPStream
+    private var rtmpConnection = RTMPConnection()
+    private var currentPosition: AVCaptureDevice.Position = .back
+    private var retryCount: Int = 0
+    private static let maxRetryCount: Int = 5
+    
+    public func startLiveStreamFlux(liveStreamKey: String, rtmpServerUrl: String?) -> Void{
+        self.livestreamkey = liveStreamKey
+
         rtmpConnection.addEventListener(.rtmpStatus, selector: #selector(rtmpStatusHandler), observer: self)
         rtmpConnection.addEventListener(.ioError, selector: #selector(rtmpErrorHandler), observer: self)
+        rtmpConnection.connect(rtmpServerUrl ?? "rtmp://broadcast.api.video/s")
     }
     
-
+    public func stopLiveStreamFlux() -> Void{
+        rtmpConnection.close()
+        rtmpConnection.removeEventListener(.rtmpStatus, selector: #selector(rtmpStatusHandler), observer: self)
+        rtmpConnection.removeEventListener(.ioError, selector: #selector(rtmpErrorHandler), observer: self)
+    }
+    
     private func setCaptureVideo(quality: String, fps: Float64){
         switch quality {
         case "240p":
@@ -230,7 +237,7 @@ public class ApiVideoLiveStream{
         switch code {
         case RTMPConnection.Code.connectSuccess.rawValue:
             retryCount = 0
-            rtmpStream!.publish(self.livestreamkey!)
+            rtmpStream.publish(self.livestreamkey!)
         case RTMPConnection.Code.connectFailed.rawValue, RTMPConnection.Code.connectClosed.rawValue:
             guard retryCount <= ApiVideoLiveStream.maxRetryCount else {
                 return
@@ -252,13 +259,13 @@ public class ApiVideoLiveStream{
         }
     }
     
-//    @objc
-//    private func on(_ notification: Notification) {
-//        guard let orientation = DeviceUtil.videoOrientation(by: UIApplication) else {
-//            return
-//        }
-//        rtmpStream.orientation = orientation
-//    }
+    @objc
+    private func on(_ notification: Notification) {
+        guard let orientation = DeviceUtil.videoOrientation(by: UIApplication.shared.statusBarOrientation) else {
+            return
+        }
+        rtmpStream.orientation = orientation
+    }
     
 
     public func upload(filePath: String) -> String {
@@ -277,5 +284,3 @@ public class ApiVideoLiveStream{
         return String(rtmpConnection.connected)
     }
 }
-
-
