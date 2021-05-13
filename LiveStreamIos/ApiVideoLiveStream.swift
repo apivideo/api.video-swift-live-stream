@@ -9,9 +9,84 @@ import AVFoundation
 import Foundation
 import VideoToolbox
 
-public class ApiVideoLiveStream{
+class Resolution{
+    var width: Int
+    var height: Int
+    
+    init(width: Int, height: Int) {
+        self.width = width
+        self.height = height
+    }
+}
 
-    public init(videoResolution: String, videoFps: Double, view: UIView?){
+public class ApiVideoLiveStream{
+    public enum Resolutions {
+        case RESOLUTION_240
+        case RESOLUTION_360
+        case RESOLUTION_480
+        case RESOLUTION_720
+        case RESOLUTION_1080
+        case RESOLUTION_2160
+        
+        var instance: Resolution{
+            switch self {
+            case .RESOLUTION_240:
+                return Resolution(width: 352, height: 240)
+            case .RESOLUTION_360:
+                return Resolution(width: 480, height: 360)
+            case .RESOLUTION_480:
+                return Resolution(width: 858, height: 480)
+            case .RESOLUTION_720:
+                return Resolution(width: 1280, height: 720)
+            case .RESOLUTION_1080:
+                return Resolution(width: 1920, height: 1080)
+            case .RESOLUTION_2160:
+                return Resolution(width: 3860, height: 2160)
+            }
+        }
+    }
+    
+    private var livestreamkey: String?
+    private var rtmpStream: RTMPStream
+    private var rtmpConnection = RTMPConnection()
+    private var currentPosition: AVCaptureDevice.Position = .back
+    private var retryCount: Int = 0
+    private static let maxRetryCount: Int = 5
+    
+    public var videoResolution: Resolutions = Resolutions.RESOLUTION_720{
+        didSet{
+            print("oldValue Resolution : h =\(oldValue.instance.height) ; w = \(oldValue.instance.width)")
+            print("newValue Resolution : h =\(videoResolution.instance.height) ; w = \(videoResolution.instance.width)")
+            setStreamVideoQuality(resolution: videoResolution)
+        }
+    }
+    
+    public var videoFps: Double = 30.0{
+        didSet{
+            print("oldValue : fps =\(oldValue)")
+            print("newValue : fps =\(videoFps) ; w = \(videoResolution.instance.width)")
+            setCaptureVideo(fps: Double(videoFps))
+        }
+    }
+    
+    public var videoCamera: AVCaptureDevice.Position = .back {
+        didSet{
+            print("oldValue videoCamera : \(oldValue.rawValue)")
+            print("newValue videoCamera : \(videoCamera.rawValue)")
+            prepareCamera()
+        }
+    }
+    
+    public var audioMuted: Bool = false{
+        didSet{
+            print("oldValue muted : \(oldValue)")
+            print("newValue muted : \(audioMuted)")
+            setCaptureVideo(fps: Double(videoFps))
+        }
+    }
+    
+
+    public init(view: UIView?){
         rtmpStream = RTMPStream(connection: rtmpConnection)
         
         NotificationCenter.default.addObserver(self, selector: #selector(on(_:)), name: UIDevice.orientationDidChangeNotification, object: nil)
@@ -26,10 +101,8 @@ public class ApiVideoLiveStream{
             print("======== Audio Flux Error ==========")
             print(error.description)
         }
-        rtmpStream.attachCamera(DeviceUtil.device(withPosition: .back)) { error in
-            print("======== Camera Flux Error ==========")
-            print(error.description)
-        }
+        
+        prepareCamera()
         
         if (view != nil) {
             let hkView = MTHKView(frame: view!.bounds)
@@ -38,16 +111,21 @@ public class ApiVideoLiveStream{
             hkView.attachStream(rtmpStream)
             view!.addSubview(hkView)
             
-            setCaptureVideo(quality: videoResolution, fps: videoFps)
-            setStreamVideoQuality(quality: videoResolution)
+            setCaptureVideo(fps: Double(videoFps))
+            setStreamVideoQuality(resolution: videoResolution)
+//            setStreamVideoQuality(resolution: videoResolution)
+        }
+        
+    }
+    
+    private func prepareCamera(){
+        rtmpStream.captureSettings[.isVideoMirrored] = videoCamera == .front
+        rtmpStream.attachCamera(DeviceUtil.device(withPosition: videoCamera)) { error in
+                print("======== Camera Flux Error ==========")
+                print(error.description)
         }
     }
-    private var livestreamkey: String?
-    private var rtmpStream: RTMPStream
-    private var rtmpConnection = RTMPConnection()
-    private var currentPosition: AVCaptureDevice.Position = .back
-    private var retryCount: Int = 0
-    private static let maxRetryCount: Int = 5
+
     
     public func startLiveStreamFlux(liveStreamKey: String, rtmpServerUrl: String?) -> Void{
         self.livestreamkey = liveStreamKey
@@ -63,168 +141,74 @@ public class ApiVideoLiveStream{
         rtmpConnection.removeEventListener(.ioError, selector: #selector(rtmpErrorHandler), observer: self)
     }
     
-    private func setCaptureVideo(quality: String, fps: Float64){
-        switch quality {
-        case "240p":
-            // 352 * 240
-            rtmpStream.captureSettings = [
-                .fps: fps,
-                .sessionPreset: AVCaptureSession.Preset.inputPriority,
-                .continuousAutofocus: true,
-                .continuousExposure: true,
-                .preferredVideoStabilizationMode: AVCaptureVideoStabilizationMode.auto
-            ]
-            
-            rtmpStream.audioSettings = [
-                .muted: false, // mute audio
-                .bitrate: 128 * 1000,
-            ]
-        case "360p":
-            // 480 * 360
-            rtmpStream.captureSettings = [
-                .fps: fps,
-                .sessionPreset: AVCaptureSession.Preset.inputPriority,
-                .continuousAutofocus: true,
-                .continuousExposure: true,
-                .preferredVideoStabilizationMode: AVCaptureVideoStabilizationMode.auto
-            ]
-            
-            rtmpStream.audioSettings = [
-                .muted: false, // mute audio
-                .bitrate: 128 * 1000,
-            ]
-            
-        case "480p":
-            // 858 * 480
-            rtmpStream.captureSettings = [
-                .fps: fps,
-                .sessionPreset: AVCaptureSession.Preset.inputPriority,
-                .continuousAutofocus: true,
-                .continuousExposure: true,
-                .preferredVideoStabilizationMode: AVCaptureVideoStabilizationMode.auto
-            ]
-            
-            rtmpStream.audioSettings = [
-                .muted: false, // mute audio
-                .bitrate: 128 * 1000,
-            ]
-        case "720p":
-            // 1280 * 720
-            rtmpStream.captureSettings = [
-                .fps: fps,
-                .sessionPreset: AVCaptureSession.Preset.inputPriority,
-                .continuousAutofocus: true,
-                .continuousExposure: true,
-                .preferredVideoStabilizationMode: AVCaptureVideoStabilizationMode.auto
-            ]
-            
-            rtmpStream.audioSettings = [
-                .muted: false, // mute audio
-                .bitrate: 128 * 1000,
-            ]
-        case "1080p":
-            // 1920 * 1080
-            rtmpStream.captureSettings = [
-                .fps: fps,
-                .sessionPreset: AVCaptureSession.Preset.inputPriority,
-                .continuousAutofocus: true,
-                .continuousExposure: true,
-                .preferredVideoStabilizationMode: AVCaptureVideoStabilizationMode.auto
-            ]
-            rtmpStream.audioSettings = [
-                .muted: false, // mute audio
-                .bitrate: 128 * 1000,
-            ]
-        case "2160p":
-            // 3860 * 2160
-            rtmpStream.captureSettings = [
-                .fps: fps,
-                .sessionPreset: AVCaptureSession.Preset.inputPriority,
-                .continuousAutofocus: true,
-                .continuousExposure: true,
-                .preferredVideoStabilizationMode: AVCaptureVideoStabilizationMode.auto
-            ]
-            
-            rtmpStream.audioSettings = [
-                .muted: false, // mute audio
-                .bitrate: 128 * 1000,
-            ]
-        default:
-            rtmpStream.captureSettings = [
-                .fps: 24,
-                .sessionPreset: AVCaptureSession.Preset.inputPriority,
-                .continuousAutofocus: true,
-                .continuousExposure: true,
-                .preferredVideoStabilizationMode: AVCaptureVideoStabilizationMode.auto
-            ]
-            
-            rtmpStream.audioSettings = [
-                .muted: false, // mute audio
-                .bitrate: 128 * 1000,
-            ]
-        }
+    private func setCaptureVideo(fps: Float64){
+        rtmpStream.captureSettings = [
+            .fps: fps,
+            //.sessionPreset: AVCaptureSession.Preset.low,
+            .continuousAutofocus: true,
+            .continuousExposure: true,
+            .preferredVideoStabilizationMode: AVCaptureVideoStabilizationMode.auto
+        ]
+        
+        rtmpStream.audioSettings = [
+            .muted: audioMuted, // mute audio
+            .bitrate: 128 * 1000,
+        ]
     }
     
-    private func setStreamVideoQuality(quality: String){
-        switch quality {
-        case "240p":
+    private func setStreamVideoQuality(resolution: Resolutions){
+        switch resolution {
+        case .RESOLUTION_240:
             // 352 * 240
             rtmpStream.videoSettings = [
-                .width: 352,
-                .height: 240,
+                .width: Resolutions.RESOLUTION_240.instance.width,
+                .height: Resolutions.RESOLUTION_240.instance.height,
                 .bitrate: 400 * 1000, // video output bitrate
-                .maxKeyFrameIntervalDuration: 2,// key frame / sec
+                .maxKeyFrameIntervalDuration: 0,// key frame / sec
             ]
             
-        case "360p":
+        case .RESOLUTION_360:
             // 480 * 360
             rtmpStream.videoSettings = [
-                .width: 480,
-                .height: 360,
+                .width: Resolutions.RESOLUTION_360.instance.width,
+                .height: Resolutions.RESOLUTION_360.instance.height,
                 .bitrate: 800 * 1000, // video output bitrate
-                .maxKeyFrameIntervalDuration: 2, // key frame / sec
+                .maxKeyFrameIntervalDuration: 0, // key frame / sec
             ]
             
-        case "480p":
+        case .RESOLUTION_480:
             // 858 * 480
             rtmpStream.videoSettings = [
-                .width: 858,
-                .height: 480,
+                .width: Resolutions.RESOLUTION_480.instance.width,
+                .height: Resolutions.RESOLUTION_480.instance.height,
                 .bitrate: 1200 * 1000, // video output bitrate
-                .maxKeyFrameIntervalDuration: 2, // key frame / sec
+                .maxKeyFrameIntervalDuration: 0, // key frame / sec
             ]
-        case "720p":
+        case .RESOLUTION_720:
             // 1280 * 720
             rtmpStream.videoSettings = [
-                .width: 1280,
-                .height: 720,
+                .width: Resolutions.RESOLUTION_720.instance.width,
+                .height: Resolutions.RESOLUTION_720.instance.height,
                 .bitrate: 2250 * 1000, // video output bitrate
-                .maxKeyFrameIntervalDuration: 2, // key frame / sec
+                .maxKeyFrameIntervalDuration: 0, // key frame / sec
             ]
-        case "1080p":
+        case .RESOLUTION_1080:
             // 1920 * 1080
             rtmpStream.videoSettings = [
-                .width: 1920,
-                .height: 1080,
+                .width: Resolutions.RESOLUTION_1080.instance.width,
+                .height: Resolutions.RESOLUTION_1080.instance.height,
                 .profileLevel: kVTProfileLevel_H264_High_4_0,
                 .bitrate: 4500 * 1000, // video output bitrate
-                .maxKeyFrameIntervalDuration: 2, // key frame / sec
+                .maxKeyFrameIntervalDuration: 0, // key frame / sec
             ]
-        case "2160p":
+        case .RESOLUTION_2160:
             // 3860 * 2160
             rtmpStream.videoSettings = [
-                .width: 3860,
-                .height: 2160,
+                .width: Resolutions.RESOLUTION_2160.instance.width,
+                .height: Resolutions.RESOLUTION_2160.instance.height,
                 .profileLevel: kVTProfileLevel_H264_High_AutoLevel,
                 .bitrate: 160000 * 1000, // video output bitrate
-                .maxKeyFrameIntervalDuration: 2, // key frame / sec
-            ]
-        default:
-            rtmpStream.videoSettings = [
-                .width: 480,
-                .height: 360,
-                .bitrate: 400 * 1000, // video output bitrate
-                .maxKeyFrameIntervalDuration: 2, // key frame / sec
+                .maxKeyFrameIntervalDuration: 0, // key frame / sec
             ]
         }
     }
