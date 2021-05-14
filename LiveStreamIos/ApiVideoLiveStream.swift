@@ -24,6 +24,11 @@ class Resolution{
 }
 
 public class ApiVideoLiveStream{
+    public enum Orientation : Int {
+        case landscape = 0
+        case portrait = 1
+    }
+    
     public enum Resolutions {
         case RESOLUTION_240
         case RESOLUTION_360
@@ -83,6 +88,11 @@ public class ApiVideoLiveStream{
             prepareCamera()
         }
     }
+    public var videoOrientation: Orientation = .landscape {
+        didSet{
+            setVideoSettings()
+        }
+    }
     
     public var audioMuted: Bool = false{
         didSet{
@@ -121,7 +131,7 @@ public class ApiVideoLiveStream{
         if (view != nil) {
             let hkView = MTHKView(frame: view!.bounds)
             hkView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            hkView.videoGravity = AVLayerVideoGravity.resizeAspectFill
+            hkView.videoGravity = AVLayerVideoGravity.resizeAspect
             hkView.attachStream(rtmpStream)
             view!.addSubview(hkView)
         }
@@ -171,8 +181,8 @@ public class ApiVideoLiveStream{
     
     private func setVideoSettings(){
         rtmpStream.videoSettings = [
-            .width: videoResolution.instance.width,
-            .height: videoResolution.instance.height,
+            .width: videoOrientation == .landscape ? videoResolution.instance.width : videoResolution.instance.height,
+            .height: videoOrientation == .landscape ? videoResolution.instance.height : videoResolution.instance.width,
             .profileLevel: videoResolution.instance.profilLevel,
             .bitrate: videoBitrate ?? videoResolution.instance.videoBitrate,
             .maxKeyFrameIntervalDuration: 0,
