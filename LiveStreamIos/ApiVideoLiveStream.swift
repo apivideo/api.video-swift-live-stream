@@ -71,10 +71,6 @@ public class ApiVideoLiveStream{
     public var videoResolution: Resolutions = Resolutions.RESOLUTION_720{
         didSet{
             updateRatioConstraint()
-//            if (rtmpStream.isStreaming) {
-//                printWarn: it will only effect after you restart your stream
-//            }
-
         }
     }
     
@@ -86,9 +82,6 @@ public class ApiVideoLiveStream{
     
     public var videoBitrate: Int? = nil {
         didSet{
-//            if (rtmpStream.isStreaming) {
-//                printWarn: it will only effect after you restart your stream
-//            }
         }
     }
     
@@ -100,9 +93,6 @@ public class ApiVideoLiveStream{
     public var videoOrientation: Orientation = .landscape {
         didSet{
             updateRatioConstraint()
-//            if (rtmpStream.isStreaming) {
-//                printWarn: it will only effect after you restart your stream
-//            }
         }
     }
     
