@@ -55,6 +55,9 @@ public class ApiVideoLiveStream{
         }
     }
     
+    private var ratioConstraint: NSLayoutConstraint?
+    private var mthkView: MTHKView?
+    
     private var livestreamkey: String?
     private var rtmpServerUrl: String?
     
@@ -67,7 +70,11 @@ public class ApiVideoLiveStream{
     
     public var videoResolution: Resolutions = Resolutions.RESOLUTION_720{
         didSet{
-            setVideoSettings()
+            updateRatioConstraint()
+//            if (rtmpStream.isStreaming) {
+//                printWarn: it will only effect after you restart your stream
+//            }
+
         }
     }
     
@@ -77,9 +84,11 @@ public class ApiVideoLiveStream{
         }
     }
     
-    public var videoBitrate: Int? = nil{
+    public var videoBitrate: Int? = nil {
         didSet{
-            setVideoSettings()
+//            if (rtmpStream.isStreaming) {
+//                printWarn: it will only effect after you restart your stream
+//            }
         }
     }
     
@@ -90,7 +99,10 @@ public class ApiVideoLiveStream{
     }
     public var videoOrientation: Orientation = .landscape {
         didSet{
-            setVideoSettings()
+            updateRatioConstraint()
+//            if (rtmpStream.isStreaming) {
+//                printWarn: it will only effect after you restart your stream
+//            }
         }
     }
     
@@ -125,18 +137,42 @@ public class ApiVideoLiveStream{
         
         prepareCamera()
         setCaptureSettings()
-        setVideoSettings()
         setAudioSettings()
         
         if (view != nil) {
-            let hkView = MTHKView(frame: view!.bounds)
-            hkView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            hkView.videoGravity = AVLayerVideoGravity.resizeAspect
-            hkView.attachStream(rtmpStream)
-            view!.addSubview(hkView)
+            mthkView = MTHKView(frame: view!.bounds)
+            mthkView!.translatesAutoresizingMaskIntoConstraints = false
+            mthkView!.videoGravity = AVLayerVideoGravity.resizeAspectFill
+            mthkView!.attachStream(rtmpStream)
+            view!.addSubview(mthkView!)
+
+            updateRatioConstraint()
+            let maxWidth = mthkView!.widthAnchor.constraint(lessThanOrEqualTo: view!.widthAnchor)
+            let maxHeight = mthkView!.heightAnchor.constraint(lessThanOrEqualTo: view!.heightAnchor)
+            let width = mthkView!.widthAnchor.constraint(equalTo: view!.widthAnchor)
+            let height = mthkView!.heightAnchor.constraint(equalTo: view!.heightAnchor)
+            let centerX = mthkView!.centerXAnchor.constraint(equalTo: view!.centerXAnchor)
+            let centerY = mthkView!.centerYAnchor.constraint(equalTo: view!.centerYAnchor)
+
+            width.priority = .defaultHigh
+            height.priority = .defaultHigh
+            
+            NSLayoutConstraint.activate([
+                maxWidth, maxHeight, width, height, centerX, centerY
+            ])
         }
         
         
+    }
+    
+    private func updateRatioConstraint() {
+        if (mthkView != nil) {
+            ratioConstraint?.isActive = false
+            let newRatio = videoOrientation == .landscape ? CGFloat(videoResolution.instance.width) / CGFloat(videoResolution.instance.height) : CGFloat(videoResolution.instance.height) / CGFloat(videoResolution.instance.width)
+            ratioConstraint = mthkView!.widthAnchor.constraint(equalTo: mthkView!.heightAnchor, multiplier: newRatio)
+            ratioConstraint?.isActive = true
+            mthkView?.layoutIfNeeded()
+        }
     }
     
     private func prepareCamera(){
@@ -151,6 +187,8 @@ public class ApiVideoLiveStream{
     public func startLiveStreamFlux(liveStreamKey: String, rtmpServerUrl: String?) -> Void{
         self.livestreamkey = liveStreamKey
         self.rtmpServerUrl = rtmpServerUrl
+        
+        setVideoSettings()
 
         rtmpConnection.addEventListener(.rtmpStatus, selector: #selector(rtmpStatusHandler), observer: self)
         rtmpConnection.addEventListener(.ioError, selector: #selector(rtmpErrorHandler), observer: self)
@@ -224,7 +262,6 @@ public class ApiVideoLiveStream{
         guard let orientation = DeviceUtil.videoOrientation(by: UIApplication.shared.statusBarOrientation) else {
             return
         }
-        print("orientation \(orientation.rawValue)")
         rtmpStream.orientation = orientation
     }
 }
