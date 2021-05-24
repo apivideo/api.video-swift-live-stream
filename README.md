@@ -45,7 +45,7 @@ class ViewController: UIViewController {
     }
 }
 ```
-By default you stream will be : 
+By default your stream will be : 
 - 720p
 - 30 fps
 - back camera
