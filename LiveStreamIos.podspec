@@ -4,7 +4,7 @@ Pod::Spec.new do |spec|
 
 
   spec.name         = "LiveStreamIos"
-  spec.version      = "0.0.2"
+  spec.version      = "0.0.3"
   spec.summary      = "a native iOS library from api.video"
 
   
@@ -19,7 +19,7 @@ Pod::Spec.new do |spec|
   
   spec.license      = "Apache License, Version 2.0"
 
-  spec.author             = { "romain petit" => "contact.romain.petit@gmail.com" }
+  spec.author             = { "Ecosystem Team" => "ecosystem@api.video" }
   spec.social_media_url   = "https://twitter.com/api_video"
 
   spec.platform     = :ios, "12.0"
@@ -35,6 +35,6 @@ Pod::Spec.new do |spec|
   spec.source_files  = "LiveStreamIos/**/*.{h,m,swift}"
   spec.exclude_files = "LiveStreamIos/Exclude"
 
-  spec.dependency "HaishinKit", "~> 1.1.0"
+  spec.dependency "HaishinKit", "1.2.1"
 
 end
