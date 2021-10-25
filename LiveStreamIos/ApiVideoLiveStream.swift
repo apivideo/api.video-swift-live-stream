@@ -235,7 +235,7 @@ public class ApiVideoLiveStream{
             .height: videoOrientation == .landscape ? videoResolution.instance.height : videoResolution.instance.width,
             .profileLevel: videoResolution.instance.profilLevel,
             .bitrate: videoBitrate ?? videoResolution.instance.videoBitrate,
-            .maxKeyFrameIntervalDuration: 0,
+            .maxKeyFrameIntervalDuration: 1,
         ]
     }
 
