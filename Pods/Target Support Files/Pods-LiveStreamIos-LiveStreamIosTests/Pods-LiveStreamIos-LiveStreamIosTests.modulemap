@@ -1,6 +1,0 @@
-framework module Pods_LiveStreamIos_LiveStreamIosTests {
-  umbrella header "Pods-LiveStreamIos-LiveStreamIosTests-umbrella.h"
-
-  export *
-  module * { export * }
-}

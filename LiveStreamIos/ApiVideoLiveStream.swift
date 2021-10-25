@@ -113,6 +113,24 @@ public class ApiVideoLiveStream{
 
 
     public init(view: UIView?) {
+        
+        let session = AVAudioSession.sharedInstance()
+        do {
+            // https://stackoverflow.com/questions/51010390/avaudiosession-setcategory-swift-4-2-ios-12-play-sound-on-silent
+            if #available(iOS 10.0, *) {
+                try session.setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker, .allowBluetooth])
+            } else {
+                session.perform(NSSelectorFromString("setCategory:withOptions:error:"), with: AVAudioSession.Category.playAndRecord, with: [
+                    AVAudioSession.CategoryOptions.allowBluetooth,
+                    AVAudioSession.CategoryOptions.defaultToSpeaker]
+                )
+                try session.setMode(.default)
+            }
+            try session.setActive(true)
+        } catch {
+            print(error)
+        }
+        
         rtmpStream = RTMPStream(connection: rtmpConnection)
 
         NotificationCenter.default.addObserver(self, selector: #selector(on(_:)), name: UIDevice.orientationDidChangeNotification, object: nil)
@@ -217,7 +235,7 @@ public class ApiVideoLiveStream{
             .height: videoOrientation == .landscape ? videoResolution.instance.height : videoResolution.instance.width,
             .profileLevel: videoResolution.instance.profilLevel,
             .bitrate: videoBitrate ?? videoResolution.instance.videoBitrate,
-            .maxKeyFrameIntervalDuration: 0,
+            .maxKeyFrameIntervalDuration: 1,
         ]
     }
 
