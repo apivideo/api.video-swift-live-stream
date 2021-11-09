@@ -57,21 +57,18 @@ public class ApiVideoLiveStream{
 
     private var ratioConstraint: NSLayoutConstraint?
     private var mthkView: MTHKView?
-
     private var livestreamkey: String?
     private var rtmpServerUrl: String?
-
     private var rtmpStream: RTMPStream
     private var rtmpConnection = RTMPConnection()
     private var currentPosition: AVCaptureDevice.Position = .back
     private var retryCount: Int = 0
     private static let maxRetryCount: Int = 5
-
-    public var onStatusChange: ((String) -> ())? = nil {
-        didSet{
-        }
-    }
-
+    
+    public var onConnectionSuccess: (() -> ())? = nil
+    public var onConnectionFailed: ((String) -> ())? = nil
+    public var onDisconnect: (() -> ())? = nil
+    
     public var videoResolution: Resolutions = Resolutions.RESOLUTION_720{
         didSet{
             updateRatioConstraint()
@@ -132,7 +129,6 @@ public class ApiVideoLiveStream{
         }
         
         rtmpStream = RTMPStream(connection: rtmpConnection)
-
         NotificationCenter.default.addObserver(self, selector: #selector(on(_:)), name: UIDevice.orientationDidChangeNotification, object: nil)
         DispatchQueue.main.async {
             if let orientation = DeviceUtil.videoOrientation(by: UIApplication.shared.statusBarOrientation) {
@@ -150,7 +146,6 @@ public class ApiVideoLiveStream{
         prepareCamera()
         setCaptureSettings()
         setAudioSettings()
-
         if (view != nil) {
             mthkView = MTHKView(frame: view!.bounds)
             mthkView!.translatesAutoresizingMaskIntoConstraints = false
@@ -174,7 +169,6 @@ public class ApiVideoLiveStream{
             ])
         }
 
-
     }
 
     private func updateRatioConstraint() {
@@ -195,7 +189,6 @@ public class ApiVideoLiveStream{
         }
     }
 
-
     public func startLiveStreamFlux(liveStreamKey: String, rtmpServerUrl: String?) -> Void{
         self.livestreamkey = liveStreamKey
         self.rtmpServerUrl = rtmpServerUrl
@@ -208,6 +201,9 @@ public class ApiVideoLiveStream{
     }
 
     public func stopLiveStreamFlux() -> Void{
+        if (self.onDisconnect != nil) {
+            self.onDisconnect!()
+        }
         rtmpConnection.close()
         rtmpConnection.removeEventListener(.rtmpStatus, selector: #selector(rtmpStatusHandler), observer: self)
         rtmpConnection.removeEventListener(.ioError, selector: #selector(rtmpErrorHandler), observer: self)
@@ -244,14 +240,17 @@ public class ApiVideoLiveStream{
         guard let data: ASObject = e.data as? ASObject, let code: String = data["code"] as? String else {
             return
         }
-        if (self.onStatusChange != nil) {
-            self.onStatusChange!(code)
-        }
         switch code {
         case RTMPConnection.Code.connectSuccess.rawValue:
+            if (self.onConnectionSuccess != nil) {
+                self.onConnectionSuccess!()
+            }
             retryCount = 0
             rtmpStream.publish(self.livestreamkey!)
         case RTMPConnection.Code.connectFailed.rawValue, RTMPConnection.Code.connectClosed.rawValue:
+            if (self.onConnectionFailed != nil) {
+                self.onConnectionFailed!(code)
+            }
             guard retryCount <= ApiVideoLiveStream.maxRetryCount else {
                 return
             }

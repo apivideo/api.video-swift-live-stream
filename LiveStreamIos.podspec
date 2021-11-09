@@ -4,7 +4,7 @@ Pod::Spec.new do |spec|
 
 
   spec.name         = "LiveStreamIos"
-  spec.version      = "0.0.3"
+  spec.version      = "0.0.4"
   spec.summary      = "a native iOS library from api.video"
 
   
@@ -17,7 +17,7 @@ Pod::Spec.new do |spec|
 
 
   
-  spec.license      = "Apache License, Version 2.0"
+  spec.license      = "MIT License Copyright (c) 2021 api.video"
 
   spec.author             = { "Ecosystem Team" => "ecosystem@api.video" }
   spec.social_media_url   = "https://twitter.com/api_video"
