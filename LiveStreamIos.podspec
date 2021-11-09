@@ -17,7 +17,7 @@ Pod::Spec.new do |spec|
 
 
   
-  spec.license      = "Apache License, Version 2.0"
+  spec.license      = "MIT License Copyright (c) 2021 api.video"
 
   spec.author             = { "Ecosystem Team" => "ecosystem@api.video" }
   spec.social_media_url   = "https://twitter.com/api_video"
