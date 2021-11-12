@@ -3,16 +3,16 @@
 Pod::Spec.new do |spec|
 
 
-  spec.name         = "LiveStreamIos"
+  spec.name         = "ApiVideoLiveStream"
   spec.version      = "0.0.4"
-  spec.summary      = "a native iOS library from api.video"
+  spec.summary      = "The api.video live stream framework allow easy integration of a live stream broadcast into your application."
 
   
   spec.description  = <<-DESC
-    a native iOS library to stream on api.video, feel free to use it
+    Quickly add the ability to broadcast a live stream from your application with this module. Within minutes, your app will be streaming RTMP live video to api.video where it can be broadcasted to anyone around the world.
                    DESC
 
-  spec.homepage     = "https://github.com/apivideo/LiveStreamIos"
+  spec.homepage     = "https://docs.api.video"
 
 
 
