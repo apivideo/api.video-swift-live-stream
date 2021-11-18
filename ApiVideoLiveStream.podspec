@@ -28,7 +28,7 @@ Pod::Spec.new do |spec|
   spec.ios.deployment_target = "9.0"
 
 
-  spec.source       = { :git => "https://github.com/apivideo/LiveStreamIos.git", :tag => spec.version.to_s }
+  spec.source       = { :git => "https://github.com/apivideo/api.video-ios-live-stream.git", :tag => spec.version.to_s }
 
 
 
