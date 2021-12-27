@@ -1,9 +1,12 @@
 PODS:
+  - ApiVideoLiveStream (0.0.4):
+    - HaishinKit (= 1.2.1)
   - HaishinKit (1.2.1):
     - Logboard (~> 2.2.2)
   - Logboard (2.2.2)
 
 DEPENDENCIES:
+  - ApiVideoLiveStream (from `.`)
   - HaishinKit (= 1.2.1)
 
 SPEC REPOS:
@@ -11,10 +14,15 @@ SPEC REPOS:
     - HaishinKit
     - Logboard
 
+EXTERNAL SOURCES:
+  ApiVideoLiveStream:
+    :path: "."
+
 SPEC CHECKSUMS:
+  ApiVideoLiveStream: e9daf8c54dc7729d495eed96db7188b0162fa284
   HaishinKit: 2b924f6ce90483e373f7079de90b2496fea30241
   Logboard: 0ab6bbd984ed032b3f0b615cef06779a73445c80
 
-PODFILE CHECKSUM: 6e4f0977ceb16ea9e41f59d80e6b11c2d9c9fe10
+PODFILE CHECKSUM: 5570064d544aa47d3e17f01afc991b4c066fd7ee
 
 COCOAPODS: 1.11.2

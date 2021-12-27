@@ -1,14 +1,12 @@
 //
-//  LiveStreamIosTests.swift
-//  LiveStreamIosTests
-//
-//  Created by Romain Petit on 29/04/2021.
+//  DummyTest.swift
+//  DummyTest
 //
 
 import XCTest
-@testable import LiveStreamIos
+@testable import ApiVideoLiveStream
 
-class LiveStreamIosTests: XCTestCase {
+class DummyTest: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
