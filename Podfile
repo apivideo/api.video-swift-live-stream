@@ -10,7 +10,7 @@ end
 
 target 'ApiVideoLiveStream' do
   # Pods for ApiVideoLiveStream
-  pod 'HaishinKit', '1.2.1'
+  pod 'HaishinKit', '1.2.2'
 
   target 'Tests' do
     # Pods for testing
