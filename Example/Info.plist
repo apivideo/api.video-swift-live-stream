@@ -21,5 +21,9 @@
 			</array>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>This application requires to capture your camera stream</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This application requires to capture your microphone stream</string>
 </dict>
 </plist>
