@@ -16,13 +16,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Pir-Wf-dKx" userLabel="Preview">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pir-Wf-dKx" userLabel="Preview">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="aZ3-8G-FEO" userLabel="LiveButton">
-                                        <rect key="frame" x="180" y="823" width="56" height="31"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="aZ3-8G-FEO" userLabel="LiveButton">
+                                        <rect key="frame" x="179" y="823" width="56" height="31"/>
                                         <accessibility key="accessibilityConfiguration" label="Start"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="gray" title="Start"/>
@@ -30,23 +28,84 @@
                                             <action selector="onPublish:" destination="BYZ-38-t0r" eventType="touchDown" id="uBC-u4-skb"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="izb-oz-cHp">
+                                        <rect key="frame" x="323.5" y="823" width="50.5" height="31"/>
+                                        <buttonConfiguration key="configuration" style="gray" image="camera.rotate" catalog="system"/>
+                                        <connections>
+                                            <action selector="switchCamera:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Xxb-sU-Da8"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rZa-oB-ZZG">
+                                        <rect key="frame" x="40" y="823" width="45" height="31"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="gray" image="speaker.circle" catalog="system"/>
+                                        <connections>
+                                            <action selector="muteUnMute:" destination="BYZ-38-t0r" eventType="touchUpInside" id="726-Hy-7ET"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="izb-oz-cHp" firstAttribute="centerY" secondItem="aZ3-8G-FEO" secondAttribute="centerY" id="DWO-DV-1NI"/>
+                                    <constraint firstItem="izb-oz-cHp" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="aZ3-8G-FEO" secondAttribute="trailing" constant="8" symbolic="YES" id="Nef-wm-jxI"/>
+                                    <constraint firstItem="rZa-oB-ZZG" firstAttribute="centerY" secondItem="aZ3-8G-FEO" secondAttribute="centerY" id="UfG-Jl-nYz"/>
+                                    <constraint firstItem="rZa-oB-ZZG" firstAttribute="leading" secondItem="Pir-Wf-dKx" secondAttribute="leading" constant="40" id="WC6-VG-lLZ"/>
+                                    <constraint firstItem="aZ3-8G-FEO" firstAttribute="leading" secondItem="rZa-oB-ZZG" secondAttribute="trailing" constant="94" id="Zb0-dO-yTJ"/>
+                                    <constraint firstItem="aZ3-8G-FEO" firstAttribute="centerX" secondItem="Pir-Wf-dKx" secondAttribute="centerX" id="ahw-75-DI8"/>
+                                    <constraint firstAttribute="bottom" secondItem="aZ3-8G-FEO" secondAttribute="bottom" constant="42" id="rcc-GX-zez"/>
+                                    <constraint firstAttribute="trailing" secondItem="izb-oz-cHp" secondAttribute="trailing" constant="40" id="uCY-1y-ddy"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="Pir-Wf-dKx" secondAttribute="bottom" id="5G7-7K-G0p"/>
+                            <constraint firstItem="Pir-Wf-dKx" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="5Hj-mR-f06"/>
+                            <constraint firstItem="Pir-Wf-dKx" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="5Uq-tt-lc2"/>
+                            <constraint firstItem="Pir-Wf-dKx" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="gku-Qs-pHq"/>
+                        </constraints>
                     </view>
                     <connections>
-                        <outlet property="preview" destination="Pir-Wf-dKx" id="ac9-q9-E4X"/>
+                        <outlet property="changeAudioButton" destination="rZa-oB-ZZG" id="Mlq-Ji-6JQ"/>
+                        <outlet property="preview" destination="Pir-Wf-dKx" id="tEH-7Y-LK7"/>
+                        <outlet property="switchCameraButton" destination="izb-oz-cHp" id="9EB-te-tZw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="137.68115942028987" y="118.52678571428571"/>
         </scene>
+        <!--Settings View Controller-->
+        <scene sceneID="r9z-CL-MKp">
+            <objects>
+                <viewController id="vcb-d4-8kg" customClass="SettingsViewController" customModule="Example" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Q8I-Rm-6Gq">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s0V-mu-hkT">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                            </scrollView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="ygH-Go-BAf"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="ygH-Go-BAf" firstAttribute="bottom" secondItem="s0V-mu-hkT" secondAttribute="bottom" id="Gwm-0F-zZ1"/>
+                            <constraint firstItem="ygH-Go-BAf" firstAttribute="trailing" secondItem="s0V-mu-hkT" secondAttribute="trailing" id="apA-KQ-j2m"/>
+                            <constraint firstItem="s0V-mu-hkT" firstAttribute="top" secondItem="ygH-Go-BAf" secondAttribute="top" id="uXV-zq-aky"/>
+                            <constraint firstItem="s0V-mu-hkT" firstAttribute="leading" secondItem="ygH-Go-BAf" secondAttribute="leading" id="vrc-Y9-WpC"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="daB-ss-e0l" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1021.7391304347827" y="118.52678571428571"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="camera.rotate" catalog="system" width="128" height="94"/>
+        <image name="speaker.circle" catalog="system" width="128" height="121"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
