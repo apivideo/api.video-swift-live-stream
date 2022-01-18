@@ -1,9 +1,21 @@
-name: Build Swift package
+name: Build iOS Live Stream
+
 on: [push]
+
 jobs:
-  build:
+  build-lib:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
       - name: Build
-        run: swift build
+        run: |
+          pod install
+          xcodebuild clean build -workspace ApiVideoLiveStream.xcworkspace -scheme ApiVideoLiveStream -sdk iphoneos
+  build-example:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        run: |
+          pod install
+          xcodebuild clean build -workspace ApiVideoLiveStream.xcworkspace -scheme ApiVideoLiveStream -sdk iphoneos
