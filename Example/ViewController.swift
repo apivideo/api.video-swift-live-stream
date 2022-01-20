@@ -6,7 +6,11 @@
 import UIKit
 import ApiVideoLiveStream
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, DataEnteredDelegate {
+    func sendDataBack(endpoint: String, streamkey: String) {
+        myStreamKey = streamkey
+        myEndpoint = endpoint
+    }
     
     @IBOutlet private weak var preview: UIView!
     @IBOutlet weak var switchCameraButton: UIButton!
@@ -14,6 +18,9 @@ class ViewController: UIViewController {
     
     private var liveStream: ApiVideoLiveStream?
     private var errorRtmp: String? = nil
+    
+    var myStreamKey = ""
+    var myEndpoint = "rtmp://broadcast.api.video/s"
     
     private let alert = UIAlertController(title: "RTMP DISCONNECT", message: "", preferredStyle: .alert)
     private let front = UIImage(systemName: "camera.rotate.fill")
@@ -49,7 +56,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let audioConfig = AudioConfig(bitrate: 128 * 1024, sampleRate: 44100, stereo: true)
+        let audioConfig = AudioConfig(bitrate: 32 * 1000, sampleRate: 41000, stereo: true)
         let videoConfig = VideoConfig(bitrate: 2 * 1024 * 1024, resolution: Resolutions.RESOLUTION_720, fps: 30)
         addAction()
         self.switchCameraButton.setImage(back, for: .selected)
@@ -67,7 +74,7 @@ class ViewController: UIViewController {
             publish.setTitle("Start", for: [])
         } else {
             UIApplication.shared.isIdleTimerDisabled = true
-            liveStream?.startStreaming(streamKey: "mykey")
+            liveStream?.startStreaming(streamKey: myStreamKey, url: myEndpoint)
             liveStream?.onConnectionFailed = {(code) in
                 self.liveStream?.stopStreaming()
                 self.callAlert(code: code)
@@ -99,6 +106,17 @@ class ViewController: UIViewController {
         }else if(!liveStream!.isMuted){
             liveStream?.isMuted = true
             self.changeAudioButton.setImage(self.mute, for: .normal)
+        }
+    }
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "segueParam") {
+            let vc = segue.destination as! UINavigationController
+            let target = vc.topViewController as! SettingsViewController
+            target.delegate = self
+            target.liveStream = liveStream
+            target.streamkey = myStreamKey
         }
     }
     
