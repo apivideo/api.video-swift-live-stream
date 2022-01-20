@@ -5,11 +5,11 @@
 
 import Foundation
 
-class Resolution{
-    var width: Int
-    var height: Int
+public class Resolution{
+    public var width: Int
+    public var height: Int
 
-    init(width: Int, height: Int) {
+    public init(width: Int, height: Int) {
         self.width = width
         self.height = height
     }
@@ -23,7 +23,7 @@ public enum Resolutions {
     case RESOLUTION_1080
     case RESOLUTION_2160
 
-    var instance: Resolution{
+    public var instance: Resolution{
         switch self {
         case .RESOLUTION_240:
             return Resolution(width: 352, height: 240)
@@ -42,9 +42,9 @@ public enum Resolutions {
 }
 
 public struct AudioConfig {
-    let bitrate: Int
-    let sampleRate: Int
-    let stereo: Bool
+    public let bitrate: Int
+    public let sampleRate: Int
+    public let stereo: Bool
     
     public init(bitrate: Int, sampleRate: Int, stereo: Bool) {
         self.bitrate = bitrate
@@ -54,9 +54,9 @@ public struct AudioConfig {
 }
 
 public struct VideoConfig {
-    let bitrate: Int
-    let resolution: Resolutions
-    let fps: Int
+    public let bitrate: Int
+    public let resolution: Resolutions
+    public let fps: Int
     
     public init(bitrate: Int, resolution: Resolutions, fps: Int) {
         self.bitrate = bitrate

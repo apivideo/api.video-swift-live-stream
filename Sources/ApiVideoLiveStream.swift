@@ -19,36 +19,52 @@ public class ApiVideoLiveStream{
     public var onDisconnect: (() -> ())? = nil
     
     
+    /// object needed to set audio
+    ///  Can't be updated
     public var audioConfig: AudioConfig {
         didSet{
             prepareAudio()
         }
     }
     
+    /// object needed to set video
+    /// Can't be updated
     public var videoConfig: VideoConfig {
         didSet{
             prepareVideo()
         }
     }
     
+    /// Bitrate number for the video
+    /// Can be updated
     public var videoBitrate: Int? = nil {
         didSet{
             rtmpStream.videoSettings[.bitrate] = videoBitrate
         }
     }
     
+    /// Camera position
+    /// Can be updated
     public var camera: AVCaptureDevice.Position = .back {
         didSet{
             attachCamera()
         }
     }
     
+    /// audio mute or not.
+    /// Can be updated
     public var isMuted: Bool = false {
         didSet{
             rtmpStream.audioSettings[.muted] = isMuted
         }
     }
     
+    
+    /// init ApiVideoLiveStream
+    /// - Parameters:
+    ///   - initialAudioConfig: AudioConfig with default value
+    ///   - initialVideoConfig: VideoConfig with default value
+    ///   - preview: UiView to display the preview of camera
     public init(initialAudioConfig: AudioConfig, initialVideoConfig: VideoConfig, preview: UIView?) throws {
         let session = AVAudioSession.sharedInstance()
         
@@ -149,12 +165,20 @@ public class ApiVideoLiveStream{
     }
     
     private func prepareAudio() {
+        do {
+            try AVAudioSession.sharedInstance().setPreferredSampleRate(Double(audioConfig.sampleRate))
+        } catch {
+        }
         rtmpStream.audioSettings = [
             .bitrate: audioConfig.bitrate,
-            .sampleRate: audioConfig.sampleRate
         ]
     }
     
+    /// Function to start your livestream
+    /// - Parameters:
+    ///   - streamKey: String value
+    ///   - url: String value, by default : rtmp://broadcast.api.video/s
+    /// - Returns: void
     public func startStreaming(streamKey: String, url: String = "rtmp://broadcast.api.video/s") -> Void{
         self.streamKey = streamKey
         self.url = url
@@ -165,6 +189,8 @@ public class ApiVideoLiveStream{
         rtmpConnection.connect(url)
     }
     
+    /// Function to stop livestream
+    /// - Returns: <#description#>
     public func stopStreaming() -> Void{
         if (self.onDisconnect != nil) {
             self.onDisconnect!()
