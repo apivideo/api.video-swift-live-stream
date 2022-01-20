@@ -207,12 +207,6 @@ class SettingsViewController : UIViewController, UITableViewDelegate, UITableVie
                 controller.paramUpdate = .SampleRate
                 self.present(UINavigationController(rootViewController: controller), animated: true, completion: nil)
             }),
-            .switchCell(model: SettingsSwitchOption(title: "Enable echo canceler", isOn: false){
-        
-            }),
-            .switchCell(model: SettingsSwitchOption(title: "Enable noise canceler", isOn: true){
-                
-            })
         ]))
         
         models.append(Section(title: "Endpoint", options: [
