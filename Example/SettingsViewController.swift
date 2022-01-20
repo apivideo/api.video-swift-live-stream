@@ -288,6 +288,7 @@ class SettingsViewController : UIViewController, UITableViewDelegate, UITableVie
             }
             cell.layer.cornerRadius = 8
             cell.configure(with: model)
+            cell.delegate = self
             cell.selectionStyle = .none
             print("slider value on main : \(cell.sliderValue)")
             return cell
@@ -378,6 +379,8 @@ class SettingsViewController : UIViewController, UITableViewDelegate, UITableVie
 extension SettingsViewController: UpdateParamDelegate{
     func updateParamVideoBitrate(variable: Int) {
         selectedVideoBitrate = variable
+        setVideo()
+        print("video bitrate : \(String(describing: selectedVideoBitrate))")
     }
     
     func updateParamEndpoint(variable: String) {

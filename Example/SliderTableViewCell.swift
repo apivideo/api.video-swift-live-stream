@@ -51,7 +51,7 @@ class SliderTableViewCell: UITableViewCell {
         sender.value = roundedStepValue
         
         sliderValue = Int(roundedStepValue)
-        //delegate?.updateParamEndpoint(variable: textField.text!)
+        delegate?.updateParamVideoBitrate(variable: sliderValue)
         
         DispatchQueue.main.async {
             self.currentValueLabel.text = String(Int(roundedStepValue))
