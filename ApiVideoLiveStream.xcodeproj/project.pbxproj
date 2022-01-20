@@ -156,21 +156,15 @@
 		219B8DBC2779B46900E1B695 /* Example */ = {
 			isa = PBXGroup;
 			children = (
+				C717815627995F0E00276345 /* Cells */,
+				C717815527995EF800276345 /* Controllers */,
 				219B8DBD2779B46900E1B695 /* AppDelegate.swift */,
 				219B8DBF2779B46900E1B695 /* SceneDelegate.swift */,
-				219B8DC12779B46900E1B695 /* ViewController.swift */,
 				219B8DC32779B46900E1B695 /* Main.storyboard */,
 				C7961B07278C8B9200B5EE94 /* Settings.bundle */,
 				219B8DC62779B46A00E1B695 /* Assets.xcassets */,
 				219B8DC82779B46A00E1B695 /* LaunchScreen.storyboard */,
 				219B8DCB2779B46A00E1B695 /* Info.plist */,
-				C7961B05278C4CC300B5EE94 /* SettingsViewController.swift */,
-				C7961B09278F228600B5EE94 /* SettingTableViewCell.swift */,
-				C7961B0B278F3DD700B5EE94 /* SwitchTableViewCell.swift */,
-				C7961B0D278F55B400B5EE94 /* SliderTableViewCell.swift */,
-				C7961B0F27902DFA00B5EE94 /* TextTableViewCell.swift */,
-				C7961B112791BF4C00B5EE94 /* ListViewController.swift */,
-				C7961B132791DA6900B5EE94 /* ListTableViewCell.swift */,
 				C7961B152796D23700B5EE94 /* UpdateParamDelegate.swift */,
 				C7961B172797817A00B5EE94 /* DataEnteredDelegate.swift */,
 			);
@@ -198,6 +192,28 @@
 				89CC6DFCEFA817903781E48E /* Pods_Example.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C717815527995EF800276345 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				219B8DC12779B46900E1B695 /* ViewController.swift */,
+				C7961B05278C4CC300B5EE94 /* SettingsViewController.swift */,
+				C7961B112791BF4C00B5EE94 /* ListViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		C717815627995F0E00276345 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				C7961B09278F228600B5EE94 /* SettingTableViewCell.swift */,
+				C7961B0B278F3DD700B5EE94 /* SwitchTableViewCell.swift */,
+				C7961B132791DA6900B5EE94 /* ListTableViewCell.swift */,
+				C7961B0D278F55B400B5EE94 /* SliderTableViewCell.swift */,
+				C7961B0F27902DFA00B5EE94 /* TextTableViewCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		C78C2002263AD01C0022A7BC = {

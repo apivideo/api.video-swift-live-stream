@@ -19,7 +19,7 @@ public class ApiVideoLiveStream{
     public var onDisconnect: (() -> ())? = nil
     
     
-    /// object needed to set audio
+    ///  Set a new AudioConfig
     ///  Can't be updated
     public var audioConfig: AudioConfig {
         didSet{
@@ -27,7 +27,7 @@ public class ApiVideoLiveStream{
         }
     }
     
-    /// object needed to set video
+    /// Set a new VideoConfig
     /// Can't be updated
     public var videoConfig: VideoConfig {
         didSet{
@@ -51,7 +51,7 @@ public class ApiVideoLiveStream{
         }
     }
     
-    /// audio mute or not.
+    /// Audio mute or not.
     /// Can be updated
     public var isMuted: Bool = false {
         didSet{
@@ -62,8 +62,8 @@ public class ApiVideoLiveStream{
     
     /// init ApiVideoLiveStream
     /// - Parameters:
-    ///   - initialAudioConfig: AudioConfig with default value
-    ///   - initialVideoConfig: VideoConfig with default value
+    ///   - initialAudioConfig: AudioConfig
+    ///   - initialVideoConfig: VideoConfig
     ///   - preview: UiView to display the preview of camera
     public init(initialAudioConfig: AudioConfig, initialVideoConfig: VideoConfig, preview: UIView?) throws {
         let session = AVAudioSession.sharedInstance()
@@ -178,7 +178,7 @@ public class ApiVideoLiveStream{
     /// - Parameters:
     ///   - streamKey: String value
     ///   - url: String value, by default : rtmp://broadcast.api.video/s
-    /// - Returns: void
+    /// - Returns: Void
     public func startStreaming(streamKey: String, url: String = "rtmp://broadcast.api.video/s") -> Void{
         self.streamKey = streamKey
         self.url = url
@@ -190,7 +190,7 @@ public class ApiVideoLiveStream{
     }
     
     /// Function to stop livestream
-    /// - Returns: <#description#>
+    /// - Returns: Void
     public func stopStreaming() -> Void{
         if (self.onDisconnect != nil) {
             self.onDisconnect!()
