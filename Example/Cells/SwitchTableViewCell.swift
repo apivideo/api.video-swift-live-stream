@@ -19,7 +19,7 @@ class SwitchTableViewCell: UITableViewCell {
     
     private let mySwitch: UISwitch =  {
         let mySwitch = UISwitch()
-        mySwitch.onTintColor = .systemBlue
+        mySwitch.onTintColor = .orange
         return mySwitch
     }()
     
