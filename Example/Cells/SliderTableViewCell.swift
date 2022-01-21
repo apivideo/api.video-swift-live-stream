@@ -13,7 +13,6 @@ class SliderTableViewCell: UITableViewCell {
     var sliderValue = 0
     var delegate: UpdateParamDelegate?
     
-    
     private let label: UILabel = {
         let label = UILabel()
         label.numberOfLines = 1
@@ -63,14 +62,12 @@ class SliderTableViewCell: UITableViewCell {
         let size: CGFloat = contentView.frame.size.height - 12
         let imageSize: CGFloat = size/1.5
         
-        
         label.frame = CGRect(
             x: 25,
             y: 0,
             width: 100,
             height: contentView.frame.size.height
         )
-        
         
         currentValueLabel.frame = CGRect(
             x: contentView.frame.size.width - 85,

@@ -38,9 +38,7 @@ class SwitchTableViewCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         let size: CGFloat = contentView.frame.size.height - 12
-        
-        let imageSize: CGFloat = size/1.5
-        
+                
         mySwitch.sizeToFit()
         mySwitch.frame = CGRect(
             x: contentView.frame.size.width - mySwitch.frame.size.width - 20,

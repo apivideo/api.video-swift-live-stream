@@ -11,14 +11,11 @@ class ListTableViewCell: UITableViewCell {
 
     static let identifier = "ListTableViewCell"
 
-    
     private let label: UILabel = {
         let label = UILabel()
         label.numberOfLines = 1
         return label
     }()
-    
-   
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

@@ -11,7 +11,6 @@ class SettingTableViewCell: UITableViewCell {
     
     static let identifier = "SettingTableViewCell"
 
-    
     private let label: UILabel = {
         let label = UILabel()
         label.numberOfLines = 1
@@ -31,9 +30,7 @@ class SettingTableViewCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        let size: CGFloat = contentView.frame.size.height - 12
         
-        let imageSize: CGFloat = size/1.5
         label.frame = CGRect(
             x: 25 ,
             y: 0,
