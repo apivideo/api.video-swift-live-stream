@@ -95,6 +95,7 @@ class SliderTableViewCell: UITableViewCell {
         label.text = model.title
         mySlider.minimumValue = Float(model.minValue)
         mySlider.maximumValue = Float(model.maxValue)
+        mySlider.value = Float(model.defaultValue)
         currentValueLabel.text = String(Int(round(mySlider.value)))
     }
     
