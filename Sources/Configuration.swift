@@ -43,13 +43,9 @@ public enum Resolutions {
 
 public struct AudioConfig {
     public let bitrate: Int
-    public let sampleRate: Int
-    public let stereo: Bool
     
-    public init(bitrate: Int, sampleRate: Int, stereo: Bool) {
+    public init(bitrate: Int) {
         self.bitrate = bitrate
-        self.sampleRate = sampleRate
-        self.stereo = stereo
     }
 }
 

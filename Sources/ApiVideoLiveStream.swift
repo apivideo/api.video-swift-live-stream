@@ -165,10 +165,6 @@ public class ApiVideoLiveStream{
     }
     
     private func prepareAudio() {
-        do {
-            try AVAudioSession.sharedInstance().setPreferredSampleRate(Double(audioConfig.sampleRate))
-        } catch {
-        }
         rtmpStream.audioSettings = [
             .bitrate: audioConfig.bitrate,
         ]

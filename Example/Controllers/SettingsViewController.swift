@@ -79,9 +79,7 @@ class SettingsViewController : UIViewController, UITableViewDelegate, UITableVie
     var models = [Section]()
     var selectedResolution = ""
     var selectedFramerate = ""
-    var selectedChannel = ""
     var selectedAudioBitrate = ""
-    var selectedSample = ""
     var streamkey = ""
     var endpoint = "rtmp://broadcast.api.video/s"
     
@@ -125,12 +123,7 @@ class SettingsViewController : UIViewController, UITableViewDelegate, UITableVie
         selectedVideoBitrate = liveStream!.videoConfig.bitrate
         
         // set audio
-        selectedChannel = isStereoToString(isStereo: liveStream!.audioConfig.stereo)
         selectedAudioBitrate = "\(liveStream!.audioConfig.bitrate / 1000)Kbps"
-        print(selectedAudioBitrate)
-        selectedSample = "\(liveStream!.audioConfig.sampleRate / 1000)kHz"
-        print(selectedSample)
-        selectedVideoBitrate = liveStream!.videoConfig.bitrate
     }
     
     private func configure(){
@@ -173,19 +166,6 @@ class SettingsViewController : UIViewController, UITableViewDelegate, UITableVie
         ]))
         
         models.append(Section(title: "Audio", options: [
-            .staticCell(model: SettingsOption(title: "Number of channels") {
-                var channels = [String]()
-                channels.append("stereo")
-                channels.append("mono")
-                
-                let controller = ListViewController()
-                controller.delegate = self
-                
-                controller.list = channels
-                controller.selectedItem = self.selectedChannel
-                controller.paramUpdate = .NbChannels
-                self.present(UINavigationController(rootViewController: controller), animated: true, completion: nil)
-            }),
             .staticCell(model: SettingsOption(title: "Bitrate"){
                 var bitrates = [String]()
                 bitrates.append("24Kbps")
@@ -200,23 +180,7 @@ class SettingsViewController : UIViewController, UITableViewDelegate, UITableVie
                 controller.selectedItem = self.selectedAudioBitrate
                 controller.paramUpdate = .AudioBitrate
                 self.present(UINavigationController(rootViewController: controller), animated: true, completion: nil)
-            }),
-            .staticCell(model: SettingsOption(title: "Sample rate"){
-                var samples = [String]()
-                samples.append("8kHz")
-                samples.append("16kHz")
-                samples.append("32kHz")
-                samples.append("44kHz")
-                samples.append("48kHz")
-                
-                let controller = ListViewController()
-                controller.delegate = self
-                
-                controller.list = samples
-                controller.selectedItem = self.selectedSample
-                controller.paramUpdate = .SampleRate
-                self.present(UINavigationController(rootViewController: controller), animated: true, completion: nil)
-            }),
+            })
         ]))
         
         models.append(Section(title: "Endpoint", options: [
@@ -405,26 +369,14 @@ extension SettingsViewController: UpdateParamDelegate{
         setVideo()
     }
     
-    func updateParamNbChannels(variable: String) {
-        selectedChannel = variable
-        setAudio()
-    }
-    
     func updateParamAudioBitrate(variable: String) {
         selectedAudioBitrate = variable
         setAudio()
     }
     
-    func updateParamSampleRate(variable: String) {
-        selectedSample = variable
-        setAudio()
-    }
-    
     private func setAudio(){
         let bitrate = audioBitrateToInt(bitrate: selectedAudioBitrate)
-        let sampleRate = sampleRateToInt(sample: selectedSample)
-        let isStereo = isStereoToBool(channel: selectedChannel)
-        let audio = AudioConfig(bitrate: bitrate, sampleRate: sampleRate, stereo: isStereo)
+        let audio = AudioConfig(bitrate: bitrate)
         liveStream?.audioConfig = audio
     }
     

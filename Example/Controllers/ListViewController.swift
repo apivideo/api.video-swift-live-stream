@@ -12,9 +12,7 @@ import Accelerate
 enum ParamUpdate {
     case Resolution
     case Framerate
-    case NbChannels
     case AudioBitrate
-    case SampleRate
 }
 
 struct SectionList {
@@ -153,12 +151,8 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
             delegate?.updateParamResolution(variable: selectedItem!)
         case .Framerate:
             delegate?.updateParamFramerate(variable: selectedItem!)
-        case .NbChannels:
-            delegate?.updateParamNbChannels(variable: selectedItem!)
         case .AudioBitrate:
             delegate?.updateParamAudioBitrate(variable: selectedItem!)
-        case .SampleRate:
-            delegate?.updateParamSampleRate(variable: selectedItem!)
         case .none:
             break
         }

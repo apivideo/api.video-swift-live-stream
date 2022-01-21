@@ -56,7 +56,7 @@ class ViewController: UIViewController, DataEnteredDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let audioConfig = AudioConfig(bitrate: 32 * 1000, sampleRate: 41000, stereo: true)
+        let audioConfig = AudioConfig(bitrate: 32 * 1000)
         let videoConfig = VideoConfig(bitrate: 2 * 1024 * 1024, resolution: Resolutions.RESOLUTION_720, fps: 30)
         addAction()
         self.switchCameraButton.setImage(back, for: .selected)
