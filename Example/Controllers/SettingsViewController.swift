@@ -37,6 +37,7 @@ struct SettingsSliderOption{
     let title:String
     let minValue: Double
     let maxValue: Double
+    var defaultValue: Double
     let handler: (()->Void)
 }
 
@@ -89,8 +90,8 @@ class SettingsViewController : UIViewController, UITableViewDelegate, UITableVie
     // MARK: View events
     override func viewDidLoad() {
         super.viewDidLoad()
-        configure()
         configureLiveStream()
+        configure()
         title = "Settings"
         let center : NotificationCenter = .default
         center.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -101,10 +102,18 @@ class SettingsViewController : UIViewController, UITableViewDelegate, UITableVie
         tableView.frame = view.bounds
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        AppUtility.lockOrientation(.portrait)
+        
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         delegate?.sendDataBack(endpoint: endpoint, streamkey:streamkey)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+        AppUtility.lockOrientation(.all)
     }
     
     // MARK: configure
@@ -121,6 +130,7 @@ class SettingsViewController : UIViewController, UITableViewDelegate, UITableVie
         print(selectedAudioBitrate)
         selectedSample = "\(liveStream!.audioConfig.sampleRate / 1000)kHz"
         print(selectedSample)
+        selectedVideoBitrate = liveStream!.videoConfig.bitrate
     }
     
     private func configure(){
@@ -158,7 +168,7 @@ class SettingsViewController : UIViewController, UITableViewDelegate, UITableVie
                 controller.paramUpdate = .Framerate
                 self.present(UINavigationController(rootViewController: controller), animated: true, completion: nil)
             }),
-            .sliderCell(model: SettingsSliderOption(title: "Bitrate", minValue: 500, maxValue: 1000000){
+            .sliderCell(model: SettingsSliderOption(title: "Bitrate", minValue: 500, maxValue: 3000000, defaultValue: Double(selectedVideoBitrate!)){
             })
         ]))
         

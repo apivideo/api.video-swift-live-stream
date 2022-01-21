@@ -66,6 +66,12 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         let indexPath = IndexPath(row: getPosition(), section: 0)
         tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+        AppUtility.lockOrientation(.portrait)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        AppUtility.lockOrientation(.all)
     }
     
     private func getPosition()-> Int{
