@@ -80,8 +80,8 @@ class ViewController: UIViewController, DataEnteredDelegate {
                 self.callAlert(code: code)
                 DispatchQueue.main.async {
                     publish.setTitle("Start", for: [])
+                    publish.isSelected = false
                 }
-                
             }
             publish.setTitle("Stop", for: [])
         }
