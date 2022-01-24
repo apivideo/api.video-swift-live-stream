@@ -70,19 +70,12 @@ struct Resolution{
 
 class SettingsViewController : UIViewController, UITableViewDelegate, UITableViewDataSource{
     
-    var liveStream: ApiVideoLiveStream?
-    var videoLiveStream: VideoConfig?
-    var audioLiveStream: AudioConfig?
-    
-    var delegate: DataEnteredDelegate?
-    
     var models = [Section]()
     var selectedResolution = ""
     var selectedFramerate = ""
     var selectedAudioBitrate = ""
     var streamkey = ""
-    var endpoint = "rtmp://broadcast.api.video/s"
-    
+    var endpoint = ""
     var selectedVideoBitrate: Int?
 
     // MARK: View events
@@ -102,13 +95,10 @@ class SettingsViewController : UIViewController, UITableViewDelegate, UITableVie
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         AppUtility.lockOrientation(.portrait)
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        delegate?.sendDataBack(endpoint: endpoint, streamkey:streamkey)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
         AppUtility.lockOrientation(.all)
@@ -118,12 +108,16 @@ class SettingsViewController : UIViewController, UITableViewDelegate, UITableVie
     
     private func configureLiveStream(){
         // set video
-        selectedResolution = "\(liveStream!.videoConfig.resolution.instance.width)x\(liveStream!.videoConfig.resolution.instance.height)"
-        selectedFramerate = String(liveStream!.videoConfig.fps)
-        selectedVideoBitrate = liveStream!.videoConfig.bitrate
+        selectedResolution = "\(SettingsManager.resolution.instance.width)x\(SettingsManager.resolution.instance.height)"
+        selectedFramerate = String(SettingsManager.framerate)
+        selectedVideoBitrate = SettingsManager.videoBitrate
         
         // set audio
-        selectedAudioBitrate = "\(liveStream!.audioConfig.bitrate / 1000)Kbps"
+        selectedAudioBitrate = "\(SettingsManager.audioBitrate / 1000)Kbps"
+        
+        //set endpoints
+        endpoint = SettingsManager.endPoint
+        streamkey = SettingsManager.streamKey
     }
     
     private func configure(){
@@ -184,11 +178,9 @@ class SettingsViewController : UIViewController, UITableViewDelegate, UITableVie
         ]))
         
         models.append(Section(title: "Endpoint", options: [
-            .textCell(model: SettingsTextOption(title: "RTMP endpoint", defaultValue: "rtmp://broadcast.api.video/s", type: .Endpoint){
-                print("\(TextTableViewCell().myTextField)")
+            .textCell(model: SettingsTextOption(title: "RTMP endpoint", defaultValue: endpoint, type: .Endpoint){
             }),
-            .textCell(model: SettingsTextOption(title: "Stream Key", defaultValue: nil, type: .StreamKey){
-                
+            .textCell(model: SettingsTextOption(title: "Stream Key", defaultValue: streamkey, type: .StreamKey){
             })
         ]))
     }
@@ -273,7 +265,6 @@ class SettingsViewController : UIViewController, UITableViewDelegate, UITableVie
             cell.selectionStyle = .none
             return cell
         }
-        
     }
         
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -347,45 +338,31 @@ class SettingsViewController : UIViewController, UITableViewDelegate, UITableVie
 extension SettingsViewController: UpdateParamDelegate{
     func updateParamVideoBitrate(variable: Int) {
         selectedVideoBitrate = variable
-        setVideo()
-        print("video bitrate : \(String(describing: selectedVideoBitrate))")
+        SettingsManager.videoBitrate = selectedVideoBitrate!
     }
     
     func updateParamEndpoint(variable: String) {
         endpoint = variable
+        SettingsManager.endPoint = endpoint
     }
     
     func updateParamStreamKey(variable: String) {
         streamkey = variable
+        SettingsManager.streamKey = streamkey
     }
     
     func updateParamResolution(variable: String) {
         selectedResolution = variable
-        setVideo()
+        SettingsManager.resolution = getResolutionEnum(res: selectedResolution)
     }
     
     func updateParamFramerate(variable: String) {
         selectedFramerate = variable
-        setVideo()
+        SettingsManager.framerate = Int(selectedFramerate)!
     }
     
     func updateParamAudioBitrate(variable: String) {
         selectedAudioBitrate = variable
-        setAudio()
+        SettingsManager.audioBitrate = audioBitrateToInt(bitrate: selectedAudioBitrate)
     }
-    
-    private func setAudio(){
-        let bitrate = audioBitrateToInt(bitrate: selectedAudioBitrate)
-        let audio = AudioConfig(bitrate: bitrate)
-        liveStream?.audioConfig = audio
-    }
-    
-    private func setVideo(){
-        let bitrate = selectedVideoBitrate!
-        let resolution = getResolutionEnum(res: selectedResolution)
-        let frame = Int(selectedFramerate)!
-        let video = VideoConfig(bitrate: bitrate, resolution: resolution, fps: frame)
-        liveStream?.videoConfig = video
-    }
-    
 }

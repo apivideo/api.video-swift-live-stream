@@ -6,11 +6,7 @@
 import UIKit
 import ApiVideoLiveStream
 
-class ViewController: UIViewController, DataEnteredDelegate {
-    func sendDataBack(endpoint: String, streamkey: String) {
-        myStreamKey = streamkey
-        myEndpoint = endpoint
-    }
+class ViewController: UIViewController {
     
     @IBOutlet private weak var preview: UIView!
     @IBOutlet weak var switchCameraButton: UIButton!
@@ -18,9 +14,6 @@ class ViewController: UIViewController, DataEnteredDelegate {
     
     private var liveStream: ApiVideoLiveStream?
     private var errorRtmp: String? = nil
-    
-    var myStreamKey = ""
-    var myEndpoint = "rtmp://broadcast.api.video/s"
     
     private let alert = UIAlertController(title: "RTMP DISCONNECT", message: "", preferredStyle: .alert)
     private let front = UIImage(systemName: "camera.rotate.fill")
@@ -56,6 +49,7 @@ class ViewController: UIViewController, DataEnteredDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("viewDidLoad")
         let audioConfig = AudioConfig(bitrate: 32 * 1000)
         let videoConfig = VideoConfig(bitrate: 2 * 1024 * 1024, resolution: Resolutions.RESOLUTION_720, fps: 30)
         addAction()
@@ -67,6 +61,13 @@ class ViewController: UIViewController, DataEnteredDelegate {
         }
         
     }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        liveStream?.audioConfig = SettingsManager.getAudioConfig()
+        liveStream?.videoConfig = SettingsManager.getVideoConfig()
+    }
+    
     @IBAction func on(publish: UIButton) {
         if publish.isSelected {
             UIApplication.shared.isIdleTimerDisabled = false
@@ -74,7 +75,7 @@ class ViewController: UIViewController, DataEnteredDelegate {
             publish.setTitle("Start", for: [])
         } else {
             UIApplication.shared.isIdleTimerDisabled = true
-            liveStream?.startStreaming(streamKey: myStreamKey, url: myEndpoint)
+            liveStream?.startStreaming(streamKey: SettingsManager.streamKey, url: SettingsManager.endPoint)
             liveStream?.onConnectionFailed = {(code) in
                 self.liveStream?.stopStreaming()
                 self.callAlert(code: code)
@@ -99,24 +100,13 @@ class ViewController: UIViewController, DataEnteredDelegate {
         }
     }
     
-    @IBAction func muteUnMute(_ sender: Any) {
+    @IBAction func toggleMute(_ sender: Any) {
         if(liveStream!.isMuted){
             liveStream?.isMuted = false
             self.changeAudioButton.setImage(self.unMute, for: .normal)
         }else if(!liveStream!.isMuted){
             liveStream?.isMuted = true
             self.changeAudioButton.setImage(self.mute, for: .normal)
-        }
-    }
-    
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == "segueParam") {
-            let vc = segue.destination as! UINavigationController
-            let target = vc.topViewController as! SettingsViewController
-            target.delegate = self
-            target.liveStream = liveStream
-            target.streamkey = myStreamKey
         }
     }
     

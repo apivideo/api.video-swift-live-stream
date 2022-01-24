@@ -22,6 +22,7 @@
 		219B8DC72779B46A00E1B695 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 219B8DC62779B46A00E1B695 /* Assets.xcassets */; };
 		219B8DCA2779B46A00E1B695 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 219B8DC82779B46A00E1B695 /* LaunchScreen.storyboard */; };
 		41576FD87238AAEA68615280 /* Pods_ApiVideoLiveStream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F74CB8AFDF71B22330FF5077 /* Pods_ApiVideoLiveStream.framework */; };
+		C7178158279AC41F00276345 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7178157279AC41F00276345 /* SettingsManager.swift */; };
 		C78C2016263AD01D0022A7BC /* ApiVideoLiveStream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C78C200C263AD01C0022A7BC /* ApiVideoLiveStream.framework */; };
 		C7961B06278C4CC400B5EE94 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7961B05278C4CC300B5EE94 /* SettingsViewController.swift */; };
 		C7961B08278C8B9200B5EE94 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C7961B07278C8B9200B5EE94 /* Settings.bundle */; };
@@ -32,7 +33,6 @@
 		C7961B122791BF4D00B5EE94 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7961B112791BF4C00B5EE94 /* ListViewController.swift */; };
 		C7961B142791DA6A00B5EE94 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7961B132791DA6900B5EE94 /* ListTableViewCell.swift */; };
 		C7961B162796D23800B5EE94 /* UpdateParamDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7961B152796D23700B5EE94 /* UpdateParamDelegate.swift */; };
-		C7961B182797817B00B5EE94 /* DataEnteredDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7961B172797817A00B5EE94 /* DataEnteredDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +89,7 @@
 		8A7FD4A00396029F35B4C6A3 /* Pods-ApiVideoLiveStream.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ApiVideoLiveStream.debug.xcconfig"; path = "Target Support Files/Pods-ApiVideoLiveStream/Pods-ApiVideoLiveStream.debug.xcconfig"; sourceTree = "<group>"; };
 		93EA046C0AD14723CDB83FB9 /* Pods-Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.debug.xcconfig"; path = "Target Support Files/Pods-Example/Pods-Example.debug.xcconfig"; sourceTree = "<group>"; };
 		A16C02B4E0E20B40927FC7E3 /* Pods-ApiVideoLiveStream-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ApiVideoLiveStream-Tests.debug.xcconfig"; path = "Target Support Files/Pods-ApiVideoLiveStream-Tests/Pods-ApiVideoLiveStream-Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		C7178157279AC41F00276345 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
 		C78C200C263AD01C0022A7BC /* ApiVideoLiveStream.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ApiVideoLiveStream.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C78C2015263AD01D0022A7BC /* Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7961B05278C4CC300B5EE94 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -100,7 +101,6 @@
 		C7961B112791BF4C00B5EE94 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		C7961B132791DA6900B5EE94 /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		C7961B152796D23700B5EE94 /* UpdateParamDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateParamDelegate.swift; sourceTree = "<group>"; };
-		C7961B172797817A00B5EE94 /* DataEnteredDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataEnteredDelegate.swift; sourceTree = "<group>"; };
 		F74CB8AFDF71B22330FF5077 /* Pods_ApiVideoLiveStream.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ApiVideoLiveStream.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -166,7 +166,7 @@
 				219B8DC82779B46A00E1B695 /* LaunchScreen.storyboard */,
 				219B8DCB2779B46A00E1B695 /* Info.plist */,
 				C7961B152796D23700B5EE94 /* UpdateParamDelegate.swift */,
-				C7961B172797817A00B5EE94 /* DataEnteredDelegate.swift */,
+				C7178157279AC41F00276345 /* SettingsManager.swift */,
 			);
 			path = Example;
 			sourceTree = "<group>";
@@ -490,7 +490,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C7961B182797817B00B5EE94 /* DataEnteredDelegate.swift in Sources */,
+				C7178158279AC41F00276345 /* SettingsManager.swift in Sources */,
 				219B8DC22779B46900E1B695 /* ViewController.swift in Sources */,
 				C7961B162796D23800B5EE94 /* UpdateParamDelegate.swift in Sources */,
 				C7961B0A278F228700B5EE94 /* SettingTableViewCell.swift in Sources */,
