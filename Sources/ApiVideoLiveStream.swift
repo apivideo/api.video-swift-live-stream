@@ -151,7 +151,7 @@ public class ApiVideoLiveStream{
         rtmpStream.videoSettings = [
             .width: self.rtmpStream.orientation.isLandscape ? videoConfig.resolution.instance.width : videoConfig.resolution.instance.height,
             .height: self.rtmpStream.orientation.isLandscape ? videoConfig.resolution.instance.height : videoConfig.resolution.instance.width,
-            .profileLevel: kVTProfileLevel_H264_High_AutoLevel,
+            .profileLevel: kVTProfileLevel_H264_Baseline_5_2,
             .bitrate: videoConfig.bitrate,
             .maxKeyFrameIntervalDuration: 1,
         ]
