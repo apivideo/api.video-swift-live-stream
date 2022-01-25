@@ -19,7 +19,7 @@ public class ApiVideoLiveStream{
     public var onDisconnect: (() -> ())? = nil
     
     
-    ///  Set a new AudioConfig
+    ///  Getter and Setter for an AudioConfig
     ///  Can't be updated
     public var audioConfig: AudioConfig {
         didSet{
@@ -27,7 +27,7 @@ public class ApiVideoLiveStream{
         }
     }
     
-    /// Set a new VideoConfig
+    /// Getter and Setter for a VideoConfig
     /// Can't be updated
     public var videoConfig: VideoConfig {
         didSet{
@@ -35,8 +35,7 @@ public class ApiVideoLiveStream{
         }
     }
     
-    /// Bitrate number for the video
-    /// Can be updated
+    /// Getter and Setter for the Bitrate number for the video
     public var videoBitrate: Int? = nil {
         didSet{
             rtmpStream.videoSettings[.bitrate] = videoBitrate
@@ -44,7 +43,6 @@ public class ApiVideoLiveStream{
     }
     
     /// Camera position
-    /// Can be updated
     public var camera: AVCaptureDevice.Position = .back {
         didSet{
             attachCamera()
@@ -52,7 +50,6 @@ public class ApiVideoLiveStream{
     }
     
     /// Audio mute or not.
-    /// Can be updated
     public var isMuted: Bool = false {
         didSet{
             rtmpStream.audioSettings[.muted] = isMuted
@@ -60,10 +57,10 @@ public class ApiVideoLiveStream{
     }
     
     
-    /// init ApiVideoLiveStream
+    /// init a new ApiVideoLiveStream
     /// - Parameters:
-    ///   - initialAudioConfig: AudioConfig
-    ///   - initialVideoConfig: VideoConfig
+    ///   - initialAudioConfig: The ApiVideoLiveStream's new AudioConfig
+    ///   - initialVideoConfig: The ApiVideoLiveStream's new VideoConfig
     ///   - preview: UiView to display the preview of camera
     public init(initialAudioConfig: AudioConfig, initialVideoConfig: VideoConfig, preview: UIView?) throws {
         let session = AVAudioSession.sharedInstance()
@@ -85,14 +82,13 @@ public class ApiVideoLiveStream{
         self.videoConfig = initialVideoConfig
         
         rtmpStream = RTMPStream(connection: rtmpConnection)
-        NotificationCenter.default.addObserver(self, selector: #selector(on(_:)), name: UIDevice.orientationDidChangeNotification, object: nil)
-        
         DispatchQueue.main.async {
             if let orientation = DeviceUtil.videoOrientation(by: UIApplication.shared.statusBarOrientation) {
                 print("orientation \(orientation.rawValue)")
                 self.rtmpStream.orientation = orientation
             }
         }
+        NotificationCenter.default.addObserver(self, selector: #selector(on(_:)), name: UIDevice.orientationDidChangeNotification, object: nil)
 
         attachCamera()
         prepareVideo()
@@ -106,7 +102,6 @@ public class ApiVideoLiveStream{
             mthkView!.attachStream(rtmpStream)
             preview!.addSubview(mthkView!)
             
-            updateRatioConstraint()
             let maxWidth = mthkView!.widthAnchor.constraint(lessThanOrEqualTo: preview!.widthAnchor)
             let maxHeight = mthkView!.heightAnchor.constraint(lessThanOrEqualTo: preview!.heightAnchor)
             let width = mthkView!.widthAnchor.constraint(equalTo: preview!.widthAnchor)
@@ -120,16 +115,6 @@ public class ApiVideoLiveStream{
             NSLayoutConstraint.activate([
                 maxWidth, maxHeight, width, height, centerX, centerY
             ])
-        }
-    }
-    
-    private func updateRatioConstraint() {
-        if (mthkView != nil) {
-            ratioConstraint?.isActive = false
-            let newRatio = self.rtmpStream.orientation.isLandscape ? CGFloat(videoConfig.resolution.instance.width) / CGFloat(videoConfig.resolution.instance.height) : CGFloat(videoConfig.resolution.instance.height) / CGFloat(videoConfig.resolution.instance.width)
-            ratioConstraint = mthkView!.widthAnchor.constraint(equalTo: mthkView!.heightAnchor, multiplier: newRatio)
-            ratioConstraint?.isActive = true
-            mthkView?.layoutIfNeeded()
         }
     }
     
@@ -170,10 +155,10 @@ public class ApiVideoLiveStream{
         ]
     }
     
-    /// Function to start your livestream
+    /// Start your livestream
     /// - Parameters:
-    ///   - streamKey: String value
-    ///   - url: String value, by default : rtmp://broadcast.api.video/s
+    ///   - streamKey: The key of your live
+    ///   - url: The url of your rtmp server, by default it's rtmp://broadcast.api.video/s
     /// - Returns: Void
     public func startStreaming(streamKey: String, url: String = "rtmp://broadcast.api.video/s") -> Void{
         self.streamKey = streamKey
@@ -185,7 +170,7 @@ public class ApiVideoLiveStream{
         rtmpConnection.connect(url)
     }
     
-    /// Function to stop livestream
+    /// Stop your livestream
     /// - Returns: Void
     public func stopStreaming() -> Void{
         if (self.onDisconnect != nil) {
@@ -230,7 +215,10 @@ public class ApiVideoLiveStream{
         guard let orientation = DeviceUtil.videoOrientation(by: UIApplication.shared.statusBarOrientation) else {
             return
         }
+        print(String(rtmpStream.orientation.rawValue))
+        print(String(orientation.rawValue))
         rtmpStream.orientation = orientation
+        print(String(rtmpStream.orientation.rawValue))
     }
 }
 

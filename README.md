@@ -48,19 +48,24 @@ To be able to broadcast, you must update Info.plist with a usage description for
 ## Code sample
 1. In your ViewController.swift file import the library
 2. Add a viariable apiVideo 
-3. Intenciate your variable with a view (or not if you dont want a preview of your stream)
-4. to start your stream use startLiveStreamFlux() function
- - if you're broadcasting on api.video you only have to add your stream key to liveStreamKey, and nil for rtmpServerUrl)
- - if not add your rtmp server url to rtmpServerUrl
+3. Intenciate your variable with an AudioConfig and VideoConfig and add a view (or not if you dont want a preview of your stream)
+4. to start your stream use startStreaming(streamKey: String) function
+ - if you're broadcasting on api.video you only have to add your stream key to streamKey)
+ - if not use 'startStreaming(streamKey: String, url: String)', url is your rtmp server url.
 
 ```swift
 class ViewController: UIViewController {
-    var apiVideo:  ApiVideoLiveStream?
+    var liveStream:  ApiVideoLiveStream?
     @IBOutlet var viewCamera: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        apiVideo = ApiVideoLiveStream(view: viewCamera)
-        apiVideo?.startLiveStreamFlux(liveStreamKey: "Your_stream_key", rtmpServerUrl: nil)
+        let audioConfig = AudioConfig(bitrate: 32 * 1000)
+        let videoConfig = VideoConfig(bitrate: 2 * 1024 * 1024, resolution: Resolutions.RESOLUTION_720, fps: 30)
+        do {
+            liveStream = try ApiVideoLiveStream(initialAudioConfig: audioConfig, initialVideoConfig: videoConfig, preview: preview)
+        } catch {
+            print (error)
+        }
     }
 }
 ```
@@ -83,9 +88,12 @@ API.Video sdk is using external library
 If you have any questions, ask us here:  https://community.api.video .
 Or use [Issues].
 
+Also feel free to test our [Sample app].
+
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
 
 [Issues]: <https://github.com/apivideo/api.video-ios-live-stream/issues>
 [HaishinKit]: <https://github.com/shogo4405/HaishinKit.swift>
+[Sample app]: <https://github.com/apivideo/api.video-ios-live-stream/Example>
 
 
