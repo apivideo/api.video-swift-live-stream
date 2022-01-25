@@ -18,54 +18,7 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pir-Wf-dKx" userLabel="Preview">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="aZ3-8G-FEO" userLabel="LiveButton">
-                                        <rect key="frame" x="179" y="823" width="56" height="31"/>
-                                        <accessibility key="accessibilityConfiguration" label="Start"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="gray" title="Start"/>
-                                        <connections>
-                                            <action selector="onPublish:" destination="BYZ-38-t0r" eventType="touchDown" id="uBC-u4-skb"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="izb-oz-cHp">
-                                        <rect key="frame" x="323.5" y="823" width="50.5" height="31"/>
-                                        <buttonConfiguration key="configuration" style="gray" image="camera.rotate" catalog="system"/>
-                                        <connections>
-                                            <action selector="switchCamera:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Xxb-sU-Da8"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rZa-oB-ZZG">
-                                        <rect key="frame" x="40" y="823" width="45" height="31"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="gray" image="speaker.circle" catalog="system"/>
-                                        <connections>
-                                            <action selector="muteUnMute:" destination="BYZ-38-t0r" eventType="touchUpInside" id="726-Hy-7ET"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yoq-hz-v5k">
-                                        <rect key="frame" x="340.5" y="52" width="43.5" height="31"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" image="ellipsis" catalog="system"/>
-                                        <connections>
-                                            <segue destination="SYv-TM-3vy" kind="show" identifier="segueParam" id="Lfl-D1-eHX"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <constraints>
-                                    <constraint firstItem="izb-oz-cHp" firstAttribute="centerY" secondItem="aZ3-8G-FEO" secondAttribute="centerY" id="DWO-DV-1NI"/>
-                                    <constraint firstItem="izb-oz-cHp" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="aZ3-8G-FEO" secondAttribute="trailing" constant="8" symbolic="YES" id="Nef-wm-jxI"/>
-                                    <constraint firstAttribute="trailing" secondItem="Yoq-hz-v5k" secondAttribute="trailing" constant="30" id="RYo-Y5-x2P"/>
-                                    <constraint firstItem="Yoq-hz-v5k" firstAttribute="top" secondItem="Pir-Wf-dKx" secondAttribute="top" constant="52" id="SHS-Au-zn0"/>
-                                    <constraint firstItem="rZa-oB-ZZG" firstAttribute="centerY" secondItem="aZ3-8G-FEO" secondAttribute="centerY" id="UfG-Jl-nYz"/>
-                                    <constraint firstItem="rZa-oB-ZZG" firstAttribute="leading" secondItem="Pir-Wf-dKx" secondAttribute="leading" constant="40" id="WC6-VG-lLZ"/>
-                                    <constraint firstItem="aZ3-8G-FEO" firstAttribute="leading" secondItem="rZa-oB-ZZG" secondAttribute="trailing" constant="94" id="Zb0-dO-yTJ"/>
-                                    <constraint firstItem="Yoq-hz-v5k" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Pir-Wf-dKx" secondAttribute="leading" constant="20" symbolic="YES" id="ZcD-Js-R2H"/>
-                                    <constraint firstItem="aZ3-8G-FEO" firstAttribute="centerX" secondItem="Pir-Wf-dKx" secondAttribute="centerX" id="ahw-75-DI8"/>
-                                    <constraint firstAttribute="bottom" secondItem="aZ3-8G-FEO" secondAttribute="bottom" constant="42" id="rcc-GX-zez"/>
-                                    <constraint firstAttribute="trailing" secondItem="izb-oz-cHp" secondAttribute="trailing" constant="40" id="uCY-1y-ddy"/>
-                                </constraints>
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -79,9 +32,8 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="changeAudioButton" destination="rZa-oB-ZZG" id="Mlq-Ji-6JQ"/>
                         <outlet property="preview" destination="Pir-Wf-dKx" id="tEH-7Y-LK7"/>
-                        <outlet property="switchCameraButton" destination="izb-oz-cHp" id="9EB-te-tZw"/>
+                        <segue destination="SYv-TM-3vy" kind="show" identifier="paramSegue" id="xPX-Ts-fEV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -143,9 +95,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="camera.rotate" catalog="system" width="128" height="94"/>
-        <image name="ellipsis" catalog="system" width="128" height="37"/>
-        <image name="speaker.circle" catalog="system" width="128" height="121"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
