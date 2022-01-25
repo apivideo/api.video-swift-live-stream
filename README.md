@@ -33,6 +33,11 @@ pod ‘LiveStreamIos’
 3. Then run `pod install`
 4. Don’t forget to import LiveStreamIos in every file you’d like to use api.video livestream library
 
+### With Carthage
+```
+github "apivideo/ApiVideoLiveStream.swift" ~> 0.1.0
+```
+
 ## Permissions
 To be able to broadcast, you must update Info.plist with a usage description for camera and microphone
 
