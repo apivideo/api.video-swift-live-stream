@@ -10,8 +10,6 @@
 		04D5A2B955A0A1996716F19A /* Pods_ApiVideoLiveStream_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E4F791480CC5345DFC9D9F6 /* Pods_ApiVideoLiveStream_Tests.framework */; };
 		11B4FDD42C5174F2136530EE /* Pods_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 89CC6DFCEFA817903781E48E /* Pods_Example.framework */; };
 		212CABF3277A13A700E02F79 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212CABF2277A13A700E02F79 /* Configuration.swift */; };
-		216536E52779C3FA00170AF2 /* ApiVideoLiveStream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C78C200C263AD01C0022A7BC /* ApiVideoLiveStream.framework */; };
-		216536E62779C3FA00170AF2 /* ApiVideoLiveStream.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C78C200C263AD01C0022A7BC /* ApiVideoLiveStream.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		216536ED2779C66100170AF2 /* ApiVideoLiveStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216536EB2779C65A00170AF2 /* ApiVideoLiveStream.swift */; };
 		216536F32779C6A800170AF2 /* DummyTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216536F12779C6A800170AF2 /* DummyTest.swift */; };
 		216536F42779C6A800170AF2 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 216536F22779C6A800170AF2 /* Info.plist */; };
@@ -36,13 +34,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		216536E72779C3FA00170AF2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C78C2003263AD01C0022A7BC /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C78C200B263AD01C0022A7BC;
-			remoteInfo = ApiVideoLiveStream;
-		};
 		C78C2017263AD01D0022A7BC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C78C2003263AD01C0022A7BC /* Project object */;
@@ -52,22 +43,7 @@
 		};
 /* End PBXContainerItemProxy section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		216536E92779C3FA00170AF2 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				216536E62779C3FA00170AF2 /* ApiVideoLiveStream.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
-		212CABEF2779FCF700E02F79 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		212CABF2277A13A700E02F79 /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		216536EB2779C65A00170AF2 /* ApiVideoLiveStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiVideoLiveStream.swift; sourceTree = "<group>"; };
 		216536EC2779C65A00170AF2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -109,7 +85,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				216536E52779C3FA00170AF2 /* ApiVideoLiveStream.framework in Frameworks */,
 				11B4FDD42C5174F2136530EE /* Pods_Example.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -219,7 +194,6 @@
 		C78C2002263AD01C0022A7BC = {
 			isa = PBXGroup;
 			children = (
-				212CABEF2779FCF700E02F79 /* Package.swift */,
 				216536F02779C6A800170AF2 /* Tests */,
 				216536EA2779C65A00170AF2 /* Sources */,
 				219B8DBC2779B46900E1B695 /* Example */,
@@ -260,13 +234,11 @@
 				219B8DB72779B46900E1B695 /* Sources */,
 				219B8DB82779B46900E1B695 /* Frameworks */,
 				219B8DB92779B46900E1B695 /* Resources */,
-				216536E92779C3FA00170AF2 /* Embed Frameworks */,
 				BD70C40A42996D14F203BD5C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				216536E82779C3FA00170AF2 /* PBXTargetDependency */,
 			);
 			name = Example;
 			productName = Example;
@@ -525,11 +497,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		216536E82779C3FA00170AF2 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C78C200B263AD01C0022A7BC /* ApiVideoLiveStream */;
-			targetProxy = 216536E72779C3FA00170AF2 /* PBXContainerItemProxy */;
-		};
 		C78C2018263AD01D0022A7BC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C78C200B263AD01C0022A7BC /* ApiVideoLiveStream */;
@@ -561,7 +528,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 93EA046C0AD14723CDB83FB9 /* Pods-Example.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
@@ -593,7 +559,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4CE9E869BDDA54F47CEA1F37 /* Pods-Example.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
