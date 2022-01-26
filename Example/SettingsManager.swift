@@ -2,8 +2,7 @@
 //  SettingsManager.swift
 //  Example
 //
-//  Created by Romain Petit on 21/01/2022.
-//
+
 
 import Foundation
 import ApiVideoLiveStream

@@ -2,8 +2,7 @@
 //  TextTableViewCell.swift
 //  Example
 //
-//  Created by Romain Petit on 13/01/2022.
-//
+
 
 import UIKit
 

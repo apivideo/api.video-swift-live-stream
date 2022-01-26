@@ -2,8 +2,7 @@
 //  ListViewController.swift
 //  Example
 //
-//  Created by Romain Petit on 14/01/2022.
-//
+
 
 import UIKit
 import Foundation

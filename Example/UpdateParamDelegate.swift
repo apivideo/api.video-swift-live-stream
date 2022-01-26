@@ -2,8 +2,7 @@
 //  UpdateParamDelegate.swift
 //  Example
 //
-//  Created by Romain Petit on 18/01/2022.
-//
+
 
 import Foundation
 

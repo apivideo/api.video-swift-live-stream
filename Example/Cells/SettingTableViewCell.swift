@@ -2,8 +2,6 @@
 //  SettingTableViewCell.swift
 //  Example
 //
-//  Created by Romain Petit on 12/01/2022.
-//
 
 import UIKit
 

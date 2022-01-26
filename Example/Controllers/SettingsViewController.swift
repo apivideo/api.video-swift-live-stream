@@ -2,8 +2,7 @@
 //  SettingsViewController.swift
 //  Example
 //
-//  Created by Romain Petit on 10/01/2022.
-//
+
 
 import Foundation
 import UIKit
