@@ -74,12 +74,6 @@ class ViewController: UIViewController {
     }
 }
 ```
-By default your stream will be : 
-- 720p
-- 30 fps
-- back camera
-- landscape
-- microphone : on
 
 # Plugins
 
