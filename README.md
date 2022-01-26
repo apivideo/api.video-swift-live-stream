@@ -18,7 +18,7 @@
 
 # Project description
 
-This module is an easy way to broadcast livestream on api.video platform
+This module is an easy way to broadcast RTMP live stream to [api.video](https://api.video) platform
 
 # Getting started
 
@@ -31,7 +31,7 @@ This module is an easy way to broadcast livestream on api.video platform
 pod 'ApiVideoLiveStream', '0.1.0' 
 ```
 3. Then run `pod install`
-4. Don’t forget to import LiveStreamIos in every file you’d like to use api.video livestream library
+4. Don’t forget to import `ApiVideoLiveStream` in every file you’d like to use api.video livestream library
 
 ### With Carthage
 ```
@@ -51,13 +51,11 @@ To be able to broadcast, you must update Info.plist with a usage description for
 ```
 
 ## Code sample
-1. In your ViewController.swift file import the library
-2. Add a viariable apiVideo 
-3. Intenciate your variable with an AudioConfig and VideoConfig and add a view (or not if you dont want a preview of your stream)
-4. to start your stream use startStreaming(streamKey: String) function
- - if you're broadcasting on api.video you only have to add your stream key to streamKey)
- - if not use 'startStreaming(streamKey: String, url: String)', url is your rtmp server url.
-
+1. In ViewController.swift import the library
+```swift
+import ApiVideoLiveStream
+```
+2. Create a `ApiVideoLiveStream` object with your default audio and video configuration
 ```swift
 class ViewController: UIViewController {
     var liveStream:  ApiVideoLiveStream?
@@ -74,6 +72,11 @@ class ViewController: UIViewController {
     }
 }
 ```
+3. Start your live stream with `startStreaming`
+```swift
+liveStream?.startStreaming(streamKey: "YOUR_STREAM_KEY")
+```
+Alternatively, you can use `startStreaming` `url` parameter to set the URL of your RTMP server.
 
 # Plugins
 
