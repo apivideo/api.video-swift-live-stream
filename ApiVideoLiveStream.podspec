@@ -35,6 +35,6 @@ Pod::Spec.new do |spec|
   spec.source_files  = "LiveStreamIos/**/*.{h,m,swift}"
   spec.exclude_files = "LiveStreamIos/Exclude"
 
-  spec.dependency "HaishinKit", "1.2.2"
+  spec.dependency "HaishinKit", "1.2.3"
 
 end
