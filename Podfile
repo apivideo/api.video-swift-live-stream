@@ -1,14 +1,18 @@
 # Uncomment the next line to define a global platform for your project
 # platform :ios, '9.0'
 
-target 'LiveStreamIos' do
-  # Comment the next line if you don't want to use dynamic frameworks
-  use_frameworks!
+# Comment the next line if you don't want to use dynamic frameworks
+use_frameworks!
 
-  # Pods for LiveStreamIos
-  pod 'HaishinKit', '1.2.1'
+target 'Example' do
+   pod 'ApiVideoLiveStream', :path => '.'
+end
 
-  target 'LiveStreamIosTests' do
+target 'ApiVideoLiveStream' do
+  # Pods for ApiVideoLiveStream
+  pod 'HaishinKit', '1.2.3'
+
+  target 'Tests' do
     # Pods for testing
   end
 
