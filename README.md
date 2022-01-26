@@ -28,7 +28,7 @@ This module is an easy way to broadcast livestream on api.video platform
 
 1. Add the following entry to your Podfile:
 ```swift
-pod ‘LiveStreamIos’
+pod 'ApiVideoLiveStream', '0.1.0' 
 ```
 3. Then run `pod install`
 4. Don’t forget to import LiveStreamIos in every file you’d like to use api.video livestream library
