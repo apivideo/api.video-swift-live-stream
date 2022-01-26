@@ -48,8 +48,6 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(handleCancel))
         
         configure()
-        print("the list is : \(String(describing: list))")
-        print("the selected Item is : \(String(describing: selectedItem))")
         title = titleList
         view.addSubview(tableView)
         tableView.delegate = self
@@ -59,8 +57,6 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("selectedItem : \(String(describing: selectedItem))")
-        
         let indexPath = IndexPath(row: getPosition(), section: 0)
         tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
         AppUtility.lockOrientation(.portrait)
@@ -91,9 +87,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
                 isSelected = true
             }
             option.append(.staticCell(model: ListOption(title: item, icon: nil, iconBackgroundColor: nil, isSelected: isSelected){
-                print("item : \(item) selected")
                 self.selectedItem = item
-                print("selectedItem : \(self.selectedItem!)")
             })
             )
         }
@@ -144,7 +138,6 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     @objc func handleDone(){
-        print("handleDone : \(selectedItem!)")
         switch paramUpdate {
         case .Resolution:
             delegate?.updateParamResolution(variable: selectedItem!)
@@ -157,7 +150,6 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
         tableView.reloadData()
         self.dismiss(animated: true, completion: nil)
-        print("done")
     }
     
     @objc func handleCancel(){

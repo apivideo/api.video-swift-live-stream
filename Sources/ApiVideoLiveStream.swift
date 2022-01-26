@@ -84,7 +84,6 @@ public class ApiVideoLiveStream{
         rtmpStream = RTMPStream(connection: rtmpConnection)
         DispatchQueue.main.async {
             if let orientation = DeviceUtil.videoOrientation(by: UIApplication.shared.statusBarOrientation) {
-                print("orientation \(orientation.rawValue)")
                 self.rtmpStream.orientation = orientation
             }
         }
@@ -215,10 +214,7 @@ public class ApiVideoLiveStream{
         guard let orientation = DeviceUtil.videoOrientation(by: UIApplication.shared.statusBarOrientation) else {
             return
         }
-        print(String(rtmpStream.orientation.rawValue))
-        print(String(orientation.rawValue))
         rtmpStream.orientation = orientation
-        print(String(rtmpStream.orientation.rawValue))
     }
 }
 

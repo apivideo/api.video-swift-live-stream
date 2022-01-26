@@ -249,12 +249,9 @@ class SettingsViewController : UIViewController, UITableViewDelegate, UITableVie
             cell.configure(with: model)
             cell.delegate = self
             cell.selectionStyle = .none
-            print("slider value on main : \(cell.sliderValue)")
             return cell
             
         case .textCell(let model):
-            print(indexPath.section)
-            print(indexPath.row)
             guard let cell = tableView.dequeueReusableCell(withIdentifier: TextTableViewCell.identifier, for: indexPath) as? TextTableViewCell else{
                 return UITableViewCell()
             }

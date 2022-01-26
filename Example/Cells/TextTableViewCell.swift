@@ -62,7 +62,6 @@ class TextTableViewCell: UITableViewCell, UITextFieldDelegate {
 
     func textFieldDidEndEditing(_ textField: UITextField) {
         NotificationCenter.default.post(name: UIResponder.keyboardDidHideNotification, object: self)
-        print("\(textField.text!)")
         switch type {
         case .Endpoint:
             delegate?.updateParamEndpoint(variable: textField.text!)
