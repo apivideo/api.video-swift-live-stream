@@ -63,10 +63,6 @@ struct Setting{
     var streamKey: String
 }
 
-struct Resolution{
-    var value: String
-}
-
 class SettingsViewController : UIViewController, UITableViewDelegate, UITableViewDataSource{
     
     var models = [Section]()
@@ -278,21 +274,21 @@ class SettingsViewController : UIViewController, UITableViewDelegate, UITableVie
     
     
     // MARK: Convert functions
-    private func getResolutionEnum(res: String) -> Resolutions{
-        var resolution: Resolutions?
+    private func getResolutionEnum(res: String) -> Resolution {
+        var resolution: Resolution?
         switch res {
         case "352x240":
-            resolution = Resolutions.RESOLUTION_240
+            resolution = Resolution.RESOLUTION_240
         case "640x360":
-            resolution = Resolutions.RESOLUTION_360
+            resolution = Resolution.RESOLUTION_360
         case "858x480":
-            resolution = Resolutions.RESOLUTION_480
+            resolution = Resolution.RESOLUTION_480
         case "1280x720":
-            resolution = Resolutions.RESOLUTION_720
+            resolution = Resolution.RESOLUTION_720
         case "1920x1080":
-            resolution = Resolutions.RESOLUTION_1080
+            resolution = Resolution.RESOLUTION_1080
         default:
-            resolution = Resolutions.RESOLUTION_720
+            resolution = Resolution.RESOLUTION_720
         }
         
         return resolution!

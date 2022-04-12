@@ -76,7 +76,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         let audioConfig = AudioConfig(bitrate: 32 * 1000)
-        let videoConfig = VideoConfig(bitrate: 2 * 1024 * 1024, resolution: Resolutions.RESOLUTION_720, fps: 30)
+        let videoConfig = VideoConfig(bitrate: 2 * 1024 * 1024, resolution: Resolution.RESOLUTION_720, fps: 30)
         do {
             liveStream = try ApiVideoLiveStream(initialAudioConfig: audioConfig, initialVideoConfig: videoConfig, preview: preview)
         } catch {
