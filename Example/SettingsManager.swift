@@ -8,7 +8,7 @@ import Foundation
 import ApiVideoLiveStream
 
 class SettingsManager{
-    public static var videoBitrate: Int = 2 * 1024 * 1024
+    public static var videoBitrate: Int = 2 * 1000 // in Kpbs
     public static var resolution: Resolution = Resolution.RESOLUTION_720
     public static var framerate: Int = 30
     public static var audioBitrate: Int = 32 * 1000
@@ -17,7 +17,7 @@ class SettingsManager{
     
     
     public static func getVideoConfig() -> VideoConfig{
-        let video = VideoConfig(bitrate: videoBitrate , resolution: resolution, fps: framerate)
+        let video = VideoConfig(bitrate: videoBitrate * 1000, resolution: resolution, fps: framerate)
         return video
     }
     

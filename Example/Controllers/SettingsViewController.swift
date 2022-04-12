@@ -108,7 +108,7 @@ class SettingsViewController : UIViewController, UITableViewDelegate, UITableVie
         selectedVideoBitrate = SettingsManager.videoBitrate
         
         // set audio
-        selectedAudioBitrate = "\(SettingsManager.audioBitrate / 1000)Kbps"
+        selectedAudioBitrate = "\(SettingsManager.audioBitrate / 1000) Kbps"
         
         //set endpoints
         endpoint = SettingsManager.endPoint
@@ -148,17 +148,17 @@ class SettingsViewController : UIViewController, UITableViewDelegate, UITableVie
                 controller.paramUpdate = .Framerate
                 self.present(UINavigationController(rootViewController: controller), animated: true, completion: nil)
             }),
-            .sliderCell(model: SettingsSliderOption(title: "Bitrate", minValue: 500, maxValue: 3000000, defaultValue: Double(selectedVideoBitrate!)){
+            .sliderCell(model: SettingsSliderOption(title: "Bitrate", minValue: 500, maxValue: 10000, defaultValue: Double(selectedVideoBitrate!)){
             })
         ]))
         
         models.append(Section(title: "Audio", options: [
             .staticCell(model: SettingsOption(title: "Bitrate"){
                 var bitrates = [String]()
-                bitrates.append("24Kbps")
-                bitrates.append("64Kbps")
-                bitrates.append("128Kbps")
-                bitrates.append("192Kbps")
+                bitrates.append("24 Kbps")
+                bitrates.append("64 Kbps")
+                bitrates.append("128 Kbps")
+                bitrates.append("192 Kbps")
                 
                 let controller = ListViewController()
                 controller.delegate = self
@@ -293,16 +293,10 @@ class SettingsViewController : UIViewController, UITableViewDelegate, UITableVie
         
         return resolution!
     }
-    
-    private func sampleRateToInt(sample: String) -> Int{
-        var res: Int?
-        res = Int(sample.dropLast(3))! * 1000
-        return res!
-    }
-    
+
     private func audioBitrateToInt(bitrate: String) -> Int{
        var res: Int?
-       res = Int(bitrate.dropLast(4))! * 1000
+       res = Int(bitrate.dropLast(5))! * 1000
        return res!
    }
     
