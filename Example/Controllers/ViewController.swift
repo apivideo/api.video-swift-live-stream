@@ -138,6 +138,13 @@ class ViewController: UIViewController {
         liveStream?.videoConfig = SettingsManager.getVideoConfig()
     }
     
+    private func resetStartButton() {
+        DispatchQueue.main.async {
+            self.startButton.setTitle("Start", for: [])
+            self.startButton.isSelected = false
+        }
+    }
+    
     @objc func toggleLivestream(){
         if startButton.isSelected {
             UIApplication.shared.isIdleTimerDisabled = false
@@ -145,14 +152,23 @@ class ViewController: UIViewController {
             startButton.setTitle("Start", for: [])
         } else {
             UIApplication.shared.isIdleTimerDisabled = true
-            liveStream?.startStreaming(streamKey: SettingsManager.streamKey, url: SettingsManager.endPoint)
+            do {
+                try liveStream?.startStreaming(streamKey: SettingsManager.streamKey, url: SettingsManager.endPoint)
+            } catch LiveStreamError.IllegalArgumentError(let message){
+                self.callAlert(code: message)
+                resetStartButton()
+           } catch {
+               self.callAlert(code: "Failed to start streaming")
+               resetStartButton()
+            }
+   
             liveStream?.onConnectionFailed = {(code) in
-                self.liveStream?.stopStreaming()
                 self.callAlert(code: code)
-                DispatchQueue.main.async {
-                    self.startButton.setTitle("Start", for: [])
-                    self.startButton.isSelected = false
-                }
+                self.resetStartButton()
+            }
+            liveStream?.onDisconnect = {() in
+                self.callAlert(code: "Disconnect")
+                self.resetStartButton()
             }
             startButton.setTitle("Stop", for: [])
         }

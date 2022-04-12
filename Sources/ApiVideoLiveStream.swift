@@ -159,7 +159,10 @@ public class ApiVideoLiveStream{
     ///   - streamKey: The key of your live
     ///   - url: The url of your rtmp server, by default it's rtmp://broadcast.api.video/s
     /// - Returns: Void
-    public func startStreaming(streamKey: String, url: String = "rtmp://broadcast.api.video/s") -> Void{
+    public func startStreaming(streamKey: String, url: String = "rtmp://broadcast.api.video/s") throws -> Void {
+        if (streamKey.isEmpty) {
+            throw LiveStreamError.IllegalArgumentError("Stream key must not be empty")
+         }
         self.streamKey = streamKey
         self.url = url
                 
@@ -172,9 +175,6 @@ public class ApiVideoLiveStream{
     /// Stop your livestream
     /// - Returns: Void
     public func stopStreaming() -> Void{
-        if (self.onDisconnect != nil) {
-            self.onDisconnect!()
-        }
         rtmpConnection.close()
         rtmpConnection.removeEventListener(.rtmpStatus, selector: #selector(rtmpStatusHandler), observer: self)
         rtmpConnection.removeEventListener(.ioError, selector: #selector(rtmpErrorHandler), observer: self)
@@ -191,10 +191,17 @@ public class ApiVideoLiveStream{
                 self.onConnectionSuccess!()
             }
             rtmpStream.publish(self.streamKey)
-        case RTMPConnection.Code.connectFailed.rawValue, RTMPConnection.Code.connectClosed.rawValue:
+            break
+        case RTMPConnection.Code.connectFailed.rawValue:
             if (self.onConnectionFailed != nil) {
                 self.onConnectionFailed!(code)
             }
+            break
+        case RTMPConnection.Code.connectClosed.rawValue:
+            if (self.onDisconnect != nil) {
+                self.onDisconnect!()
+            }
+            break
         default:
             break
         }
@@ -220,4 +227,8 @@ public class ApiVideoLiveStream{
 
 extension AVCaptureVideoOrientation {
     var isLandscape: Bool { return self == .landscapeLeft || self == .landscapeRight }
+}
+
+public enum LiveStreamError: Error {
+    case IllegalArgumentError(String)
 }
