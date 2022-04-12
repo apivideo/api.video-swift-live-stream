@@ -21,7 +21,6 @@ public enum Resolutions {
     case RESOLUTION_480
     case RESOLUTION_720
     case RESOLUTION_1080
-    case RESOLUTION_2160
 
     public var instance: Resolution{
         switch self {
@@ -35,8 +34,6 @@ public enum Resolutions {
             return Resolution(width: 1280, height: 720)
         case .RESOLUTION_1080:
             return Resolution(width: 1920, height: 1080)
-        case .RESOLUTION_2160:
-            return Resolution(width: 3860, height: 2160)
         }
     }
 }

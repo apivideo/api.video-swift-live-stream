@@ -28,7 +28,6 @@
 				<string>858x480</string>
 				<string>1280x720</string>
 				<string>1920x1080</string>
-				<string>3860x2160</string>
 			</array>
 			<key>Titles</key>
 			<array>
@@ -37,7 +36,6 @@
 				<string>858x480</string>
 				<string>1280x720</string>
 				<string>1920x1080</string>
-				<string>3860x2160</string>
 			</array>
 		</dict>
 		<dict>
@@ -54,14 +52,12 @@
 				<string>24</string>
 				<string>30</string>
 				<string>60</string>
-				<string>120</string>
 			</array>
 			<key>Titles</key>
 			<array>
 				<string>24</string>
 				<string>30</string>
 				<string>60</string>
-				<string>120</string>
 			</array>
 		</dict>
 		<dict>

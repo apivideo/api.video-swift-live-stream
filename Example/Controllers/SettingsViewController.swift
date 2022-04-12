@@ -128,7 +128,6 @@ class SettingsViewController : UIViewController, UITableViewDelegate, UITableVie
                 resolutions.append("858x480")
                 resolutions.append("1280x720")
                 resolutions.append("1920x1080")
-                resolutions.append("3860x2160")
                 
                                 
                 let controller = ListViewController()
@@ -144,7 +143,6 @@ class SettingsViewController : UIViewController, UITableViewDelegate, UITableVie
                 framerates.append("24")
                 framerates.append("30")
                 framerates.append("60")
-                framerates.append("120")
                 
                 let controller = ListViewController()
                 controller.delegate = self
@@ -293,8 +291,6 @@ class SettingsViewController : UIViewController, UITableViewDelegate, UITableVie
             resolution = Resolutions.RESOLUTION_720
         case "1920x1080":
             resolution = Resolutions.RESOLUTION_1080
-        case "3860x2160":
-            resolution = Resolutions.RESOLUTION_2160
         default:
             resolution = Resolutions.RESOLUTION_720
         }
