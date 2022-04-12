@@ -63,8 +63,9 @@ struct Setting{
     var streamKey: String
 }
 
-class SettingsViewController : UIViewController, UITableViewDelegate, UITableViewDataSource{
-    
+class SettingsViewController : UIViewController, UITableViewDelegate, UITableViewDataSource {
+    var settingDidDisappear : (() -> Void)?
+
     var models = [Section]()
     var selectedResolution = ""
     var selectedFramerate = ""
@@ -99,6 +100,11 @@ class SettingsViewController : UIViewController, UITableViewDelegate, UITableVie
         AppUtility.lockOrientation(.all)
     }
     
+    override func viewDidDisappear(_ animated : Bool) {
+        super.viewDidDisappear(animated)
+        settingDidDisappear?()
+    }
+
     // MARK: configure
     
     private func configureLiveStream(){

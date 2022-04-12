@@ -112,12 +112,6 @@ class ViewController: UIViewController {
         
     }
     
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        liveStream?.audioConfig = SettingsManager.getAudioConfig()
-        liveStream?.videoConfig = SettingsManager.getVideoConfig()
-    }
-    
     private func resetStartButton() {
         DispatchQueue.main.async {
             self.startButton.setTitle("Start", for: [])
@@ -181,15 +175,23 @@ class ViewController: UIViewController {
         self.performSegue(withIdentifier: "paramSegue", sender: self)
     }
     
+    private func updateConfig() {
+        liveStream?.audioConfig = SettingsManager.getAudioConfig()
+        liveStream?.videoConfig = SettingsManager.getVideoConfig()
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "paramSegue" {
-            if segue.destination is SettingsViewController {
-
+            if let navigationController = segue.destination as? UINavigationController {
+                let settingsViewController = navigationController.topViewController as? SettingsViewController
+                settingsViewController?.settingDidDisappear = {
+                    self.updateConfig()
+                }
             }
         }
      }
     
     
 }
+
 
