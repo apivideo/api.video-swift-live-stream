@@ -12,7 +12,6 @@ class ViewController: UIViewController {
     private var liveStream: ApiVideoLiveStream?
     private var errorRtmp: String? = nil
     
-    private let alert = UIAlertController(title: "RTMP DISCONNECT", message: "", preferredStyle: .alert)
     private let front = UIImage(systemName: "camera.rotate.fill")
     private let back = UIImage(systemName: "camera.rotate")
     private let mute = UIImage(systemName: "speaker.slash.circle")
@@ -47,30 +46,16 @@ class ViewController: UIViewController {
     }()
     
     
-    private func callAlert(code: String?){
-        DispatchQueue.main.async {
-            self.alert.message = code ?? "something went wrong, try again later"
-            
-            self.present(self.alert, animated: true, completion: nil)
+    private func callAlert(code: String, action: @escaping (() -> ()) = {}){
+        let alert = UIAlertController(title: "RTMP DISCONNECT", message: code, preferredStyle: .alert)
+        let okAction = UIAlertAction.init(title: "OK", style: .default) { (UIActionAlert) in
+            action()
         }
-    }
-    
-    private func addAction(){
-        self.alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-            switch action.style{
-                case .default:
-                print("default")
-                
-                case .cancel:
-                print("cancel")
-                
-                case .destructive:
-                print("destructive")
-                
-            @unknown default:
-                fatalError()
-            }
-        }))
+        
+        alert.addAction(okAction)
+        DispatchQueue.main.async {
+            self.present(alert, animated: true, completion: nil)
+        }
     }
     
     override func viewDidLoad() {
@@ -96,10 +81,6 @@ class ViewController: UIViewController {
         self.parameterButton.addTarget(self, action: #selector(navigateToParam), for: .touchUpInside)
         
         constraints()
-        
-        addAction()
-        
-        
     }
     
     func constraints(){
