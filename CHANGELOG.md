@@ -1,6 +1,9 @@
 # Changelog
 All changes to this project will be documented in this file.
 
+## [0.2.1] - 2022-04-22
+- Stop streaming on didEnterBackgroundNotification
+
 ## [0.2.0] - 2022-04-13
 - Add default parameters for audio and video config
 - Fix continous auto focus
