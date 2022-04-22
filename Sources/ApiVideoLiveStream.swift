@@ -56,7 +56,6 @@ public class ApiVideoLiveStream{
         }
     }
     
-    
     /// init a new ApiVideoLiveStream
     /// - Parameters:
     ///   - initialAudioConfig: The ApiVideoLiveStream's new AudioConfig
@@ -87,8 +86,9 @@ public class ApiVideoLiveStream{
                 self.rtmpStream.orientation = orientation
             }
         }
-        NotificationCenter.default.addObserver(self, selector: #selector(on(_:)), name: UIDevice.orientationDidChangeNotification, object: nil)
-
+        NotificationCenter.default.addObserver(self, selector: #selector(orientationDidChange(_:)), name: UIDevice.orientationDidChangeNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground(_:)), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        
         attachCamera()
         prepareVideo()
         attachAudio()
@@ -115,6 +115,11 @@ public class ApiVideoLiveStream{
                 maxWidth, maxHeight, width, height, centerX, centerY
             ])
         }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: UIDevice.orientationDidChangeNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.didEnterBackgroundNotification, object: nil)
     }
     
     private func attachCamera() {
@@ -218,11 +223,16 @@ public class ApiVideoLiveStream{
     }
     
     @objc
-    private func on(_ notification: Notification) {
+    private func orientationDidChange(_ notification: Notification) {
         guard let orientation = DeviceUtil.videoOrientation(by: UIApplication.shared.statusBarOrientation) else {
             return
         }
         rtmpStream.orientation = orientation
+    }
+    
+    @objc
+    private func didEnterBackground(_ notification: Notification) {
+        stopStreaming()
     }
 }
 
