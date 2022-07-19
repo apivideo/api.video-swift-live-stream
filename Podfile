@@ -9,8 +9,7 @@ target 'Example' do
 end
 
 target 'ApiVideoLiveStream' do
-  # Pods for ApiVideoLiveStream
-  pod 'HaishinKit', '1.2.3'
+  # Pods for Example
 
   target 'Tests' do
     # Pods for testing
