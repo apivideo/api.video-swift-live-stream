@@ -7,12 +7,11 @@ import Foundation
 import VideoToolbox
 
 public class ApiVideoLiveStream{
-    private var ratioConstraint: NSLayoutConstraint?
     private var mthkView: MTHKView?
     private var streamKey: String = ""
     private var url: String = ""
-    private var rtmpStream: RTMPStream
-    private var rtmpConnection = RTMPConnection()
+    private let rtmpStream: RTMPStream
+    private let rtmpConnection = RTMPConnection()
     
     public var onConnectionSuccess: (() -> ())? = nil
     public var onConnectionFailed: ((String) -> ())? = nil
@@ -21,24 +20,31 @@ public class ApiVideoLiveStream{
     
     ///  Getter and Setter for an AudioConfig
     ///  Can't be updated
-    public var audioConfig: AudioConfig {
+    public var audioConfig: AudioConfig? {
         didSet{
-            prepareAudio()
+            if let audioConfig = audioConfig {
+                prepareAudio(audioConfig: audioConfig)
+            }
         }
     }
     
     /// Getter and Setter for a VideoConfig
     /// Can't be updated
-    public var videoConfig: VideoConfig {
+    public var videoConfig: VideoConfig? {
         didSet{
-            prepareVideo()
+            if let videoConfig = videoConfig {
+                prepareVideo(videoConfig: videoConfig)
+            }
         }
     }
     
     /// Getter and Setter for the Bitrate number for the video
-    public var videoBitrate: Int? = nil {
-        didSet{
-            rtmpStream.videoSettings[.bitrate] = videoBitrate
+    public var videoBitrate: Int {
+        get {
+            return rtmpStream.videoSettings[.bitrate] as! Int
+        }
+        set(newValue){
+            rtmpStream.videoSettings[.bitrate] = newValue
         }
     }
     
@@ -50,9 +56,12 @@ public class ApiVideoLiveStream{
     }
     
     /// Audio mute or not.
-    public var isMuted: Bool = false {
-        didSet{
-            rtmpStream.audioSettings[.muted] = isMuted
+    public var isMuted: Bool {
+        get {
+            return  rtmpStream.audioSettings[.muted] as! Bool
+        }
+        set(newValue){
+            rtmpStream.audioSettings[.muted] = newValue
         }
     }
     
@@ -61,7 +70,7 @@ public class ApiVideoLiveStream{
     ///   - initialAudioConfig: The ApiVideoLiveStream's new AudioConfig
     ///   - initialVideoConfig: The ApiVideoLiveStream's new VideoConfig
     ///   - preview: UiView to display the preview of camera
-    public init(initialAudioConfig: AudioConfig, initialVideoConfig: VideoConfig, preview: UIView?) throws {
+    public init(initialAudioConfig: AudioConfig?, initialVideoConfig: VideoConfig?, preview: UIView?) throws {
         let session = AVAudioSession.sharedInstance()
         
         // https://stackoverflow.com/questions/51010390/avaudiosession-setcategory-swift-4-2-ios-12-play-sound-on-silent
@@ -75,8 +84,7 @@ public class ApiVideoLiveStream{
             try session.setMode(.default)
         }
         try session.setActive(true)
-        
-        
+
         self.audioConfig = initialAudioConfig
         self.videoConfig = initialVideoConfig
         
@@ -90,9 +98,13 @@ public class ApiVideoLiveStream{
         NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground(_:)), name: UIApplication.didEnterBackgroundNotification, object: nil)
         
         attachCamera()
-        prepareVideo()
+        if let videoConfig = videoConfig {
+            prepareVideo(videoConfig: videoConfig)
+        }
         attachAudio()
-        prepareAudio()
+        if let audioConfig = audioConfig {
+            prepareAudio(audioConfig: audioConfig)
+        }
         
         if (preview != nil) {
             mthkView = MTHKView(frame: preview!.bounds)
@@ -130,7 +142,7 @@ public class ApiVideoLiveStream{
         }
     }
     
-    private func prepareVideo() {
+    private func prepareVideo(videoConfig: VideoConfig) {
         rtmpStream.captureSettings = [
             .sessionPreset: AVCaptureSession.Preset.high,
             .fps: videoConfig.fps,
@@ -154,7 +166,7 @@ public class ApiVideoLiveStream{
         }
     }
     
-    private func prepareAudio() {
+    private func prepareAudio(audioConfig: AudioConfig) {
         rtmpStream.audioSettings = [
             .bitrate: audioConfig.bitrate,
         ]
@@ -168,7 +180,11 @@ public class ApiVideoLiveStream{
     public func startStreaming(streamKey: String, url: String = "rtmp://broadcast.api.video/s") throws -> Void {
         if (streamKey.isEmpty) {
             throw LiveStreamError.IllegalArgumentError("Stream key must not be empty")
-         }
+        }
+        if (audioConfig == nil || videoConfig == nil) {
+            throw LiveStreamError.IllegalArgumentError("Missing audio and/or video configuration")
+        }
+        
         self.streamKey = streamKey
         self.url = url
                 
