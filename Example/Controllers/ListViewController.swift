@@ -3,10 +3,9 @@
 //  Example
 //
 
-
-import UIKit
-import Foundation
 import Accelerate
+import Foundation
+import UIKit
 
 enum ParamUpdate {
     case Resolution
@@ -16,101 +15,99 @@ enum ParamUpdate {
 
 struct SectionList {
     let title: String
-    let options:[ListOptionType]
+    let options: [ListOptionType]
 }
 
-enum ListOptionType{
+enum ListOptionType {
     case staticCell(model: ListOption)
 }
 
-struct ListOption{
-    let title:String
+struct ListOption {
+    let title: String
     let icon: UIImage?
     let iconBackgroundColor: UIColor?
     var isSelected: Bool
-    let handler: (()->Void)
+    let handler: () -> Void
 }
 
 class ListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    
     var list: [String]?
     var selectedItem: String?
     var titleList: String?
     var paramUpdate: ParamUpdate?
     var delegate: UpdateParamDelegate?
-    
+
     var models = [SectionList]()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.tintColor = .orange
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(handleDone))
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(handleCancel))
-        
+        navigationController?.navigationBar.tintColor = .orange
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(handleDone))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(handleCancel))
+
         configure()
         title = titleList
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.frame = view.bounds
-        
     }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         let indexPath = IndexPath(row: getPosition(), section: 0)
         tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
         AppUtility.lockOrientation(.portrait)
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         AppUtility.lockOrientation(.all)
     }
-    
-    private func getPosition()-> Int{
+
+    private func getPosition() -> Int {
         var position = 0
         var i = 0
-        for item in list!{
-            if(item == self.selectedItem!){
+        for item in list! {
+            if item == selectedItem! {
                 position = i
             }
             i = i + 1
         }
         return position
     }
-    
-    private func configure(){
+
+    private func configure() {
         var option: [ListOptionType] = []
         for item in list! {
             var isSelected = false
-            if(item == selectedItem){
+            if item == selectedItem {
                 isSelected = true
             }
-            option.append(.staticCell(model: ListOption(title: item, icon: nil, iconBackgroundColor: nil, isSelected: isSelected){
+            option.append(.staticCell(model: ListOption(title: item, icon: nil, iconBackgroundColor: nil, isSelected: isSelected) {
                 self.selectedItem = item
             })
             )
         }
         models.append(SectionList(title: "Video", options: option))
     }
-    
+
     private let tableView: UITableView = {
-        
         let table = UITableView(frame: .zero, style: .grouped)
         table.register(ListTableViewCell.self, forCellReuseIdentifier: ListTableViewCell.identifier)
         return table
     }()
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+
+    func tableView(_: UITableView, numberOfRowsInSection section: Int) -> Int {
         return models[section].options.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let model = models[indexPath.section].options[indexPath.row]
-        
+
         switch model.self {
-        case .staticCell(let model):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ListTableViewCell.identifier, for: indexPath) as? ListTableViewCell else{
+        case let .staticCell(model):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ListTableViewCell.identifier, for: indexPath) as? ListTableViewCell else {
                 return UITableViewCell()
             }
             cell.layer.cornerRadius = 8
@@ -118,11 +115,11 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
             return cell
         }
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let type = models[indexPath.section].options[indexPath.row]
         switch type.self {
-        case .staticCell(let model):
+        case let .staticCell(model):
             if let cell = tableView.cellForRow(at: indexPath) {
                 cell.tintColor = .orange
                 cell.accessoryType = .checkmark
@@ -130,14 +127,14 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
             model.handler()
         }
     }
-    
+
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath) {
             cell.accessoryType = .none
         }
     }
-    
-    @objc func handleDone(){
+
+    @objc func handleDone() {
         switch paramUpdate {
         case .Resolution:
             delegate?.updateParamResolution(variable: selectedItem!)
@@ -149,11 +146,10 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
             break
         }
         tableView.reloadData()
-        self.dismiss(animated: true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
-    
-    @objc func handleCancel(){
-        self.dismiss(animated: true, completion: nil)
+
+    @objc func handleCancel() {
+        dismiss(animated: true, completion: nil)
     }
-    
 }

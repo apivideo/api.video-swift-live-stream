@@ -3,10 +3,9 @@
 //  Example
 //
 
-
 import Foundation
 
-protocol UpdateParamDelegate{
+protocol UpdateParamDelegate {
     func updateParamResolution(variable: String)
     func updateParamFramerate(variable: String)
     func updateParamAudioBitrate(variable: String)
@@ -14,4 +13,3 @@ protocol UpdateParamDelegate{
     func updateParamStreamKey(variable: String)
     func updateParamVideoBitrate(variable: Int)
 }
-

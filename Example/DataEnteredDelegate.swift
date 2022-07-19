@@ -8,5 +8,5 @@
 import Foundation
 
 protocol DataEnteredDelegate: AnyObject {
-    func sendDataBack(endpoint: String, streamkey:String)
+    func sendDataBack(endpoint: String, streamkey: String)
 }
