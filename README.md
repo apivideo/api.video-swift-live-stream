@@ -28,14 +28,14 @@ This module is an easy way to broadcast RTMP live stream to [api.video](https://
 
 1. Add the following entry to your Podfile:
 ```swift
-pod 'ApiVideoLiveStream', '0.2.1'
+pod 'ApiVideoLiveStream', '1.0.0'
 ```
 3. Then run `pod install`
 4. Don’t forget to import `ApiVideoLiveStream` in every file you’d like to use api.video livestream library
 
 ### With Carthage
 ```
-github "apivideo/ApiVideoLiveStream.swift" ~> 0.2.1
+github "apivideo/ApiVideoLiveStream.swift" ~> 1.0.0
 ```
 
 ## Permissions

@@ -2,7 +2,7 @@
 
 Pod::Spec.new do |spec|
   spec.name         = "ApiVideoLiveStream"
-  spec.version      = "0.2.1"
+  spec.version      = "1.0.0"
   spec.summary      = "The api.video live stream framework allow easy integration of a live stream broadcast into your application."
 
   
