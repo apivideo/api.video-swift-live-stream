@@ -1,8 +1,9 @@
 # Changelog
 All changes to this project will be documented in this file.
 
-## [1.0.0] - 2022-07-26
+## [1.0.0] - 2022-08-02
 - Allows nil initialVideoConfig and initialAudioConfig
+- Fix landscape orientation
 
 ## [0.2.1] - 2022-04-22
 - Stop streaming on didEnterBackgroundNotification
