@@ -88,11 +88,10 @@ public class ApiVideoLiveStream {
         videoConfig = initialVideoConfig
 
         rtmpStream = RTMPStream(connection: rtmpConnection)
-        DispatchQueue.main.async {
-            if let orientation = DeviceUtil.videoOrientation(by: UIApplication.shared.statusBarOrientation) {
-                self.rtmpStream.orientation = orientation
-            }
+        if let orientation = DeviceUtil.videoOrientation(by: UIApplication.shared.statusBarOrientation) {
+            self.rtmpStream.orientation = orientation
         }
+
         NotificationCenter.default.addObserver(self, selector: #selector(orientationDidChange(_:)), name: UIDevice.orientationDidChangeNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground(_:)), name: UIApplication.didEnterBackgroundNotification, object: nil)
 
@@ -240,6 +239,13 @@ public class ApiVideoLiveStream {
             return
         }
         rtmpStream.orientation = orientation
+
+        if let videoConfig = videoConfig {
+            rtmpStream.videoSettings = [
+                .width: rtmpStream.orientation.isLandscape ? videoConfig.resolution.instance.width : videoConfig.resolution.instance.height,
+                .height: rtmpStream.orientation.isLandscape ? videoConfig.resolution.instance.height : videoConfig.resolution.instance.width,
+            ]
+        }
     }
 
     @objc
