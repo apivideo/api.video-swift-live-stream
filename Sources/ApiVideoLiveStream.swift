@@ -89,7 +89,7 @@ public class ApiVideoLiveStream {
 
         rtmpStream = RTMPStream(connection: rtmpConnection)
         if let orientation = DeviceUtil.videoOrientation(by: UIApplication.shared.statusBarOrientation) {
-            self.rtmpStream.orientation = orientation
+            rtmpStream.orientation = orientation
         }
 
         NotificationCenter.default.addObserver(self, selector: #selector(orientationDidChange(_:)), name: UIDevice.orientationDidChangeNotification, object: nil)
