@@ -195,9 +195,13 @@ public class ApiVideoLiveStream {
     /// Stop your livestream
     /// - Returns: Void
     public func stopStreaming() {
+        let isConnected = rtmpConnection.connected
         rtmpConnection.close()
         rtmpConnection.removeEventListener(.rtmpStatus, selector: #selector(rtmpStatusHandler), observer: self)
         rtmpConnection.removeEventListener(.ioError, selector: #selector(rtmpErrorHandler), observer: self)
+        if (isConnected) {
+            onDisconnect?()
+        }
     }
 
     @objc private func rtmpStatusHandler(_ notification: Notification) {
@@ -207,18 +211,12 @@ public class ApiVideoLiveStream {
         }
         switch code {
         case RTMPConnection.Code.connectSuccess.rawValue:
-            if onConnectionSuccess != nil {
-                onConnectionSuccess!()
-            }
+            onConnectionSuccess?()
             rtmpStream.publish(streamKey)
         case RTMPConnection.Code.connectFailed.rawValue:
-            if onConnectionFailed != nil {
-                onConnectionFailed!(code)
-            }
+            onConnectionFailed?(code)
         case RTMPConnection.Code.connectClosed.rawValue:
-            if onDisconnect != nil {
-                onDisconnect!()
-            }
+            onDisconnect?()
         default:
             break
         }
