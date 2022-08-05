@@ -109,10 +109,8 @@ class ViewController: UIViewController {
     }
 
     private func resetStartButton() {
-        DispatchQueue.main.async {
-            self.startButton.setTitle("Start", for: [])
-            self.startButton.isSelected = false
-        }
+        self.startButton.setTitle("Start", for: [])
+        self.startButton.isSelected = false
     }
 
     @objc func toggleLivestream() {
@@ -133,12 +131,16 @@ class ViewController: UIViewController {
             }
 
             liveStream?.onConnectionFailed = { code in
-                self.callAlert(code: code)
-                self.resetStartButton()
+                DispatchQueue.main.async {
+                    self.callAlert(code: code)
+                    self.resetStartButton()
+                }
             }
             liveStream?.onDisconnect = { () in
-                self.callAlert(code: "Disconnect")
-                self.resetStartButton()
+                DispatchQueue.main.async {
+                    self.callAlert(code: "Disconnect")
+                    self.resetStartButton()
+                }
             }
             startButton.setTitle("Stop", for: [])
         }
