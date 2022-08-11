@@ -17,10 +17,9 @@ public class ApiVideoLiveStream {
     public var onConnectionFailed: ((String) -> Void)?
     public var onDisconnect: (() -> Void)?
 
-    //Gotta be initialized before init, otherwise .self wont exist in init - Aka voodoo
-    private var zoomGesture: UIPinchGestureRecognizer = UIPinchGestureRecognizer()
+    private lazy var zoomGesture: UIPinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(zoom(sender:)))
     private var currentZoomFactor: CGFloat = 1.0
-    private var lastScale: CGFloat = 0.0
+    public var pinchZoomMultiplier: CGFloat = 2.2
 
     ///  Getter and Setter for an AudioConfig
     ///  Can't be updated
@@ -70,10 +69,10 @@ public class ApiVideoLiveStream {
     }
 
     // TODO: Fix zoom flow so it can be a React prop instead of method
-    public var zoomEnabled: Bool = false {
+    public var pinchedZoomEnabled: Bool = false {
         didSet {
-            if(zoomEnabled != oldValue) {
-                if (zoomEnabled == true) {
+            if(pinchedZoomEnabled != oldValue) {
+                if (pinchedZoomEnabled == true) {
                     mthkView!.addGestureRecognizer(zoomGesture)
                 } else {
                     mthkView!.removeGestureRecognizer(zoomGesture)
@@ -143,8 +142,7 @@ public class ApiVideoLiveStream {
                 maxWidth, maxHeight, width, height, centerX, centerY,
             ])
 
-            // TODO: Fix zoom flow so it can be a React prop instead of method
-            zoomGesture = UIPinchGestureRecognizer(target: self, action: #selector(zoom(sender:)))
+            //zoomGesture = UIPinchGestureRecognizer(target: self, action: #selector(zoom(sender:)))
         }
     }
 
@@ -210,8 +208,8 @@ public class ApiVideoLiveStream {
         rtmpConnection.addEventListener(.rtmpStatus, selector: #selector(rtmpStatusHandler), observer: self)
         rtmpConnection.addEventListener(.ioError, selector: #selector(rtmpErrorHandler), observer: self)
 
-        // TODO: Fix zoom flow so it can be a React prop instead of method
-        zoomEnabled = true
+        // TODO: Remove after testing
+        pinchedZoomEnabled = true
 
         rtmpConnection.connect(url)
     }
@@ -219,8 +217,8 @@ public class ApiVideoLiveStream {
     /// Stop your livestream
     /// - Returns: Void
     public func stopStreaming() {
-        // TODO: Fix zoom flow so it can be a React prop instead of method
-        zoomEnabled = true
+        // TODO: Remove after testing
+        pinchedZoomEnabled = true
 
         let isConnected = rtmpConnection.connected
         rtmpConnection.close()
@@ -280,12 +278,10 @@ public class ApiVideoLiveStream {
 
     @objc
     private func zoom(sender: UIPinchGestureRecognizer) {
-        if sender.state == .began || sender.state == .changed {
-            if(sender.scale < 2 && sender.scale > 0) {
-                currentZoomFactor = min(max(currentZoomFactor + (min(max(sender.scale, 0.5), 1.5) - 1) * 2.2, 0), 4)
-                rtmpStream.setZoomFactor(currentZoomFactor, ramping: false)
-                sender.scale = 1
-            }
+        if sender.state == .changed {
+            currentZoomFactor = min(4, max(0, currentZoomFactor + (sender.scale-1) * pinchZoomMultiplier))
+            rtmpStream.setZoomFactor(currentZoomFactor)
+            sender.scale = 1
         }
     }
 }
