@@ -12,6 +12,8 @@ public class ApiVideoLiveStream {
     private var url: String = ""
     private let rtmpStream: RTMPStream
     private let rtmpConnection = RTMPConnection()
+    private var isAudioConfigured = false
+    private var isVideoConfigured = false
 
     public var onConnectionSuccess: (() -> Void)?
     public var onConnectionFailed: ((String) -> Void)?
@@ -23,21 +25,23 @@ public class ApiVideoLiveStream {
 
     ///  Getter and Setter for an AudioConfig
     ///  Can't be updated
-    public var audioConfig: AudioConfig? {
-        didSet {
-            if let audioConfig = audioConfig {
-                prepareAudio(audioConfig: audioConfig)
-            }
+    public var audioConfig: AudioConfig {
+        get {
+            return AudioConfig(bitrate: rtmpStream.audioSettings[.bitrate] as! Int)
+        }
+        set {
+            prepareAudio(audioConfig: newValue)
         }
     }
 
     /// Getter and Setter for a VideoConfig
     /// Can't be updated
-    public var videoConfig: VideoConfig? {
-        didSet {
-            if let videoConfig = videoConfig {
-                prepareVideo(videoConfig: videoConfig)
-            }
+    public var videoConfig: VideoConfig {
+        get {
+            return try! VideoConfig(bitrate: Int(rtmpStream.videoSettings[.bitrate] as! UInt32), resolution: Resolution.getResolution(width: Int(rtmpStream.videoSettings[.width] as! Int32), height: Int(rtmpStream.videoSettings[.height] as! Int32)), fps: Int(rtmpStream.captureSettings[.fps] as! Float64))
+        }
+        set {
+            prepareVideo(videoConfig: newValue)
         }
     }
 
@@ -101,25 +105,23 @@ public class ApiVideoLiveStream {
         }
         try session.setActive(true)
 
-        audioConfig = initialAudioConfig
-        videoConfig = initialVideoConfig
-
         rtmpStream = RTMPStream(connection: rtmpConnection)
+
+        attachCamera()
+        if let initialVideoConfig = initialVideoConfig {
+            prepareVideo(videoConfig: initialVideoConfig)
+        }
+        attachAudio()
+        if let initialAudioConfig = initialAudioConfig {
+            prepareAudio(audioConfig: initialAudioConfig)
+        }
+
         if let orientation = DeviceUtil.videoOrientation(by: UIApplication.shared.statusBarOrientation) {
             rtmpStream.orientation = orientation
         }
 
         NotificationCenter.default.addObserver(self, selector: #selector(orientationDidChange(_:)), name: UIDevice.orientationDidChangeNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground(_:)), name: UIApplication.didEnterBackgroundNotification, object: nil)
-
-        attachCamera()
-        if let videoConfig = videoConfig {
-            prepareVideo(videoConfig: videoConfig)
-        }
-        attachAudio()
-        if let audioConfig = audioConfig {
-            prepareAudio(audioConfig: audioConfig)
-        }
 
         if preview != nil {
             mthkView = MTHKView(frame: preview!.bounds)
@@ -174,6 +176,8 @@ public class ApiVideoLiveStream {
             .bitrate: videoConfig.bitrate,
             .maxKeyFrameIntervalDuration: 1,
         ]
+
+        isVideoConfigured = true
     }
 
     private func attachAudio() {
@@ -187,6 +191,8 @@ public class ApiVideoLiveStream {
         rtmpStream.audioSettings = [
             .bitrate: audioConfig.bitrate,
         ]
+
+        isAudioConfigured = true
     }
 
     /// Start your livestream
@@ -198,7 +204,7 @@ public class ApiVideoLiveStream {
         if streamKey.isEmpty {
             throw LiveStreamError.IllegalArgumentError("Stream key must not be empty")
         }
-        if audioConfig == nil || videoConfig == nil {
+        if !isAudioConfigured || !isVideoConfigured {
             throw LiveStreamError.IllegalArgumentError("Missing audio and/or video configuration")
         }
 
@@ -224,7 +230,7 @@ public class ApiVideoLiveStream {
         rtmpConnection.close()
         rtmpConnection.removeEventListener(.rtmpStatus, selector: #selector(rtmpStatusHandler), observer: self)
         rtmpConnection.removeEventListener(.ioError, selector: #selector(rtmpErrorHandler), observer: self)
-        if (isConnected) {
+        if isConnected {
             onDisconnect?()
         }
     }
@@ -263,12 +269,10 @@ public class ApiVideoLiveStream {
         }
         rtmpStream.orientation = orientation
 
-        if let videoConfig = videoConfig {
-            rtmpStream.videoSettings = [
-                .width: rtmpStream.orientation.isLandscape ? videoConfig.resolution.instance.width : videoConfig.resolution.instance.height,
-                .height: rtmpStream.orientation.isLandscape ? videoConfig.resolution.instance.height : videoConfig.resolution.instance.width,
-            ]
-        }
+        rtmpStream.videoSettings = [
+            .width: rtmpStream.orientation.isLandscape ? videoConfig.resolution.instance.width : videoConfig.resolution.instance.height,
+            .height: rtmpStream.orientation.isLandscape ? videoConfig.resolution.instance.height : videoConfig.resolution.instance.width,
+        ]
     }
 
     @objc
