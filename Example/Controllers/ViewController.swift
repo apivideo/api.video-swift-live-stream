@@ -17,6 +17,9 @@ class ViewController: UIViewController {
     private let unMute = UIImage(systemName: "speaker.circle")
     private let parameter = UIImage(systemName: "ellipsis")
 
+    private lazy var zoomGesture: UIPinchGestureRecognizer = .init(target: self, action: #selector(zoom(sender:)))
+    private let pinchZoomMultiplier: CGFloat = 2.2
+
     private var nc = NotificationCenter.default
 
     private let muteButton: UIButton = {
@@ -77,6 +80,8 @@ class ViewController: UIViewController {
         startButton.addTarget(self, action: #selector(toggleLivestream), for: .touchUpInside)
         parameterButton.addTarget(self, action: #selector(navigateToParam), for: .touchUpInside)
 
+        preview.addGestureRecognizer(zoomGesture)
+
         constraints()
     }
 
@@ -109,8 +114,8 @@ class ViewController: UIViewController {
     }
 
     private func resetStartButton() {
-        self.startButton.setTitle("Start", for: [])
-        self.startButton.isSelected = false
+        startButton.setTitle("Start", for: [])
+        startButton.isSelected = false
     }
 
     @objc func toggleLivestream() {
@@ -185,6 +190,16 @@ class ViewController: UIViewController {
                     self.updateConfig()
                 }
             }
+        }
+    }
+
+    @objc
+    private func zoom(sender: UIPinchGestureRecognizer) {
+        if sender.state == .changed {
+            if let liveStream = liveStream {
+                liveStream.zoomRatio = liveStream.zoomRatio + (sender.scale - 1) * pinchZoomMultiplier
+            }
+            sender.scale = 1
         }
     }
 }

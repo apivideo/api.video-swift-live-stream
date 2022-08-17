@@ -68,6 +68,15 @@ public class ApiVideoLiveStream {
         }
     }
 
+    public var zoomRatio: CGFloat {
+        get {
+            return rtmpStream.zoomFactor
+        }
+        set(newValue) {
+            rtmpStream.setZoomFactor(newValue)
+        }
+    }
+
     /// init a new ApiVideoLiveStream
     /// - Parameters:
     ///   - initialAudioConfig: The ApiVideoLiveStream's new AudioConfig
