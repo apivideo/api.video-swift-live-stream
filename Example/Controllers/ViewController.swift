@@ -16,6 +16,10 @@ class ViewController: UIViewController {
     private let mute = UIImage(systemName: "speaker.slash.circle")
     private let unMute = UIImage(systemName: "speaker.circle")
     private let parameter = UIImage(systemName: "ellipsis")
+    
+    private lazy var zoomGesture: UIPinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(zoom(sender:)))
+    private var currentZoomFactor: CGFloat = 1.0
+    public var pinchZoomMultiplier: CGFloat = 2.2
 
     private var nc = NotificationCenter.default
 
@@ -76,6 +80,8 @@ class ViewController: UIViewController {
         muteButton.addTarget(self, action: #selector(toggleMute), for: .touchUpInside)
         startButton.addTarget(self, action: #selector(toggleLivestream), for: .touchUpInside)
         parameterButton.addTarget(self, action: #selector(navigateToParam), for: .touchUpInside)
+        
+        preview.addGestureRecognizer(zoomGesture)
 
         constraints()
     }
@@ -185,6 +191,16 @@ class ViewController: UIViewController {
                     self.updateConfig()
                 }
             }
+        }
+    }
+    
+    @objc
+    private func zoom(sender: UIPinchGestureRecognizer) {
+        if sender.state == .changed {
+            //currentZoomFactor = min(4, max(1, currentZoomFactor + (sender.scale-1) * pinchZoomMultiplier))
+            //rtmpStream.setZoomFactor(currentZoomFactor)
+            liveStream?.zoomRatio = (liveStream?.zoomRatio ?? 1.0) + (sender.scale-1) * pinchZoomMultiplier
+            sender.scale = 1
         }
     }
 }
