@@ -67,7 +67,7 @@ public class ApiVideoLiveStream {
             rtmpStream.audioSettings[.muted] = newValue
         }
     }
-    
+
     public var zoomRatio: CGFloat {
         get {
             return rtmpStream.zoomFactor
@@ -210,7 +210,6 @@ public class ApiVideoLiveStream {
     /// Stop your livestream
     /// - Returns: Void
     public func stopStreaming() {
-
         let isConnected = rtmpConnection.connected
         rtmpConnection.close()
         rtmpConnection.removeEventListener(.rtmpStatus, selector: #selector(rtmpStatusHandler), observer: self)
