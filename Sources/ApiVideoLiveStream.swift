@@ -17,10 +17,6 @@ public class ApiVideoLiveStream {
     public var onConnectionFailed: ((String) -> Void)?
     public var onDisconnect: (() -> Void)?
 
-    private lazy var zoomGesture: UIPinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(zoom(sender:)))
-    private var currentZoomFactor: CGFloat = 1.0
-    public var pinchZoomMultiplier: CGFloat = 2.2
-
     ///  Getter and Setter for an AudioConfig
     ///  Can't be updated
     public var audioConfig: AudioConfig? {
@@ -67,17 +63,13 @@ public class ApiVideoLiveStream {
             rtmpStream.audioSettings[.muted] = newValue
         }
     }
-
-    // TODO: Fix zoom flow so it can be a React prop instead of method
-    public var pinchedZoomEnabled: Bool = false {
-        didSet {
-            if(pinchedZoomEnabled != oldValue) {
-                if (pinchedZoomEnabled == true) {
-                    mthkView!.addGestureRecognizer(zoomGesture)
-                } else {
-                    mthkView!.removeGestureRecognizer(zoomGesture)
-                }
-            }
+    
+    public var zoomRatio: CGFloat {
+        get {
+            return rtmpStream.zoomFactor
+        }
+        set(newValue) {
+            rtmpStream.setZoomFactor(newValue)
         }
     }
 
@@ -141,8 +133,6 @@ public class ApiVideoLiveStream {
             NSLayoutConstraint.activate([
                 maxWidth, maxHeight, width, height, centerX, centerY,
             ])
-
-            //zoomGesture = UIPinchGestureRecognizer(target: self, action: #selector(zoom(sender:)))
         }
     }
 
@@ -208,17 +198,12 @@ public class ApiVideoLiveStream {
         rtmpConnection.addEventListener(.rtmpStatus, selector: #selector(rtmpStatusHandler), observer: self)
         rtmpConnection.addEventListener(.ioError, selector: #selector(rtmpErrorHandler), observer: self)
 
-        // TODO: Remove after testing
-        pinchedZoomEnabled = true
-
         rtmpConnection.connect(url)
     }
 
     /// Stop your livestream
     /// - Returns: Void
     public func stopStreaming() {
-        // TODO: Remove after testing
-        pinchedZoomEnabled = true
 
         let isConnected = rtmpConnection.connected
         rtmpConnection.close()
@@ -274,15 +259,6 @@ public class ApiVideoLiveStream {
     @objc
     private func didEnterBackground(_: Notification) {
         stopStreaming()
-    }
-
-    @objc
-    private func zoom(sender: UIPinchGestureRecognizer) {
-        if sender.state == .changed {
-            currentZoomFactor = min(4, max(0, currentZoomFactor + (sender.scale-1) * pinchZoomMultiplier))
-            rtmpStream.setZoomFactor(currentZoomFactor)
-            sender.scale = 1
-        }
     }
 }
 
