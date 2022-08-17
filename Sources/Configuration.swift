@@ -37,6 +37,22 @@ public enum Resolution {
             return Size(width: 1920, height: 1080)
         }
     }
+
+    public static func getResolution(width: Int, height: Int) throws -> Resolution {
+        if ((width == 352) && (height == 240)) || ((width == 240) && (height == 352)) {
+            return .RESOLUTION_240
+        } else if ((width == 480) && (height == 360)) || ((width == 360) && (height == 480)) {
+            return .RESOLUTION_360
+        } else if ((width == 858) && (height == 480)) || ((width == 480) && (height == 858)) {
+            return .RESOLUTION_480
+        } else if ((width == 1280) && (height == 720)) || ((width == 720) && (height == 1280)) {
+            return .RESOLUTION_720
+        } else if ((width == 1920) && (height == 1080)) || ((width == 1080) && (height == 1920)) {
+            return .RESOLUTION_1080
+        } else {
+            throw ConfigurationError.invalidParameter("")
+        }
+    }
 }
 
 public struct AudioConfig {
@@ -73,4 +89,8 @@ public struct VideoConfig {
         case Resolution.RESOLUTION_1080: return 3_500_000
         }
     }
+}
+
+enum ConfigurationError: Error {
+    case invalidParameter(String)
 }
