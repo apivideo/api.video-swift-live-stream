@@ -50,7 +50,7 @@ public enum Resolution {
         } else if ((width == 1920) && (height == 1080)) || ((width == 1080) && (height == 1920)) {
             return .RESOLUTION_1080
         } else {
-            throw ConfigurationError.invalidParameter("")
+            throw ConfigurationError.invalidParameter("Resolution \(width)x\(height) is not supported")
         }
     }
 }
