@@ -219,6 +219,16 @@ public class ApiVideoLiveStream {
         }
     }
 
+    public func startPreview() {
+        attachCamera()
+        attachAudio()
+    }
+
+    public func stopPreview() {
+        rtmpStream.attachCamera(nil)
+        rtmpStream.attachAudio(nil)
+    }
+
     @objc private func rtmpStatusHandler(_ notification: Notification) {
         let e = Event.from(notification)
         guard let data: ASObject = e.data as? ASObject, let code: String = data["code"] as? String else {
