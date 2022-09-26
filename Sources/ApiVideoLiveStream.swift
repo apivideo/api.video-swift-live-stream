@@ -14,6 +14,7 @@ public class ApiVideoLiveStream {
     private let rtmpConnection = RTMPConnection()
     private var isAudioConfigured = false
     private var isVideoConfigured = false
+    private let queue = DispatchQueue(label: "api.video.livestream.DispatchQueue")
 
     public var onConnectionSuccess: (() -> Void)?
     public var onConnectionFailed: ((String) -> Void)?
@@ -164,20 +165,24 @@ public class ApiVideoLiveStream {
 
     private func attachCamera() {
         rtmpStream.captureSettings[.isVideoMirrored] = camera == .front
-        rtmpStream.attachCamera(DeviceUtil.device(withPosition: camera)) { error in
-            print("======== Camera error ==========")
-            print(error.description)
+        queue.sync {
+            rtmpStream.attachCamera(DeviceUtil.device(withPosition: camera)) { error in
+                print("======== Camera error ==========")
+                print(error.description)
+            }
         }
     }
 
     private func prepareVideo(videoConfig: VideoConfig) {
-        rtmpStream.captureSettings = [
-            .sessionPreset: AVCaptureSession.Preset.high,
-            .fps: videoConfig.fps,
-            .continuousAutofocus: true,
-            .continuousExposure: true,
-            // .preferredVideoStabilizationMode: AVCaptureVideoStabilizationMode.auto // Add latency to video
-        ]
+        queue.sync {
+            rtmpStream.captureSettings = [
+                .sessionPreset: AVCaptureSession.Preset.high,
+                .fps: videoConfig.fps,
+                .continuousAutofocus: true,
+                .continuousExposure: true,
+                // .preferredVideoStabilizationMode: AVCaptureVideoStabilizationMode.auto // Add latency to video
+            ]
+        }
         rtmpStream.videoSettings = [
             .width: rtmpStream.orientation.isLandscape ? videoConfig.resolution.instance.width : videoConfig.resolution.instance.height,
             .height: rtmpStream.orientation.isLandscape ? videoConfig.resolution.instance.height : videoConfig.resolution.instance.width,
@@ -223,7 +228,9 @@ public class ApiVideoLiveStream {
         rtmpConnection.addEventListener(.rtmpStatus, selector: #selector(rtmpStatusHandler), observer: self)
         rtmpConnection.addEventListener(.ioError, selector: #selector(rtmpErrorHandler), observer: self)
 
-        rtmpConnection.connect(url)
+        queue.sync {
+            rtmpConnection.connect(url)
+        }
     }
 
     /// Stop your livestream
