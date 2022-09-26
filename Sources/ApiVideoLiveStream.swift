@@ -77,12 +77,11 @@ public class ApiVideoLiveStream {
         }
     }
 
-    /// init a new ApiVideoLiveStream
+    /// init a new ApiVideoLiveStream without preview
     /// - Parameters:
     ///   - initialAudioConfig: The ApiVideoLiveStream's new AudioConfig
     ///   - initialVideoConfig: The ApiVideoLiveStream's new VideoConfig
-    ///   - preview: UiView to display the preview of camera
-    public init(initialAudioConfig: AudioConfig?, initialVideoConfig: VideoConfig?, preview: UIView?) throws {
+    public init(initialAudioConfig: AudioConfig?, initialVideoConfig: VideoConfig?) throws {
         let session = AVAudioSession.sharedInstance()
 
         // https://stackoverflow.com/questions/51010390/avaudiosession-setcategory-swift-4-2-ios-12-play-sound-on-silent
@@ -114,28 +113,45 @@ public class ApiVideoLiveStream {
 
         NotificationCenter.default.addObserver(self, selector: #selector(orientationDidChange(_:)), name: UIDevice.orientationDidChangeNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground(_:)), name: UIApplication.didEnterBackgroundNotification, object: nil)
+    }
 
-        if preview != nil {
-            mthkView = MTHKView(frame: preview!.bounds)
-            mthkView!.translatesAutoresizingMaskIntoConstraints = false
-            mthkView!.videoGravity = AVLayerVideoGravity.resizeAspectFill
-            mthkView!.attachStream(rtmpStream)
-            preview!.addSubview(mthkView!)
+    /// init a new ApiVideoLiveStream with an UIView
+    /// - Parameters:
+    ///   - initialAudioConfig: The ApiVideoLiveStream's new AudioConfig
+    ///   - initialVideoConfig: The ApiVideoLiveStream's new VideoConfig
+    ///   - preview: UiView to display the preview of camera
+    public convenience init(initialAudioConfig: AudioConfig?, initialVideoConfig: VideoConfig?, preview: UIView) throws {
+        try self.init(initialAudioConfig: initialAudioConfig, initialVideoConfig: initialVideoConfig)
 
-            let maxWidth = mthkView!.widthAnchor.constraint(lessThanOrEqualTo: preview!.widthAnchor)
-            let maxHeight = mthkView!.heightAnchor.constraint(lessThanOrEqualTo: preview!.heightAnchor)
-            let width = mthkView!.widthAnchor.constraint(equalTo: preview!.widthAnchor)
-            let height = mthkView!.heightAnchor.constraint(equalTo: preview!.heightAnchor)
-            let centerX = mthkView!.centerXAnchor.constraint(equalTo: preview!.centerXAnchor)
-            let centerY = mthkView!.centerYAnchor.constraint(equalTo: preview!.centerYAnchor)
+        mthkView = MTHKView(frame: preview.bounds)
+        mthkView!.translatesAutoresizingMaskIntoConstraints = false
+        mthkView!.videoGravity = AVLayerVideoGravity.resizeAspectFill
+        mthkView!.attachStream(rtmpStream)
+        preview.addSubview(mthkView!)
 
-            width.priority = .defaultHigh
-            height.priority = .defaultHigh
+        let maxWidth = mthkView!.widthAnchor.constraint(lessThanOrEqualTo: preview.widthAnchor)
+        let maxHeight = mthkView!.heightAnchor.constraint(lessThanOrEqualTo: preview.heightAnchor)
+        let width = mthkView!.widthAnchor.constraint(equalTo: preview.widthAnchor)
+        let height = mthkView!.heightAnchor.constraint(equalTo: preview.heightAnchor)
+        let centerX = mthkView!.centerXAnchor.constraint(equalTo: preview.centerXAnchor)
+        let centerY = mthkView!.centerYAnchor.constraint(equalTo: preview.centerYAnchor)
 
-            NSLayoutConstraint.activate([
-                maxWidth, maxHeight, width, height, centerX, centerY,
-            ])
-        }
+        width.priority = .defaultHigh
+        height.priority = .defaultHigh
+
+        NSLayoutConstraint.activate([
+            maxWidth, maxHeight, width, height, centerX, centerY,
+        ])
+    }
+
+    /// init a new ApiVideoLiveStream with a NetStreamDrawable
+    /// - Parameters:
+    ///   - initialAudioConfig: The ApiVideoLiveStream's new AudioConfig
+    ///   - initialVideoConfig: The ApiVideoLiveStream's new VideoConfig
+    ///   - preview: UiView to display the preview of camera
+    public convenience init(initialAudioConfig: AudioConfig?, initialVideoConfig: VideoConfig?, preview: NetStreamDrawable) throws {
+        try self.init(initialAudioConfig: initialAudioConfig, initialVideoConfig: initialVideoConfig)
+        preview.attachStream(rtmpStream)
     }
 
     deinit {
