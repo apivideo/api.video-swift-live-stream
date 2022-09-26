@@ -97,6 +97,9 @@ public class ApiVideoLiveStream {
         try session.setActive(true)
 
         rtmpStream = RTMPStream(connection: rtmpConnection)
+        // Force default resolution because HK default resolution is not supported (480x272)
+        rtmpStream.videoSettings[.width] = 1280
+        rtmpStream.videoSettings[.height] = 720
 
         attachCamera()
         if let initialVideoConfig = initialVideoConfig {
