@@ -1,7 +1,7 @@
 name: Release to Cocoapods
 on:
   release:
-    types: [created]
+    types: [published]
 jobs:
   deploy:
     runs-on: macos-latest
