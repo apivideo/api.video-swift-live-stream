@@ -116,6 +116,9 @@ public class ApiVideoLiveStream {
 
         NotificationCenter.default.addObserver(self, selector: #selector(orientationDidChange(_:)), name: UIDevice.orientationDidChangeNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground(_:)), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        rtmpConnection.addEventListener(.rtmpStatus, selector: #selector(rtmpStatusHandler), observer: self)
+        rtmpConnection.addEventListener(.ioError, selector: #selector(rtmpErrorHandler), observer: self)
+
     }
 
     /// init a new ApiVideoLiveStream with an UIView
@@ -161,6 +164,8 @@ public class ApiVideoLiveStream {
     deinit {
         NotificationCenter.default.removeObserver(self, name: UIDevice.orientationDidChangeNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIApplication.didEnterBackgroundNotification, object: nil)
+        rtmpConnection.removeEventListener(.rtmpStatus, selector: #selector(rtmpStatusHandler), observer: self)
+        rtmpConnection.removeEventListener(.ioError, selector: #selector(rtmpErrorHandler), observer: self)
     }
 
     private func attachCamera() {
@@ -225,9 +230,6 @@ public class ApiVideoLiveStream {
         self.streamKey = streamKey
         self.url = url
 
-        rtmpConnection.addEventListener(.rtmpStatus, selector: #selector(rtmpStatusHandler), observer: self)
-        rtmpConnection.addEventListener(.ioError, selector: #selector(rtmpErrorHandler), observer: self)
-
         rtmpStream.lockQueue.sync {
             rtmpConnection.connect(url)
         }
@@ -238,8 +240,6 @@ public class ApiVideoLiveStream {
     public func stopStreaming() {
         let isConnected = rtmpConnection.connected
         rtmpConnection.close()
-        rtmpConnection.removeEventListener(.rtmpStatus, selector: #selector(rtmpStatusHandler), observer: self)
-        rtmpConnection.removeEventListener(.ioError, selector: #selector(rtmpErrorHandler), observer: self)
         if isConnected {
             onDisconnect?()
         }
