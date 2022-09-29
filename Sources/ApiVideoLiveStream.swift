@@ -14,7 +14,6 @@ public class ApiVideoLiveStream {
     private let rtmpConnection = RTMPConnection()
     private var isAudioConfigured = false
     private var isVideoConfigured = false
-    private let queue = DispatchQueue(label: "api.video.livestream.DispatchQueue")
 
     public var onConnectionSuccess: (() -> Void)?
     public var onConnectionFailed: ((String) -> Void)?
@@ -131,6 +130,7 @@ public class ApiVideoLiveStream {
         mthkView!.translatesAutoresizingMaskIntoConstraints = false
         mthkView!.videoGravity = AVLayerVideoGravity.resizeAspectFill
         mthkView!.attachStream(rtmpStream)
+
         preview.addSubview(mthkView!)
 
         let maxWidth = mthkView!.widthAnchor.constraint(lessThanOrEqualTo: preview.widthAnchor)
@@ -165,7 +165,7 @@ public class ApiVideoLiveStream {
 
     private func attachCamera() {
         rtmpStream.captureSettings[.isVideoMirrored] = camera == .front
-        queue.sync {
+        rtmpStream.lockQueue.sync {
             rtmpStream.attachCamera(DeviceUtil.device(withPosition: camera)) { error in
                 print("======== Camera error ==========")
                 print(error.description)
@@ -174,7 +174,7 @@ public class ApiVideoLiveStream {
     }
 
     private func prepareVideo(videoConfig: VideoConfig) {
-        queue.sync {
+        rtmpStream.lockQueue.sync {
             rtmpStream.captureSettings = [
                 .sessionPreset: AVCaptureSession.Preset.high,
                 .fps: videoConfig.fps,
@@ -228,7 +228,7 @@ public class ApiVideoLiveStream {
         rtmpConnection.addEventListener(.rtmpStatus, selector: #selector(rtmpStatusHandler), observer: self)
         rtmpConnection.addEventListener(.ioError, selector: #selector(rtmpErrorHandler), observer: self)
 
-        queue.sync {
+        rtmpStream.lockQueue.sync {
             rtmpConnection.connect(url)
         }
     }
