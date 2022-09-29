@@ -1,6 +1,9 @@
 # Changelog
 All changes to this project will be documented in this file.
 
+## [1.2.1] - 2022-09-29
+- fix(lib): use RtmpStream lock instead of a custom lock
+
 ## [1.2.0] - 2022-09-29
 - Add startPreview/stopPreview API
 - Try to synchronize `startStreaming` abd video configuration
