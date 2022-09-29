@@ -1,6 +1,14 @@
 # Changelog
 All changes to this project will be documented in this file.
 
+## [1.2.0] - 2022-09-29
+- Add startPreview/stopPreview API
+- Try to synchronize `startStreaming` abd video configuration
+- Force HaishinKit default resolution to 720p
+- Add constructor for HaishinKit NetStreamDrawable
+- Upgrade to HaishinKit 1.3.0
+- Release workflow is triggered on release published (instead of created)
+
 ## [1.1.0] - 2022-08-18
 - Adds API to set zoom ratio
 

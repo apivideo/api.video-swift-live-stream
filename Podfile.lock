@@ -1,5 +1,5 @@
 PODS:
-  - ApiVideoLiveStream (1.1.0):
+  - ApiVideoLiveStream (1.2.0):
     - HaishinKit (= 1.3.0)
   - HaishinKit (1.3.0):
     - Logboard (~> 2.3.0)
@@ -18,7 +18,7 @@ EXTERNAL SOURCES:
     :path: "."
 
 SPEC CHECKSUMS:
-  ApiVideoLiveStream: 16348be3cb246401dcaa7edf8eb4e778ebeade6e
+  ApiVideoLiveStream: c3e2ac0372cfbf25176727e26a3301aaf40c5e55
   HaishinKit: 013229683accc4abe46630b04629da3ff90428b7
   Logboard: f3a37d2a4040b82b7e2eb39765897e2c9c5ec024
 
