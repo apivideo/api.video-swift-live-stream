@@ -1,6 +1,9 @@
 # Changelog
 All changes to this project will be documented in this file.
 
+## [1.2.2] - 2022-09-29
+- Only register event listener in constructor to avoid multiple callback called
+
 ## [1.2.1] - 2022-09-29
 - fix(lib): use RtmpStream lock instead of a custom lock
 
