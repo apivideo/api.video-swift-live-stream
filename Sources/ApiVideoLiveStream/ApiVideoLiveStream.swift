@@ -5,7 +5,9 @@
 import AVFoundation
 import Foundation
 import HaishinKit
+#if !os(macOS)
 import UIKit
+#endif
 import VideoToolbox
 
 public class ApiVideoLiveStream {
@@ -70,6 +72,7 @@ public class ApiVideoLiveStream {
         }
     }
 
+    #if os(iOS)
     public var zoomRatio: CGFloat {
         get {
             guard let device = rtmpStream.videoCapture(for: 0)?.device else {
@@ -90,22 +93,34 @@ public class ApiVideoLiveStream {
             }
         }
     }
+    #endif
 
     /// init a new ApiVideoLiveStream without preview
     /// - Parameters:
     ///   - initialAudioConfig: The ApiVideoLiveStream's new AudioConfig
     ///   - initialVideoConfig: The ApiVideoLiveStream's new VideoConfig
     public init(initialAudioConfig: AudioConfig?, initialVideoConfig: VideoConfig?) throws {
+        #if os(iOS)
         let session = AVAudioSession.sharedInstance()
 
         // https://stackoverflow.com/questions/51010390/avaudiosession-setcategory-swift-4-2-ios-12-play-sound-on-silent
         try session.setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker, .allowBluetooth])
         try session.setActive(true)
+        #endif
 
         rtmpStream = RTMPStream(connection: rtmpConnection)
         // Force default resolution because HK default resolution is not supported (480x272)
         rtmpStream.videoSettings[.width] = 1280
         rtmpStream.videoSettings[.height] = 720
+
+        #if os(iOS)
+        if let orientation = DeviceUtil.videoOrientation(by: UIApplication.shared.statusBarOrientation) {
+            rtmpStream.videoOrientation = orientation
+        }
+
+        NotificationCenter.default.addObserver(self, selector: #selector(orientationDidChange(_:)),
+                name: UIDevice.orientationDidChangeNotification, object: nil)
+        #endif
 
         attachCamera()
         if let initialVideoConfig = initialVideoConfig {
@@ -116,16 +131,15 @@ public class ApiVideoLiveStream {
             prepareAudio(audioConfig: initialAudioConfig)
         }
 
-        if let orientation = DeviceUtil.videoOrientation(by: UIApplication.shared.statusBarOrientation) {
-            rtmpStream.videoOrientation = orientation
-        }
-
-        NotificationCenter.default.addObserver(self, selector: #selector(orientationDidChange(_:)), name: UIDevice.orientationDidChangeNotification, object: nil)
+        #if !os(macOS)
         NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground(_:)), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        #endif
+
         rtmpConnection.addEventListener(.rtmpStatus, selector: #selector(rtmpStatusHandler), observer: self)
         rtmpConnection.addEventListener(.ioError, selector: #selector(rtmpErrorHandler), observer: self)
     }
 
+    #if !os(macOS)
     /// init a new ApiVideoLiveStream with an UIView
     /// - Parameters:
     ///   - initialAudioConfig: The ApiVideoLiveStream's new AudioConfig
@@ -155,6 +169,7 @@ public class ApiVideoLiveStream {
             maxWidth, maxHeight, width, height, centerX, centerY,
         ])
     }
+    #endif
 
     /// init a new ApiVideoLiveStream with a NetStreamDrawable
     /// - Parameters:
@@ -167,8 +182,12 @@ public class ApiVideoLiveStream {
     }
 
     deinit {
+        #if os(iOS)
         NotificationCenter.default.removeObserver(self, name: UIDevice.orientationDidChangeNotification, object: nil)
+        #endif
+        #if !os(macOS)
         NotificationCenter.default.removeObserver(self, name: UIApplication.didEnterBackgroundNotification, object: nil)
+        #endif
         rtmpConnection.removeEventListener(.rtmpStatus, selector: #selector(rtmpStatusHandler), observer: self)
         rtmpConnection.removeEventListener(.ioError, selector: #selector(rtmpErrorHandler), observer: self)
     }
@@ -297,6 +316,7 @@ public class ApiVideoLiveStream {
         }
     }
 
+    #if os(iOS)
     @objc
     private func orientationDidChange(_: Notification) {
         guard let orientation = DeviceUtil.videoOrientation(by: UIApplication.shared.statusBarOrientation) else {
@@ -309,11 +329,14 @@ public class ApiVideoLiveStream {
             .height: rtmpStream.videoOrientation.isLandscape ? videoConfig.resolution.size.height : videoConfig.resolution.size.width,
         ]
     }
+    #endif
 
+    #if !os(macOS)
     @objc
     private func didEnterBackground(_: Notification) {
         stopStreaming()
     }
+    #endif
 }
 
 public protocol ApiVideoLiveStreamDelegate: AnyObject {
