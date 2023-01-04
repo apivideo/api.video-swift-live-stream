@@ -107,7 +107,7 @@ public class ApiVideoLiveStream {
     }
     #endif
 
-    /// init a new ApiVideoLiveStream without preview
+    /// Creates a new ApiVideoLiveStream object without a preview
     /// - Parameters:
     ///   - initialAudioConfig: The ApiVideoLiveStream's new AudioConfig
     ///   - initialVideoConfig: The ApiVideoLiveStream's new VideoConfig
@@ -161,11 +161,11 @@ public class ApiVideoLiveStream {
     }
 
     #if !os(macOS)
-    /// init a new ApiVideoLiveStream with an UIView
+    /// Creates a new ApiVideoLiveStream object with a UIView as preview
     /// - Parameters:
+    ///   - preview: The UIView where to display the preview of camera
     ///   - initialAudioConfig: The ApiVideoLiveStream's new AudioConfig
     ///   - initialVideoConfig: The ApiVideoLiveStream's new VideoConfig
-    ///   - preview: UiView to display the preview of camera
     public convenience init(
             preview: UIView,
             initialAudioConfig: AudioConfig? = AudioConfig(),
@@ -196,11 +196,11 @@ public class ApiVideoLiveStream {
     }
     #endif
 
-    /// init a new ApiVideoLiveStream with a NetStreamDrawable
+    /// Creates a new ApiVideoLiveStream object with a NetStreamDrawable
     /// - Parameters:
+    ///   - preview: The NetStreamDrawable where to display the preview of camera
     ///   - initialAudioConfig: The ApiVideoLiveStream's new AudioConfig
     ///   - initialVideoConfig: The ApiVideoLiveStream's new VideoConfig
-    ///   - preview: UiView to display the preview of camera
     public convenience init(
             preview: NetStreamDrawable,
             initialAudioConfig: AudioConfig? = AudioConfig(),
@@ -261,7 +261,7 @@ public class ApiVideoLiveStream {
                     .resolution.size.width,
             .profileLevel: kVTProfileLevel_H264_Baseline_5_2,
             .bitrate: videoConfig.bitrate,
-            .maxKeyFrameIntervalDuration: 1
+            .maxKeyFrameIntervalDuration: videoConfig.gopDuration
         ]
 
         self.isVideoConfigured = true
@@ -327,7 +327,10 @@ public class ApiVideoLiveStream {
     @objc
     private func rtmpStatusHandler(_ notification: Notification) {
         let e = Event.from(notification)
-        guard let data: ASObject = e.data as? ASObject, let code: String = data["code"] as? String else {
+        guard let data: ASObject = e.data as? ASObject,
+              let code: String = data["code"] as? String,
+              let description: String = data["description"] as? String
+        else {
             return
         }
         switch code {
@@ -336,7 +339,7 @@ public class ApiVideoLiveStream {
             self.rtmpStream.publish(self.streamKey)
 
         case RTMPConnection.Code.connectFailed.rawValue:
-            self.delegate?.connectionFailed(code)
+            self.delegate?.connectionFailed(description)
 
         case RTMPConnection.Code.connectClosed.rawValue:
             self.delegate?.disconnection()

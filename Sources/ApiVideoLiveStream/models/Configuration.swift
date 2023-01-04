@@ -4,6 +4,9 @@ import Network
 public struct AudioConfig {
     public let bitrate: Int
 
+    /// Creates an audio configuration object
+    /// - Parameters:
+    ///   - bitrate: The audio bitrate in bits per second
     public init(bitrate: Int = 128_000) {
         self.bitrate = bitrate
     }
@@ -13,17 +16,31 @@ public struct VideoConfig {
     public let bitrate: Int
     public let resolution: Resolution
     public let fps: Float64
+    public let gopDuration: TimeInterval
 
-    public init(resolution: Resolution = Resolution.RESOLUTION_720, fps: Float64 = 30) {
-        self.bitrate = VideoConfig.getDefaultBitrate(resolution: resolution)
+    /// Creates a video configuration object with default video bitrate
+    /// - Parameters:
+    ///   - resolution: The video resolution
+    ///   - fps: The video framerate
+    ///   - gopDuration: The time interval between two key frames
+    public init(resolution: Resolution = Resolution.RESOLUTION_720, fps: Float64 = 30, gopDuration: TimeInterval = 1.0) {
+        bitrate = VideoConfig.getDefaultBitrate(resolution: resolution)
         self.resolution = resolution
         self.fps = fps
+        self.gopDuration = gopDuration
     }
 
-    public init(bitrate: Int, resolution: Resolution = Resolution.RESOLUTION_720, fps: Float64 = 30) {
+    /// Creates a video configuration object with explicit video bitrate
+    /// - Parameters:
+    ///   - bitrate: The video bitrate in bits per second
+    ///   - resolution: The video resolution
+    ///   - fps: The video framerate
+    ///   - gopDuration: The time interval between two key frames
+    public init(bitrate: Int, resolution: Resolution = Resolution.RESOLUTION_720, fps: Float64 = 30, gopDuration: TimeInterval = 1.0) {
         self.bitrate = bitrate
         self.resolution = resolution
         self.fps = fps
+        self.gopDuration = gopDuration
     }
 
     static func getDefaultBitrate(resolution: Resolution) -> Int {
