@@ -10,6 +10,11 @@ class SettingsViewController: IASKAppSettingsViewController {
 
         showDoneButton = true
         showCreditsFooter = false
+
+        NotificationCenter.default.addObserver(self,
+                selector: #selector(settingDidChange(notification:)),
+                name: Notification.Name.IASKSettingChanged,
+                object: nil)
     }
 
     @objc
