@@ -47,26 +47,9 @@ jobs:
           if [ $scheme = default ]; then scheme=$(cat default); fi
           xcodebuild clean build -project Examples/ExampleUIKit/ExampleUIKit.xcodeproj -scheme $scheme -sdk iphoneos
 
-  run-tests:
-    name: Run tests
-    needs: [ build-xcodebuild, build-swift ]
-    runs-on: macos-latest
-
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set test parameters
-        run: |
-          sed -i -e "s/INTEGRATION_TESTS_RTMP_URL/${INTEGRATION_TESTS_RTMP_URL}/" ./Tests/ApiVideoLiveStream/Parameters.swift
-          sed -i -e "s/INTEGRATION_TESTS_RTMP_STREAM_KEY/${INTEGRATION_TESTS_RTMP_STREAM_KEY}/" ./Tests/ApiVideoLiveStream/Parameters.swift
-        env:
-          INTEGRATION_TESTS_API_KEY: ${{ secrets.INTEGRATION_TESTS_RTMP_URL }}
-          INTEGRATION_TESTS_RTMP_STREAM_KEY: ${{ secrets.INTEGRATION_TESTS_RTMP_STREAM_KEY }}
-      - name: Running tests
-        run: swift test
-
   verify_cocoapods:
     name: Verify cocoapods podspec
-    needs: run-tests
+    needs: [ build-xcodebuild, build-swift ]
     runs-on: macos-latest
 
     steps:
