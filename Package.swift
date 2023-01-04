@@ -32,7 +32,7 @@ let package = Package(
             .testTarget(
                     name: "ApiVideoLiveStreamTests",
                     dependencies: ["ApiVideoLiveStream"],
-                    path: "Tests/ApiVideoLiveStreamTests"
+                    path: "Tests/ApiVideoLiveStream"
             )
         ]
 )
