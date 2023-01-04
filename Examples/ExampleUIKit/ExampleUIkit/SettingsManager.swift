@@ -32,7 +32,7 @@ enum SettingsManager {
     }
 
     public static var videoConfig: VideoConfig {
-        VideoConfig(bitrate: videoBitrate * 1000, resolution: resolution, fps: framerate)
+        VideoConfig(bitrate: videoBitrate * 1_000, resolution: resolution, fps: framerate)
     }
 
     // MARK: Audio

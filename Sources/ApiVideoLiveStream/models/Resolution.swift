@@ -19,10 +19,10 @@ public enum Resolution {
             return CGSize(width: 858, height: 480)
 
         case .RESOLUTION_720:
-            return CGSize(width: 1280, height: 720)
+            return CGSize(width: 1_280, height: 720)
 
         case .RESOLUTION_1080:
-            return CGSize(width: 1920, height: 1080)
+            return CGSize(width: 1_920, height: 1_080)
         }
     }
 
@@ -39,10 +39,10 @@ public enum Resolution {
         case (858, 480):
             return .RESOLUTION_480
 
-        case (1280, 720):
+        case (1_280, 720):
             return .RESOLUTION_720
 
-        case (1920, 1080):
+        case (1_920, 1_080):
             return .RESOLUTION_1080
 
         default:
@@ -51,8 +51,8 @@ public enum Resolution {
     }
 }
 
-extension CGSize {
-    public var resolution: Resolution {
+public extension CGSize {
+    var resolution: Resolution {
         get throws {
             try Resolution.getResolution(width: Int(width), height: Int(height))
         }

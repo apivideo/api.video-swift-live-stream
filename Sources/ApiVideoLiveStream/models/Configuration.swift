@@ -15,7 +15,7 @@ public struct VideoConfig {
     public let fps: Float64
 
     public init(resolution: Resolution = Resolution.RESOLUTION_720, fps: Float64 = 30) {
-        bitrate = VideoConfig.getDefaultBitrate(resolution: resolution)
+        self.bitrate = VideoConfig.getDefaultBitrate(resolution: resolution)
         self.resolution = resolution
         self.fps = fps
     }

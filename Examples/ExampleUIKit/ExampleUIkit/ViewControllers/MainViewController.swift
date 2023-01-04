@@ -1,6 +1,6 @@
 import ApiVideoLiveStream
-import InAppSettingsKit
 import AVKit
+import InAppSettingsKit
 import UIKit
 
 class MainViewController: UIViewController {
@@ -10,9 +10,10 @@ class MainViewController: UIViewController {
         do {
             // Create liveStream object
             let liveStream = try ApiVideoLiveStream(
+                    preview: preview,
                     initialAudioConfig: SettingsManager.audioConfig,
-                    initialVideoConfig: SettingsManager.videoConfig,
-                    preview: preview)
+                    initialVideoConfig: SettingsManager.videoConfig
+            )
 
             return liveStream
         } catch {
@@ -76,52 +77,52 @@ class MainViewController: UIViewController {
         }
 
         // Call to explicitly create liveStream
-        liveStream.delegate = self
+        self.liveStream.delegate = self
 
-        view.addSubview(muteButton)
-        view.addSubview(streamingButton)
-        view.addSubview(switchButton)
-        view.addSubview(parameterButton)
-        muteButton.setImage(unMute, for: .normal)
-        switchButton.setImage(back, for: .normal)
-        parameterButton.setImage(parameter, for: .normal)
+        view.addSubview(self.muteButton)
+        view.addSubview(self.streamingButton)
+        view.addSubview(self.switchButton)
+        view.addSubview(self.parameterButton)
+        self.muteButton.setImage(self.unMute, for: .normal)
+        self.switchButton.setImage(self.back, for: .normal)
+        self.parameterButton.setImage(self.parameter, for: .normal)
 
-        switchButton.addTarget(self, action: #selector(toggleSwitch), for: .touchUpInside)
-        muteButton.addTarget(self, action: #selector(toggleMute), for: .touchUpInside)
-        streamingButton.addTarget(self, action: #selector(toggleStreaming), for: .touchUpInside)
-        parameterButton.addTarget(self, action: #selector(navigateToParam), for: .touchUpInside)
+        self.switchButton.addTarget(self, action: #selector(self.toggleSwitch), for: .touchUpInside)
+        self.muteButton.addTarget(self, action: #selector(self.toggleMute), for: .touchUpInside)
+        self.streamingButton.addTarget(self, action: #selector(self.toggleStreaming), for: .touchUpInside)
+        self.parameterButton.addTarget(self, action: #selector(self.navigateToParam), for: .touchUpInside)
 
-        preview.addGestureRecognizer(zoomGesture)
+        self.preview.addGestureRecognizer(self.zoomGesture)
 
-        constraints()
+        self.constraints()
     }
 
     func constraints() {
-        muteButton.translatesAutoresizingMaskIntoConstraints = false
-        streamingButton.translatesAutoresizingMaskIntoConstraints = false
-        switchButton.translatesAutoresizingMaskIntoConstraints = false
-        parameterButton.translatesAutoresizingMaskIntoConstraints = false
+        self.muteButton.translatesAutoresizingMaskIntoConstraints = false
+        self.streamingButton.translatesAutoresizingMaskIntoConstraints = false
+        self.switchButton.translatesAutoresizingMaskIntoConstraints = false
+        self.parameterButton.translatesAutoresizingMaskIntoConstraints = false
 
-        muteButton.widthAnchor.constraint(equalToConstant: 70).isActive = true
-        muteButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        streamingButton.widthAnchor.constraint(equalToConstant: 70).isActive = true
-        streamingButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        switchButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        switchButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        parameterButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        parameterButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        self.muteButton.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        self.muteButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        self.streamingButton.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        self.streamingButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        self.switchButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        self.switchButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        self.parameterButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        self.parameterButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
 
-        parameterButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 70).isActive = true
-        parameterButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
+        self.parameterButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 70).isActive = true
+        self.parameterButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
 
-        streamingButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        streamingButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40).isActive = true
+        self.streamingButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        self.streamingButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40).isActive = true
 
-        muteButton.centerYAnchor.constraint(equalTo: streamingButton.centerYAnchor).isActive = true
-        switchButton.centerYAnchor.constraint(equalTo: streamingButton.centerYAnchor).isActive = true
+        self.muteButton.centerYAnchor.constraint(equalTo: self.streamingButton.centerYAnchor).isActive = true
+        self.switchButton.centerYAnchor.constraint(equalTo: self.streamingButton.centerYAnchor).isActive = true
 
-        muteButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30).isActive = true
-        switchButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30).isActive = true
+        self.muteButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30).isActive = true
+        self.switchButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30).isActive = true
     }
 
     private func resetStartButton() {
@@ -131,53 +132,52 @@ class MainViewController: UIViewController {
         }
     }
 
-    // swiftlint:disable line_length
     @objc
     func toggleStreaming() {
-        if streamingButton.isSelected {
+        if self.streamingButton.isSelected {
             UIApplication.shared.isIdleTimerDisabled = false
-            liveStream.stopStreaming()
-            resetStartButton()
+            self.liveStream.stopStreaming()
+            self.resetStartButton()
         } else {
             UIApplication.shared.isIdleTimerDisabled = true
             do {
                 if SettingsManager.streamKey.isEmpty {
-                    callAlert("The stream key is not set. Please set it in Settings.")
+                    self.callAlert("The stream key is not set. Please set it in Settings.")
                     return
                 }
                 if SettingsManager.rtmpUrl.isEmpty {
-                    callAlert("The stream key is not set. Please set it in Settings.")
+                    self.callAlert("The stream key is not set. Please set it in Settings.")
                     return
                 }
 
-                try liveStream.startStreaming(streamKey: SettingsManager.streamKey, url: SettingsManager.rtmpUrl)
+                try self.liveStream.startStreaming(streamKey: SettingsManager.streamKey, url: SettingsManager.rtmpUrl)
 
-                streamingButton.setTitle("Stop", for: [])
-                streamingButton.isSelected = true
+                self.streamingButton.setTitle("Stop", for: [])
+                self.streamingButton.isSelected = true
             } catch {
-                callAlert("Failed to start streaming: \(error)")
+                self.callAlert("Failed to start streaming: \(error)")
             }
         }
     }
 
     @objc
     func toggleSwitch() {
-        if liveStream.cameraPosition == .front {
-            liveStream.cameraPosition = .back
-            switchButton.setImage(back, for: .normal)
-        } else if liveStream.cameraPosition == .back {
-            liveStream.cameraPosition = .front
-            switchButton.setImage(front, for: .normal)
+        if self.liveStream.cameraPosition == .front {
+            self.liveStream.cameraPosition = .back
+            self.switchButton.setImage(self.back, for: .normal)
+        } else if self.liveStream.cameraPosition == .back {
+            self.liveStream.cameraPosition = .front
+            self.switchButton.setImage(self.front, for: .normal)
         }
     }
 
     @objc
     func toggleMute() {
-        liveStream.isMuted.toggle()
-        if liveStream.isMuted {
-            muteButton.setImage(unMute, for: .normal)
+        self.liveStream.isMuted.toggle()
+        if self.liveStream.isMuted {
+            self.muteButton.setImage(self.unMute, for: .normal)
         } else {
-            muteButton.setImage(mute, for: .normal)
+            self.muteButton.setImage(self.mute, for: .normal)
         }
     }
 
@@ -187,8 +187,8 @@ class MainViewController: UIViewController {
     }
 
     private func updateConfig() {
-        liveStream.audioConfig = SettingsManager.audioConfig
-        liveStream.videoConfig = SettingsManager.videoConfig
+        self.liveStream.audioConfig = SettingsManager.audioConfig
+        self.liveStream.videoConfig = SettingsManager.videoConfig
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -207,44 +207,48 @@ class MainViewController: UIViewController {
     @objc
     private func zoom(sender: UIPinchGestureRecognizer) {
         if sender.state == .changed {
-            liveStream.zoomRatio += (sender.scale - 1) * pinchZoomMultiplier
+            self.liveStream.zoomRatio += (sender.scale - 1) * self.pinchZoomMultiplier
             sender.scale = 1
         }
     }
 }
 
+// MARK: IASKSettingsDelegate
+
 extension MainViewController: IASKSettingsDelegate {
     func settingsViewControllerDidEnd(_ settingsViewController: IASKAppSettingsViewController) {
         settingsViewController.dismiss(animated: true, completion: nil)
-        updateConfig()
+        self.updateConfig()
     }
 }
 
+// MARK: ApiVideoLiveStreamDelegate
+
 extension MainViewController: ApiVideoLiveStreamDelegate {
     /// Called when the connection to the rtmp server is successful
-    func onConnectionSuccess() {
+    func connectionSuccess() {
         print("onConnectionSuccess")
     }
 
     /// Called when the connection to the rtmp server failed
-    func onConnectionFailed(_ code: String) {
-        callAlert("Failed to connect to the server")
-        resetStartButton()
+    func connectionFailed(_: String) {
+        self.callAlert("Failed to connect to the server")
+        self.resetStartButton()
     }
 
     /// Called when the connection to the rtmp server is closed
-    func onDisconnect() {
+    func disconnection() {
         print("onDisconnect")
-        resetStartButton()
+        self.resetStartButton()
     }
 
     /// Called if an error happened during the audio configuration
     func audioError(_ error: Error) {
-        callAlert("Audio error: \(error.localizedDescription)")
+        self.callAlert("Audio error: \(error.localizedDescription)")
     }
 
     /// Called if an error happened during the video configuration
     func videoError(_ error: Error) {
-        callAlert("Video error: \(error.localizedDescription)")
+        self.callAlert("Video error: \(error.localizedDescription)")
     }
 }
