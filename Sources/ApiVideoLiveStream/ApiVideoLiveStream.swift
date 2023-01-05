@@ -63,10 +63,29 @@ public class ApiVideoLiveStream {
         }
     }
 
+    private var lastCamera: AVCaptureDevice?
+
     /// Camera position
-    public var cameraPosition: AVCaptureDevice.Position = .back {
-        didSet {
-            self.attachCamera()
+    public var cameraPosition: AVCaptureDevice.Position {
+        get {
+            guard let position = self.rtmpStream.videoCapture(for: 0)?.device?.position else {
+                return AVCaptureDevice.Position.unspecified
+            }
+            return position
+        }
+        set(newValue) {
+            self.attachCamera(newValue)
+        }
+    }
+
+    /// Camera device
+    public var camera: AVCaptureDevice? {
+        get {
+            self.rtmpStream.videoCapture(for: 0)?.device
+        }
+        set(newValue) {
+            lastCamera = newValue
+            self.attachCamera(newValue)
         }
     }
 
@@ -109,9 +128,15 @@ public class ApiVideoLiveStream {
 
     /// Creates a new ApiVideoLiveStream object without a preview
     /// - Parameters:
-    ///   - initialAudioConfig: The ApiVideoLiveStream's new AudioConfig
-    ///   - initialVideoConfig: The ApiVideoLiveStream's new VideoConfig
-    public init(initialAudioConfig: AudioConfig? = AudioConfig(), initialVideoConfig: VideoConfig? = VideoConfig()) throws {
+    ///   - initialAudioConfig: The ApiVideoLiveStream's initial AudioConfig
+    ///   - initialVideoConfig: The ApiVideoLiveStream's initial VideoConfig
+    ///   - initialCamera: The ApiVideoLiveStream's initial camera device
+    public init(initialAudioConfig: AudioConfig? = AudioConfig(),
+                initialVideoConfig: VideoConfig? = VideoConfig(),
+                initialCamera: AVCaptureDevice? = AVCaptureDevice.default(.builtInWideAngleCamera,
+                        for: .video,
+                        position: .back)
+    ) throws {
         #if os(iOS)
         let session = AVAudioSession.sharedInstance()
 
@@ -138,7 +163,9 @@ public class ApiVideoLiveStream {
         )
         #endif
 
-        self.attachCamera()
+        if let initialCamera = initialCamera {
+            self.attachCamera(initialCamera)
+        }
         if let initialVideoConfig = initialVideoConfig {
             self.prepareVideo(videoConfig: initialVideoConfig)
         }
@@ -166,12 +193,18 @@ public class ApiVideoLiveStream {
     ///   - preview: The UIView where to display the preview of camera
     ///   - initialAudioConfig: The ApiVideoLiveStream's new AudioConfig
     ///   - initialVideoConfig: The ApiVideoLiveStream's new VideoConfig
+    ///   - initialCamera: The ApiVideoLiveStream's initial camera device
     public convenience init(
             preview: UIView,
             initialAudioConfig: AudioConfig? = AudioConfig(),
-            initialVideoConfig: VideoConfig? = VideoConfig()
+            initialVideoConfig: VideoConfig? = VideoConfig(),
+            initialCamera: AVCaptureDevice? = AVCaptureDevice.default(.builtInWideAngleCamera,
+                    for: .video,
+                    position: .back)
     ) throws {
-        try self.init(initialAudioConfig: initialAudioConfig, initialVideoConfig: initialVideoConfig)
+        try self.init(initialAudioConfig: initialAudioConfig,
+                initialVideoConfig: initialVideoConfig,
+                initialCamera: initialCamera)
 
         let mthkView = MTHKView(frame: preview.bounds)
         mthkView.translatesAutoresizingMaskIntoConstraints = false
@@ -201,12 +234,18 @@ public class ApiVideoLiveStream {
     ///   - preview: The NetStreamDrawable where to display the preview of camera
     ///   - initialAudioConfig: The ApiVideoLiveStream's new AudioConfig
     ///   - initialVideoConfig: The ApiVideoLiveStream's new VideoConfig
+    ///   - initialCamera: The ApiVideoLiveStream's initial camera device
     public convenience init(
             preview: NetStreamDrawable,
             initialAudioConfig: AudioConfig? = AudioConfig(),
-            initialVideoConfig: VideoConfig? = VideoConfig()
+            initialVideoConfig: VideoConfig? = VideoConfig(),
+            initialCamera: AVCaptureDevice? = AVCaptureDevice.default(.builtInWideAngleCamera,
+                    for: .video,
+                    position: .back)
     ) throws {
-        try self.init(initialAudioConfig: initialAudioConfig, initialVideoConfig: initialVideoConfig)
+        try self.init(initialAudioConfig: initialAudioConfig,
+                initialVideoConfig: initialVideoConfig,
+                initialCamera: initialCamera)
         preview.attachStream(self.rtmpStream)
     }
 
@@ -221,23 +260,25 @@ public class ApiVideoLiveStream {
         rtmpConnection.removeEventListener(.ioError, selector: #selector(rtmpErrorHandler), observer: self)
     }
 
-    private func attachCamera() {
+    private func attachCamera(_ cameraPosition: AVCaptureDevice.Position) {
+        let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: cameraPosition)
+        attachCamera(camera)
+    }
+
+    private func attachCamera(_ camera: AVCaptureDevice?) {
         self.rtmpStream.videoCapture(for: 0)?.isVideoMirrored = self.cameraPosition == .front
-        self.rtmpStream.lockQueue.sync {
-            let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: cameraPosition)
-            rtmpStream.attachCamera(camera) { error in
-                print("======== Camera error ==========")
-                print(error)
-                self.delegate?.videoError(error)
-            }
+        rtmpStream.attachCamera(camera) { error in
+            print("======== Camera error ==========")
+            print(error)
+            self.delegate?.videoError(error)
         }
     }
 
     private func prepareVideo(videoConfig: VideoConfig) {
-        self.rtmpStream.lockQueue.sync {
-            // rtmpStream.videoCapture(for: 0)?.preferredVideoStabilizationMode = AVCaptureVideoStabilizationMode.auto // Add latency to video
-            rtmpStream.frameRate = videoConfig.fps
-            rtmpStream.sessionPreset = AVCaptureSession.Preset.high
+        // rtmpStream.videoCapture(for: 0)?.preferredVideoStabilizationMode = AVCaptureVideoStabilizationMode.auto // Add latency to video
+        rtmpStream.frameRate = videoConfig.fps
+        rtmpStream.sessionPreset = AVCaptureSession.Preset.high
+        rtmpStream.lockQueue.sync {
             guard let device = rtmpStream.videoCapture(for: 0)?.device else {
                 return
             }
@@ -315,7 +356,7 @@ public class ApiVideoLiveStream {
     }
 
     public func startPreview() {
-        self.attachCamera()
+        self.attachCamera(lastCamera)
         self.attachAudio()
     }
 
@@ -364,7 +405,10 @@ public class ApiVideoLiveStream {
         guard let orientation = DeviceUtil.videoOrientation(by: UIApplication.shared.statusBarOrientation) else {
             return
         }
-        self.rtmpStream.videoOrientation = orientation
+
+        rtmpStream.lockQueue.sync {
+            self.rtmpStream.videoOrientation = orientation
+        }
 
         self.rtmpStream.videoSettings = [
             .width: self.rtmpStream.videoOrientation.isLandscape ? self.videoConfig.resolution.size.width : self
