@@ -1,6 +1,14 @@
 # Changelog
 All changes to this project will be documented in this file.
 
+## [1.3.0] - 2023-01-06
+- Add a camera parameter in the ApiVideoLiveStream constructors
+- Add an API to set the duration between two key frames
+- Introducing the new `camera` API. Previous `camera` has been renamed to `cameraPosition`
+- Add swift PM support
+- Upgrade HaishinKit to 1.4.1
+- Example: refactor and clean the UIKit example
+
 ## [1.2.2] - 2022-09-29
 - Only register event listener in constructor to avoid multiple callback called
 
