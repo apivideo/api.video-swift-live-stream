@@ -44,7 +44,8 @@ public class ApiVideoLiveStream {
                             width: Int(self.rtmpStream.videoSettings[.width] as! Int32),
                             height: Int(self.rtmpStream.videoSettings[.height] as! Int32)
                     ),
-                    fps: self.rtmpStream.frameRate
+                    fps: self.rtmpStream.frameRate,
+                    gopDuration: self.rtmpStream.videoSettings[.maxKeyFrameIntervalDuration] as! TimeInterval
             )
         }
         set {
