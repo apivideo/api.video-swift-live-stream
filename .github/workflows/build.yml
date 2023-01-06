@@ -1,21 +1,78 @@
-name: Build iOS Live Stream
+name: Build
 
-on: [push]
+on: [ push ]
 
 jobs:
-  build-lib:
+  build-swift:
+    name: Build with swift
     runs-on: macos-latest
+
     steps:
-      - uses: actions/checkout@v2
-      - name: Build
-        run: |
-          pod install
-          xcodebuild clean build -workspace ApiVideoLiveStream.xcworkspace -scheme ApiVideoLiveStream -sdk iphoneos
-  build-example:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: xcode version
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+      - name: Build Package with swift
+        run: swift build
+
+  build-xcodebuild:
+    name: Build with xcodebuild
     runs-on: macos-latest
+
     steps:
-      - uses: actions/checkout@v2
-      - name: Build
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: xcode version
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+      - name: Set Default Scheme
         run: |
-          pod install
-          xcodebuild clean build -workspace ApiVideoLiveStream.xcworkspace -scheme ApiVideoLiveStream -sdk iphoneos
+          scheme_list=$(xcodebuild -list -json | tr -d "\n")
+          default=$(echo $scheme_list | ruby -e "require 'json'; puts JSON.parse(STDIN.gets)['workspace']['schemes'][0]")
+          echo $default | cat >default
+          echo Using default scheme: $default
+      - name: Build Package with xcodebuild
+        env:
+          scheme: ${{ 'default' }}
+        run: |
+          if [ $scheme = default ]; then scheme=$(cat default); fi
+          xcodebuild -scheme $scheme  -destination 'platform=iOS Simulator,name=iPhone 13'
+      - name: Build Example
+        env:
+          scheme: ${{ 'default' }}
+        run: |
+          if [ $scheme = default ]; then scheme=$(cat default); fi
+          xcodebuild clean build -project Examples/ExampleUIKit/ExampleUIKit.xcodeproj -scheme $scheme -sdk iphoneos
+
+  verify_cocoapods:
+    name: Verify cocoapods podspec
+    needs: [ build-xcodebuild, build-swift ]
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: xcode version
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+      - name: Verify cocoapods
+        run: pod lib lint --allow-warnings
+
+  lint:
+    name: Running swiftlint
+    needs: verify_cocoapods
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: xcode version
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+      - name: Run swiftlint
+        run: swiftlint
