@@ -1,6 +1,10 @@
 # Changelog
 All changes to this project will be documented in this file.
 
+## [1.3.1] - 2023-01-09
+- Reduce startup time by fixing synchronization issues
+- Fix `isMuted` value. The property was inverted
+
 ## [1.3.0] - 2023-01-06
 - Add a camera parameter in the ApiVideoLiveStream constructors
 - Add an API to set the duration between two key frames
