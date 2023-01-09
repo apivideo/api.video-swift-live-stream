@@ -390,8 +390,7 @@ public class ApiVideoLiveStream {
     private func rtmpStatusHandler(_ notification: Notification) {
         let e = Event.from(notification)
         guard let data: ASObject = e.data as? ASObject,
-              let code: String = data["code"] as? String,
-              let description: String = data["description"] as? String else
+              let code: String = data["code"] as? String else
         {
             return
         }
@@ -401,7 +400,7 @@ public class ApiVideoLiveStream {
             self.rtmpStream.publish(self.streamKey)
 
         case RTMPConnection.Code.connectFailed.rawValue:
-            self.delegate?.connectionFailed(description)
+            self.delegate?.connectionFailed(code)
 
         case RTMPConnection.Code.connectClosed.rawValue:
             self.delegate?.disconnection()
