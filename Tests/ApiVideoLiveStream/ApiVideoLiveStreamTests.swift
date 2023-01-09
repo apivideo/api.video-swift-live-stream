@@ -9,30 +9,26 @@ class ApiVideoLiveStreamTests: XCTestCase {
         let liveStream = try ApiVideoLiveStream()
         liveStream.delegate = self
         try liveStream.startStreaming(streamKey: Parameters.streamKey, url: Parameters.rtmpUrl)
-        wait(for: [connectionExpectation], timeout: 10.0)
+        wait(for: [self.connectionExpectation], timeout: 10.0)
         liveStream.stopStreaming()
-        wait(for: [disconnectionExpectation], timeout: 10.0)
+        wait(for: [self.disconnectionExpectation], timeout: 10.0)
     }
 }
 
+// MARK: ApiVideoLiveStreamDelegate
+
 extension ApiVideoLiveStreamTests: ApiVideoLiveStreamDelegate {
     func connectionSuccess() {
-        connectionExpectation.fulfill()
+        self.connectionExpectation.fulfill()
     }
 
-    func connectionFailed(_ code: String) {
-
-    }
+    func connectionFailed(_: String) {}
 
     func disconnection() {
-        disconnectionExpectation.fulfill()
+        self.disconnectionExpectation.fulfill()
     }
 
-    func audioError(_ error: Error) {
+    func audioError(_: Error) {}
 
-    }
-
-    func videoError(_ error: Error) {
-
-    }
+    func videoError(_: Error) {}
 }

@@ -10,9 +10,9 @@ class MainViewController: UIViewController {
         do {
             // Create liveStream object
             let liveStream = try ApiVideoLiveStream(
-                    preview: preview,
-                    initialAudioConfig: SettingsManager.audioConfig,
-                    initialVideoConfig: SettingsManager.videoConfig
+                preview: preview,
+                initialAudioConfig: SettingsManager.audioConfig,
+                initialVideoConfig: SettingsManager.videoConfig
             )
 
             return liveStream
@@ -55,8 +55,7 @@ class MainViewController: UIViewController {
         return paramBtn
     }()
 
-    private func callAlert(_ message: String, title: String = "Error", action: @escaping () -> Void = {
-    }) {
+    private func callAlert(_ message: String, title: String = "Error", action: @escaping () -> Void = {}) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default) { _ in
             action()

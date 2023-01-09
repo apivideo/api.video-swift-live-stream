@@ -23,8 +23,12 @@ public struct VideoConfig {
     ///   - resolution: The video resolution
     ///   - fps: The video framerate
     ///   - gopDuration: The time interval between two key frames
-    public init(resolution: Resolution = Resolution.RESOLUTION_720, fps: Float64 = 30, gopDuration: TimeInterval = 1.0) {
-        bitrate = VideoConfig.getDefaultBitrate(resolution: resolution)
+    public init(
+        resolution: Resolution = Resolution.RESOLUTION_720,
+        fps: Float64 = 30,
+        gopDuration: TimeInterval = 1.0
+    ) {
+        self.bitrate = VideoConfig.getDefaultBitrate(resolution: resolution)
         self.resolution = resolution
         self.fps = fps
         self.gopDuration = gopDuration
@@ -36,7 +40,12 @@ public struct VideoConfig {
     ///   - resolution: The video resolution
     ///   - fps: The video framerate
     ///   - gopDuration: The time interval between two key frames
-    public init(bitrate: Int, resolution: Resolution = Resolution.RESOLUTION_720, fps: Float64 = 30, gopDuration: TimeInterval = 1.0) {
+    public init(
+        bitrate: Int,
+        resolution: Resolution = Resolution.RESOLUTION_720,
+        fps: Float64 = 30,
+        gopDuration: TimeInterval = 1.0
+    ) {
         self.bitrate = bitrate
         self.resolution = resolution
         self.fps = fps
