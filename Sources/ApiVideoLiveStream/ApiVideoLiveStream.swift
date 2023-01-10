@@ -354,8 +354,11 @@ public class ApiVideoLiveStream {
         if streamKey.isEmpty {
             throw LiveStreamError.IllegalArgumentError("Stream key must not be empty")
         }
+        if url.isEmpty {
+            throw LiveStreamError.IllegalArgumentError("URL must not be empty")
+        }
         if !isAudioConfigured || !isVideoConfigured {
-            throw LiveStreamError.IllegalArgumentError("Missing audio and/or video configuration")
+            throw LiveStreamError.IllegalOperationError("Missing audio and/or video configuration")
         }
 
         self.streamKey = streamKey
@@ -481,4 +484,5 @@ extension AVCaptureVideoOrientation {
 
 public enum LiveStreamError: Error {
     case IllegalArgumentError(String)
+    case IllegalOperationError(String)
 }
