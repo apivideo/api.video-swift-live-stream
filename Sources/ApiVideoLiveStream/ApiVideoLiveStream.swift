@@ -85,7 +85,6 @@ public class ApiVideoLiveStream {
             self.rtmpStream.videoCapture(for: 0)?.device
         }
         set(newValue) {
-            self.lastCamera = newValue
             self.attachCamera(newValue)
         }
     }
@@ -281,6 +280,7 @@ public class ApiVideoLiveStream {
     }
 
     private func attachCamera(_ camera: AVCaptureDevice?) {
+        self.lastCamera = camera
         self.rtmpStream.attachCamera(camera) { error in
             print("======== Camera error ==========")
             print(error)
@@ -377,7 +377,11 @@ public class ApiVideoLiveStream {
     }
 
     public func startPreview() {
-        self.attachCamera(self.lastCamera)
+        guard let lastCamera = lastCamera else {
+            print("No camera has been set")
+            return
+        }
+        self.attachCamera(lastCamera)
         self.attachAudio()
     }
 
