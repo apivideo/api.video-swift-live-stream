@@ -27,10 +27,10 @@ public class ApiVideoLiveStream {
     // swiftlint:disable force_cast
     public var audioConfig: AudioConfig {
         get {
-            AudioConfig(bitrate: self.rtmpStream.audioSettings[.bitrate] as! Int)
+            AudioConfig(bitrate: rtmpStream.audioSettings[.bitrate] as! Int)
         }
         set {
-            self.prepareAudio(audioConfig: newValue)
+            prepareAudio(audioConfig: newValue)
         }
     }
 
@@ -39,17 +39,17 @@ public class ApiVideoLiveStream {
     public var videoConfig: VideoConfig {
         get {
             try! VideoConfig(
-                bitrate: Int(self.rtmpStream.videoSettings[.bitrate] as! UInt32),
+                bitrate: Int(rtmpStream.videoSettings[.bitrate] as! UInt32),
                 resolution: Resolution.getResolution(
-                    width: Int(self.rtmpStream.videoSettings[.width] as! Int32),
-                    height: Int(self.rtmpStream.videoSettings[.height] as! Int32)
+                    width: Int(rtmpStream.videoSettings[.width] as! Int32),
+                    height: Int(rtmpStream.videoSettings[.height] as! Int32)
                 ),
-                fps: self.rtmpStream.frameRate,
-                gopDuration: self.rtmpStream.videoSettings[.maxKeyFrameIntervalDuration] as! TimeInterval
+                fps: rtmpStream.frameRate,
+                gopDuration: rtmpStream.videoSettings[.maxKeyFrameIntervalDuration] as! TimeInterval
             )
         }
         set {
-            self.prepareVideo(videoConfig: newValue)
+            prepareVideo(videoConfig: newValue)
         }
     }
 
@@ -57,10 +57,10 @@ public class ApiVideoLiveStream {
     // swiftlint:disable force_cast
     public var videoBitrate: Int {
         get {
-            self.rtmpStream.videoSettings[.bitrate] as! Int
+            rtmpStream.videoSettings[.bitrate] as! Int
         }
         set(newValue) {
-            self.rtmpStream.videoSettings[.bitrate] = newValue
+            rtmpStream.videoSettings[.bitrate] = newValue
         }
     }
 
@@ -69,33 +69,33 @@ public class ApiVideoLiveStream {
     /// Camera position
     public var cameraPosition: AVCaptureDevice.Position {
         get {
-            guard let position = self.rtmpStream.videoCapture(for: 0)?.device?.position else {
+            guard let position = rtmpStream.videoCapture(for: 0)?.device?.position else {
                 return AVCaptureDevice.Position.unspecified
             }
             return position
         }
         set(newValue) {
-            self.attachCamera(newValue)
+            attachCamera(newValue)
         }
     }
 
     /// Camera device
     public var camera: AVCaptureDevice? {
         get {
-            self.rtmpStream.videoCapture(for: 0)?.device
+            rtmpStream.videoCapture(for: 0)?.device
         }
         set(newValue) {
-            self.attachCamera(newValue)
+            attachCamera(newValue)
         }
     }
 
     /// Mutes or unmutes audio capture.
     public var isMuted: Bool {
         get {
-            !self.rtmpStream.hasAudio
+            !rtmpStream.hasAudio
         }
         set(newValue) {
-            self.rtmpStream.hasAudio = !newValue
+            rtmpStream.hasAudio = !newValue
         }
     }
 
@@ -148,45 +148,45 @@ public class ApiVideoLiveStream {
         try session.setActive(true)
         #endif
 
-        self.rtmpStream = RTMPStream(connection: self.rtmpConnection)
+        rtmpStream = RTMPStream(connection: rtmpConnection)
 
         // Force default resolution because HK default resolution is not supported (480x272)
-        self.rtmpStream.videoSettings = [.width: 1_280, .height: 720]
+        rtmpStream.videoSettings = [.width: 1_280, .height: 720]
 
         #if os(iOS)
         if let orientation = DeviceUtil.videoOrientation(by: UIApplication.shared.statusBarOrientation) {
-            self.rtmpStream.videoOrientation = orientation
+            rtmpStream.videoOrientation = orientation
         }
         #endif
 
         if let initialCamera = initialCamera {
-            self.attachCamera(initialCamera)
+            attachCamera(initialCamera)
         }
         if let initialVideoConfig = initialVideoConfig {
-            self.prepareVideo(videoConfig: initialVideoConfig)
+            prepareVideo(videoConfig: initialVideoConfig)
         }
 
-        self.attachAudio()
+        attachAudio()
         if let initialAudioConfig = initialAudioConfig {
-            self.prepareAudio(audioConfig: initialAudioConfig)
+            prepareAudio(audioConfig: initialAudioConfig)
         }
 
         #if !os(macOS)
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(self.didEnterBackground(_:)),
+            selector: #selector(didEnterBackground(_:)),
             name: UIApplication.didEnterBackgroundNotification,
             object: nil
         )
         #endif
 
-        self.rtmpConnection.addEventListener(.rtmpStatus, selector: #selector(self.rtmpStatusHandler), observer: self)
-        self.rtmpConnection.addEventListener(.ioError, selector: #selector(self.rtmpErrorHandler), observer: self)
+        rtmpConnection.addEventListener(.rtmpStatus, selector: #selector(rtmpStatusHandler), observer: self)
+        rtmpConnection.addEventListener(.ioError, selector: #selector(rtmpErrorHandler), observer: self)
 
         #if os(iOS)
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(self.orientationDidChange(_:)),
+            selector: #selector(orientationDidChange(_:)),
             name: UIDevice.orientationDidChangeNotification,
             object: nil
         )
@@ -219,7 +219,7 @@ public class ApiVideoLiveStream {
         let mthkView = MTHKView(frame: preview.bounds)
         mthkView.translatesAutoresizingMaskIntoConstraints = false
         mthkView.videoGravity = AVLayerVideoGravity.resizeAspectFill
-        mthkView.attachStream(self.rtmpStream)
+        mthkView.attachStream(rtmpStream)
 
         preview.addSubview(mthkView)
 
@@ -260,7 +260,7 @@ public class ApiVideoLiveStream {
             initialVideoConfig: initialVideoConfig,
             initialCamera: initialCamera
         )
-        preview.attachStream(self.rtmpStream)
+        preview.attachStream(rtmpStream)
     }
 
     deinit {
@@ -276,18 +276,18 @@ public class ApiVideoLiveStream {
 
     private func attachCamera(_ cameraPosition: AVCaptureDevice.Position) {
         let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: cameraPosition)
-        self.attachCamera(camera)
+        attachCamera(camera)
     }
 
     private func attachCamera(_ camera: AVCaptureDevice?) {
-        self.lastCamera = camera
-        self.rtmpStream.attachCamera(camera) { error in
+        lastCamera = camera
+        rtmpStream.attachCamera(camera) { error in
             print("======== Camera error ==========")
             print(error)
             self.delegate?.videoError(error)
         }
         // This lockQueue waits for attachCamera to be completed and sync operation on the same queue
-        self.rtmpStream.lockQueue.async {
+        rtmpStream.lockQueue.async {
             guard let capture = self.rtmpStream.videoCapture(for: 0) else {
                 return
             }
@@ -313,24 +313,24 @@ public class ApiVideoLiveStream {
     }
 
     private func prepareVideo(videoConfig: VideoConfig) {
-        self.rtmpStream.frameRate = videoConfig.fps
-        self.rtmpStream.sessionPreset = AVCaptureSession.Preset.high
+        rtmpStream.frameRate = videoConfig.fps
+        rtmpStream.sessionPreset = AVCaptureSession.Preset.high
 
-        self.rtmpStream.videoSettings = [
-            .width: self.rtmpStream.videoOrientation.isLandscape ? videoConfig.resolution.size.width : videoConfig
+        rtmpStream.videoSettings = [
+            .width: rtmpStream.videoOrientation.isLandscape ? videoConfig.resolution.size.width : videoConfig
                 .resolution.size.height,
-            .height: self.rtmpStream.videoOrientation.isLandscape ? videoConfig.resolution.size.height : videoConfig
+            .height: rtmpStream.videoOrientation.isLandscape ? videoConfig.resolution.size.height : videoConfig
                 .resolution.size.width,
             .profileLevel: kVTProfileLevel_H264_Baseline_5_2,
             .bitrate: videoConfig.bitrate,
             .maxKeyFrameIntervalDuration: videoConfig.gopDuration
         ]
 
-        self.isVideoConfigured = true
+        isVideoConfigured = true
     }
 
     private func attachAudio() {
-        self.rtmpStream.attachAudio(AVCaptureDevice.default(for: AVMediaType.audio)) { error in
+        rtmpStream.attachAudio(AVCaptureDevice.default(for: AVMediaType.audio)) { error in
             print("======== Audio error ==========")
             print(error)
             self.delegate?.audioError(error)
@@ -338,11 +338,11 @@ public class ApiVideoLiveStream {
     }
 
     private func prepareAudio(audioConfig: AudioConfig) {
-        self.rtmpStream.audioSettings = [
+        rtmpStream.audioSettings = [
             .bitrate: audioConfig.bitrate
         ]
 
-        self.isAudioConfigured = true
+        isAudioConfigured = true
     }
 
     /// Start your livestream
@@ -354,14 +354,14 @@ public class ApiVideoLiveStream {
         if streamKey.isEmpty {
             throw LiveStreamError.IllegalArgumentError("Stream key must not be empty")
         }
-        if !self.isAudioConfigured || !self.isVideoConfigured {
+        if !isAudioConfigured || !isVideoConfigured {
             throw LiveStreamError.IllegalArgumentError("Missing audio and/or video configuration")
         }
 
         self.streamKey = streamKey
         self.url = url
 
-        self.rtmpStream.lockQueue.sync {
+        rtmpStream.lockQueue.sync {
             rtmpConnection.connect(url)
         }
     }
@@ -369,10 +369,10 @@ public class ApiVideoLiveStream {
     /// Stop your livestream
     /// - Returns: Void
     public func stopStreaming() {
-        let isConnected = self.rtmpConnection.connected
-        self.rtmpConnection.close()
+        let isConnected = rtmpConnection.connected
+        rtmpConnection.close()
         if isConnected {
-            self.delegate?.disconnection()
+            delegate?.disconnection()
         }
     }
 
@@ -381,13 +381,13 @@ public class ApiVideoLiveStream {
             print("No camera has been set")
             return
         }
-        self.attachCamera(lastCamera)
-        self.attachAudio()
+        attachCamera(lastCamera)
+        attachAudio()
     }
 
     public func stopPreview() {
-        self.rtmpStream.attachCamera(nil)
-        self.rtmpStream.attachAudio(nil)
+        rtmpStream.attachCamera(nil)
+        rtmpStream.attachAudio(nil)
     }
 
     @objc
@@ -400,14 +400,14 @@ public class ApiVideoLiveStream {
         }
         switch code {
         case RTMPConnection.Code.connectSuccess.rawValue:
-            self.delegate?.connectionSuccess()
-            self.rtmpStream.publish(self.streamKey)
+            delegate?.connectionSuccess()
+            rtmpStream.publish(streamKey)
 
         case RTMPConnection.Code.connectFailed.rawValue:
-            self.delegate?.connectionFailed(code)
+            delegate?.connectionFailed(code)
 
         case RTMPConnection.Code.connectClosed.rawValue:
-            self.delegate?.disconnection()
+            delegate?.disconnection()
 
         default:
             break
@@ -430,17 +430,17 @@ public class ApiVideoLiveStream {
             return
         }
 
-        self.rtmpStream.lockQueue.async {
+        rtmpStream.lockQueue.async {
             self.rtmpStream.videoOrientation = orientation
         }
         do {
             let resolution = try Resolution.getResolution(
-                width: Int(self.rtmpStream.videoSettings[.width] as! Int32),
-                height: Int(self.rtmpStream.videoSettings[.height] as! Int32)
+                width: Int(rtmpStream.videoSettings[.width] as! Int32),
+                height: Int(rtmpStream.videoSettings[.height] as! Int32)
             )
-            self.rtmpStream.videoSettings = [
-                .width: self.rtmpStream.videoOrientation.isLandscape ? resolution.size.width : resolution.size.height,
-                .height: self.rtmpStream.videoOrientation.isLandscape ? resolution.size.height : resolution.size.width
+            rtmpStream.videoSettings = [
+                .width: rtmpStream.videoOrientation.isLandscape ? resolution.size.width : resolution.size.height,
+                .height: rtmpStream.videoOrientation.isLandscape ? resolution.size.height : resolution.size.width
             ]
         } catch {
             print("Failed to set resolution to orientation \(orientation)")
