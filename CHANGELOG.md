@@ -1,6 +1,10 @@
 # Changelog
 All changes to this project will be documented in this file.
 
+## [1.3.2] - 2023-01-11
+- Fix `lastCamera` when camera is set with `cameraPosition`
+- Improve `startStreaming` errors
+
 ## [1.3.1] - 2023-01-09
 - Reduce startup time by fixing synchronization issues
 - Fix `isMuted` value. The property was inverted
