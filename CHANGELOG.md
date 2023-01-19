@@ -1,6 +1,10 @@
 # Changelog
 All changes to this project will be documented in this file.
 
+## [1.3.3] - 2023-01-19
+- Fix streaming orientation when application is opened in portrait and device is turned to landscape
+- Upgrade HaishinKit to 1.4.2
+
 ## [1.3.2] - 2023-01-11
 - Fix `lastCamera` when camera is set with `cameraPosition`
 - Improve `startStreaming` errors
