@@ -1,6 +1,10 @@
 # Changelog
 All changes to this project will be documented in this file.
 
+## [1.3.4] - 2023-03-02
+- Fix front camera mirroring
+- Upgrade HaishinKit to 1.4.3
+
 ## [1.3.3] - 2023-01-19
 - Fix streaming orientation when application is opened in portrait and device is turned to landscape
 - Upgrade HaishinKit to 1.4.2
