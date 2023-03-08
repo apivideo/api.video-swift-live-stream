@@ -94,7 +94,7 @@ Alternatively, you can use `startStreaming` `url` parameter to set the URL of yo
 
 # Plugins
 
-API.Video sdk is using external library
+api.video sdk is using external library
 
 | Plugin | README |
 | ------ | ------ |
