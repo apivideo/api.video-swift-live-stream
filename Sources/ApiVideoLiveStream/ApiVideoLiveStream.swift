@@ -55,12 +55,12 @@ public class ApiVideoLiveStream {
 
     // swiftlint:disable force_cast
     /// Getter and Setter for the Bitrate number for the video
-    public var videoBitrate: UInt32 {
+    public var videoBitrate: Int {
         get {
-            self.rtmpStream.videoSettings.bitRate
+            Int(self.rtmpStream.videoSettings.bitRate)
         }
         set(newValue) {
-            self.rtmpStream.videoSettings.bitRate = newValue
+            self.rtmpStream.videoSettings.bitRate = UInt32(newValue)
         }
     }
 
