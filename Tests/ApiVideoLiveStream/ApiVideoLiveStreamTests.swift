@@ -13,6 +13,14 @@ class ApiVideoLiveStreamTests: XCTestCase {
         liveStream.stopStreaming()
         wait(for: [self.disconnectionExpectation], timeout: 10.0)
     }
+
+    func testVideoBitrateSet() throws {
+        let liveStream = try ApiVideoLiveStream()
+        
+        liveStream.videoBitrate = 10
+        
+        XCTAssertEqual(liveStream.videoConfig.bitrate, 10)
+    }
 }
 
 // MARK: ApiVideoLiveStreamDelegate
