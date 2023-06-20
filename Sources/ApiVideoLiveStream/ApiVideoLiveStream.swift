@@ -344,7 +344,8 @@ public class ApiVideoLiveStream {
 
     private func prepareAudio(audioConfig: AudioConfig) {
         self.rtmpStream.audioSettings = AudioCodecSettings(
-            bitRate: audioConfig.bitrate
+            bitRate: audioConfig.bitrate,
+            format: .aac
         )
 
         self.isAudioConfigured = true
