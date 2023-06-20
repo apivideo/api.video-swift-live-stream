@@ -27,7 +27,7 @@ public class ApiVideoLiveStream {
     ///  Getter and Setter for an AudioConfig
     public var audioConfig: AudioConfig {
         get {
-            AudioConfig(bitrate: self.rtmpStream.audioSettings[.bitrate] as! Int)
+            AudioConfig(bitrate: self.rtmpStream.audioSettings.bitRate)
         }
         set {
             self.prepareAudio(audioConfig: newValue)
@@ -39,13 +39,13 @@ public class ApiVideoLiveStream {
     public var videoConfig: VideoConfig {
         get {
             try! VideoConfig(
-                bitrate: Int(self.rtmpStream.videoSettings[.bitrate] as! UInt32),
+                bitrate: Int(self.rtmpStream.videoSettings.bitRate),
                 resolution: Resolution.getResolution(
-                    width: Int(self.rtmpStream.videoSettings[.width] as! Int32),
-                    height: Int(self.rtmpStream.videoSettings[.height] as! Int32)
+                    width: Int(self.rtmpStream.videoSettings.videoSize.width),
+                    height: Int(self.rtmpStream.videoSettings.videoSize.height)
                 ),
                 fps: self.rtmpStream.frameRate,
-                gopDuration: self.rtmpStream.videoSettings[.maxKeyFrameIntervalDuration] as! TimeInterval
+                gopDuration: TimeInterval(self.rtmpStream.videoSettings.maxKeyFrameIntervalDuration)
             )
         }
         set {
@@ -57,10 +57,10 @@ public class ApiVideoLiveStream {
     /// Getter and Setter for the Bitrate number for the video
     public var videoBitrate: Int {
         get {
-            self.rtmpStream.videoSettings[.bitrate] as! Int
+            Int(self.rtmpStream.videoSettings.bitRate)
         }
         set(newValue) {
-            self.rtmpStream.videoSettings[.bitrate] = newValue
+            self.rtmpStream.videoSettings.bitRate = UInt32(newValue)
         }
     }
 
@@ -151,7 +151,7 @@ public class ApiVideoLiveStream {
         self.rtmpStream = RTMPStream(connection: self.rtmpConnection)
 
         // Force default resolution because HK default resolution is not supported (480x272)
-        self.rtmpStream.videoSettings = [.width: 1_280, .height: 720]
+        self.rtmpStream.videoSettings = VideoCodecSettings(videoSize: .init(width: 1_280, height: 720))
 
         #if os(iOS)
         if let orientation = DeviceUtil.videoOrientation(by: UIApplication.shared.statusBarOrientation) {
@@ -318,16 +318,18 @@ public class ApiVideoLiveStream {
     private func prepareVideo(videoConfig: VideoConfig) {
         self.rtmpStream.frameRate = videoConfig.fps
         self.rtmpStream.sessionPreset = AVCaptureSession.Preset.high
-
-        self.rtmpStream.videoSettings = [
-            .width: self.rtmpStream.videoOrientation.isLandscape ? videoConfig.resolution.size.width : videoConfig
-                .resolution.size.height,
-            .height: self.rtmpStream.videoOrientation.isLandscape ? videoConfig.resolution.size.height : videoConfig
-                .resolution.size.width,
-            .profileLevel: kVTProfileLevel_H264_Baseline_5_2,
-            .bitrate: videoConfig.bitrate,
-            .maxKeyFrameIntervalDuration: videoConfig.gopDuration
-        ]
+        
+        let width = self.rtmpStream.videoOrientation.isLandscape ? videoConfig.resolution.size.width : videoConfig
+            .resolution.size.height
+        let height = self.rtmpStream.videoOrientation.isLandscape ? videoConfig.resolution.size.height : videoConfig
+            .resolution.size.width
+        
+        self.rtmpStream.videoSettings = VideoCodecSettings(
+          videoSize: .init(width: Int32(width), height: Int32(height)),
+          profileLevel: kVTProfileLevel_H264_Baseline_5_2 as String,
+          bitRate: UInt32(videoConfig.bitrate),
+          maxKeyFrameIntervalDuration: Int32(videoConfig.gopDuration)
+        )
 
         self.isVideoConfigured = true
     }
@@ -341,9 +343,9 @@ public class ApiVideoLiveStream {
     }
 
     private func prepareAudio(audioConfig: AudioConfig) {
-        self.rtmpStream.audioSettings = [
-            .bitrate: audioConfig.bitrate
-        ]
+        self.rtmpStream.audioSettings = AudioCodecSettings(
+            bitRate: audioConfig.bitrate
+        )
 
         self.isAudioConfigured = true
     }
@@ -440,15 +442,19 @@ public class ApiVideoLiveStream {
             self.rtmpStream.videoOrientation = orientation
             do {
                 let resolution = try Resolution.getResolution(
-                    width: Int(self.rtmpStream.videoSettings[.width] as! Int32),
-                    height: Int(self.rtmpStream.videoSettings[.height] as! Int32)
+                    width: Int(self.rtmpStream.videoSettings.videoSize.width),
+                    height: Int(self.rtmpStream.videoSettings.videoSize.height)
                 )
-                self.rtmpStream.videoSettings = [
-                    .width: self.rtmpStream.videoOrientation.isLandscape ?
-                        resolution.size.width : resolution.size.height,
-                    .height: self.rtmpStream.videoOrientation.isLandscape ?
+                self.rtmpStream.videoSettings.videoSize = .init(
+                    width: Int32(
+                        self.rtmpStream.videoOrientation.isLandscape ?
+                        resolution.size.width : resolution.size.height
+                    ),
+                    height: Int32(
+                        self.rtmpStream.videoOrientation.isLandscape ?
                         resolution.size.height : resolution.size.width
-                ]
+                    )
+                )
             } catch {
                 print("Failed to set resolution to orientation \(orientation)")
             }
