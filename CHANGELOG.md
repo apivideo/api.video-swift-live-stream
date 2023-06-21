@@ -1,6 +1,10 @@
 # Changelog
 All changes to this project will be documented in this file.
 
+## [1.3.5] - 2023-06-21
+- Fix detach camera
+- Upgrade HaishinKit to 1.5.2
+
 ## [1.3.4] - 2023-03-02
 - Fix front camera mirroring
 - Upgrade HaishinKit to 1.4.3
