@@ -98,6 +98,23 @@ public class ApiVideoLiveStream {
             self.rtmpStream.hasAudio = !newValue
         }
     }
+    
+    public var isMirrored: Bool {
+        get {
+            guard let device = self.rtmpStream.videoCapture(for: 0) else {
+                return false
+            }
+
+            return device.isVideoMirrored
+        }
+        set(newValue) {
+            guard let device = self.rtmpStream.videoCapture(for: 0) else {
+                return
+            }
+
+            device.isVideoMirrored = newValue
+        }
+    }
 
     #if os(iOS)
     // swiftlint:disable implicit_return

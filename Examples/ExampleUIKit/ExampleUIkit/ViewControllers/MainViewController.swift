@@ -14,45 +14,53 @@ class MainViewController: UIViewController {
                 initialAudioConfig: SettingsManager.audioConfig,
                 initialVideoConfig: SettingsManager.videoConfig
             )
-
+            
             return liveStream
         } catch {
             fatalError("Can't create liveStream: \(error)")
         }
     }()
-
+    
     private let front = UIImage(systemName: "camera.rotate.fill")
     private let back = UIImage(systemName: "camera.rotate")
     private let mute = UIImage(systemName: "mic.slash.fill")
     private let unMute = UIImage(systemName: "mic.fill")
     private let parameter = UIImage(systemName: "ellipsis")
-
+    private let isMirrored = UIImage(systemName: "arrow.left.and.right.righttriangle.left.righttriangle.right.fill")
+    private let isNotMirrored = UIImage(systemName: "arrow.left.and.right.righttriangle.left.righttriangle.right")
+    
     private lazy var zoomGesture: UIPinchGestureRecognizer = .init(target: self, action: #selector(zoom(sender:)))
     private let pinchZoomMultiplier: CGFloat = 2.2
-
+    
     private let muteButton: UIButton = {
         let muteButton = UIButton()
         muteButton.setTitleColor(.orange, for: .normal)
         return muteButton
     }()
-
+    
     private let streamingButton: UIButton = {
         let start = UIButton()
         start.setTitle("Start", for: .normal)
         start.setTitleColor(.orange, for: .normal)
         return start
     }()
-
+    
     private let switchButton: UIButton = {
         let switchBtn = UIButton()
         switchBtn.setTitleColor(.orange, for: .normal)
         return switchBtn
     }()
-
+    
     private let parameterButton: UIButton = {
         let paramBtn = UIButton()
         paramBtn.setTitleColor(.orange, for: .normal)
         return paramBtn
+    }()
+    
+    private let mirrorButton: UIButton = {
+        let mirrorBtn = UIButton()
+        mirrorBtn.setTitleColor(.orange, for: .normal)
+        return mirrorBtn
     }()
 
     private func callAlert(_ message: String, title: String = "Error", action: @escaping () -> Void = {}) {
@@ -82,14 +90,22 @@ class MainViewController: UIViewController {
         view.addSubview(self.streamingButton)
         view.addSubview(self.switchButton)
         view.addSubview(self.parameterButton)
+        view.addSubview(self.mirrorButton)
         self.muteButton.setImage(self.unMute, for: .normal)
         self.switchButton.setImage(self.back, for: .normal)
         self.parameterButton.setImage(self.parameter, for: .normal)
+        
+        if self.liveStream.isMirrored {
+            self.mirrorButton.setImage(self.isMirrored, for: .normal)
+        } else {
+            self.mirrorButton.setImage(self.isNotMirrored, for: .normal)
+        }
 
         self.switchButton.addTarget(self, action: #selector(self.toggleSwitch), for: .touchUpInside)
         self.muteButton.addTarget(self, action: #selector(self.toggleMute), for: .touchUpInside)
         self.streamingButton.addTarget(self, action: #selector(self.toggleStreaming), for: .touchUpInside)
         self.parameterButton.addTarget(self, action: #selector(self.navigateToParam), for: .touchUpInside)
+        self.mirrorButton.addTarget(self, action: #selector(self.toggleMirror), for: .touchUpInside)
 
         self.preview.addGestureRecognizer(self.zoomGesture)
 
@@ -101,6 +117,7 @@ class MainViewController: UIViewController {
         self.streamingButton.translatesAutoresizingMaskIntoConstraints = false
         self.switchButton.translatesAutoresizingMaskIntoConstraints = false
         self.parameterButton.translatesAutoresizingMaskIntoConstraints = false
+        self.mirrorButton.translatesAutoresizingMaskIntoConstraints = false
 
         self.muteButton.widthAnchor.constraint(equalToConstant: 70).isActive = true
         self.muteButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
@@ -110,7 +127,10 @@ class MainViewController: UIViewController {
         self.switchButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         self.parameterButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
         self.parameterButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-
+        self.mirrorButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
+        self.mirrorButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        
         self.parameterButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 70).isActive = true
         self.parameterButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -20).isActive = true
 
@@ -119,9 +139,11 @@ class MainViewController: UIViewController {
 
         self.muteButton.centerYAnchor.constraint(equalTo: self.streamingButton.centerYAnchor).isActive = true
         self.switchButton.centerYAnchor.constraint(equalTo: self.streamingButton.centerYAnchor).isActive = true
+        self.mirrorButton.centerYAnchor.constraint(equalTo: self.streamingButton.centerYAnchor).isActive = true
 
         self.muteButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30).isActive = true
-        self.switchButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30).isActive = true
+        self.switchButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -50).isActive = true
+        self.mirrorButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -5).isActive = true
     }
 
     private func resetStartButton() {
@@ -183,6 +205,17 @@ class MainViewController: UIViewController {
     @objc
     func navigateToParam() {
         performSegue(withIdentifier: "paramSegue", sender: self)
+    }
+    
+    @objc
+    func toggleMirror() {
+        self.liveStream.isMirrored.toggle()
+        
+        if self.liveStream.isMirrored {
+            self.mirrorButton.setImage(self.isMirrored, for: .normal)
+        } else {
+            self.mirrorButton.setImage(self.isNotMirrored, for: .normal)
+        }
     }
 
     private func updateConfig() {
