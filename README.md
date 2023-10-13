@@ -1,6 +1,6 @@
-[![badge](https://img.shields.io/twitter/follow/api_video?style=social)](https://twitter.com/intent/follow?screen_name=api_video) &nbsp; [![badge](https://img.shields.io/github/stars/apivideo/api.video-ios-live-stream?style=social)](https://github.com/apivideo/api.video-ios-live-stream) &nbsp; [![badge](https://img.shields.io/discourse/topics?server=https%3A%2F%2Fcommunity.api.video)](https://community.api.video)
+[![badge](https://img.shields.io/twitter/follow/api_video?style=social)](https://twitter.com/intent/follow?screen_name=api_video) &nbsp; [![badge](https://img.shields.io/github/stars/apivideo/api.video-swift-live-stream?style=social)](https://github.com/apivideo/api.video-swift-live-stream) &nbsp; [![badge](https://img.shields.io/discourse/topics?server=https%3A%2F%2Fcommunity.api.video)](https://community.api.video)
 ![](https://github.com/apivideo/.github/blob/main/assets/apivideo_banner.png)
-<h1 align="center">iOS RTMP live stream client</h1>
+<h1 align="center">Swift RTMP live stream client for iOS</h1>
 
 [api.video](https://api.video) is the video infrastructure for product builders. Lightning fast video APIs for integrating, scaling, and managing on-demand & low latency live streaming features in your app.
 
@@ -29,12 +29,12 @@ This module is an easy way to broadcast RTMP live stream to [api.video](https://
 In the Project Navigator select your own project. Then select the project in the Project section and click on the Package Dependencies tab. Click on the "+" button at the bottom. Paste the below url on the search bar on the top right. Finaly click on "Add package" button.
 
 ```
-https://github.com/api.video-ios-live-stream
+https://github.com/api.video-swift-live-stream
 ```
 Or add this in your Package.swift
 ```
   dependencies: [
-        .package(url: "https://github.com/api.video-ios-live-stream.git", from: "1.3.5"),
+        .package(url: "https://github.com/api.video-swift-live-stream.git", from: "1.3.5"),
     ],
 ```
 
@@ -108,8 +108,8 @@ Also feel free to test our [Sample app].
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
 
-[Issues]: <https://github.com/apivideo/api.video-ios-live-stream/issues>
+[Issues]: <https://github.com/apivideo/api.video-swift-live-stream/issues>
 [HaishinKit]: <https://github.com/shogo4405/HaishinKit.swift>
-[Sample app]: <https://github.com/apivideo/api.video-ios-live-stream/Example>
+[Sample app]: <https://github.com/apivideo/api.video-swift-live-stream/Example>
 
 
