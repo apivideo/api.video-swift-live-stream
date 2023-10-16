@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/shogo4405/HaishinKit.swift",
       "state" : {
-        "revision" : "1d851afe324242ade5b513f98b124484817cf603",
-        "version" : "1.5.2"
+        "revision" : "8cdb9ef8046bb0be6798e0542f2d60da7f43c2f2",
+        "version" : "1.6.1"
       }
     },
     {
@@ -23,26 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/shogo4405/Logboard.git",
       "state" : {
-        "revision" : "e597fa65bb2ce9fc56935b4161b1af74495ddb52",
-        "version" : "2.3.1"
-      }
-    },
-    {
-      "identity" : "swift-docc-plugin",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-docc-plugin",
-      "state" : {
-        "revision" : "9b1258905c21fc1b97bf03d1b4ca12c4ec4e5fda",
-        "version" : "1.2.0"
-      }
-    },
-    {
-      "identity" : "swift-docc-symbolkit",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-docc-symbolkit",
-      "state" : {
-        "revision" : "b45d1f2ed151d057b54504d653e0da5552844e34",
-        "version" : "1.0.0"
+        "revision" : "6a7cbf54553936103084ed72cfb6d6f836758229",
+        "version" : "2.4.1"
       }
     }
   ],

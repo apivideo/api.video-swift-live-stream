@@ -325,7 +325,7 @@ public class ApiVideoLiveStream {
             .resolution.size.width
         
         self.rtmpStream.videoSettings = VideoCodecSettings(
-          videoSize: .init(width: Int32(width), height: Int32(height)),
+            videoSize: CGSize(width: width, height: height),
           profileLevel: kVTProfileLevel_H264_Baseline_5_2 as String,
           bitRate: UInt32(videoConfig.bitrate),
           maxKeyFrameIntervalDuration: Int32(videoConfig.gopDuration)
@@ -344,8 +344,7 @@ public class ApiVideoLiveStream {
 
     private func prepareAudio(audioConfig: AudioConfig) {
         self.rtmpStream.audioSettings = AudioCodecSettings(
-            bitRate: audioConfig.bitrate,
-            format: .aac
+            bitRate: audioConfig.bitrate
         )
 
         self.isAudioConfigured = true
@@ -446,15 +445,13 @@ public class ApiVideoLiveStream {
                     width: Int(self.rtmpStream.videoSettings.videoSize.width),
                     height: Int(self.rtmpStream.videoSettings.videoSize.height)
                 )
-                self.rtmpStream.videoSettings.videoSize = .init(
-                    width: Int32(
+                self.rtmpStream.videoSettings.videoSize = CGSize(
+                    width:
                         self.rtmpStream.videoOrientation.isLandscape ?
-                        resolution.size.width : resolution.size.height
-                    ),
-                    height: Int32(
+                        resolution.size.width : resolution.size.height,
+                    height:
                         self.rtmpStream.videoOrientation.isLandscape ?
                         resolution.size.height : resolution.size.width
-                    )
                 )
             } catch {
                 print("Failed to set resolution to orientation \(orientation)")
