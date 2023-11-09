@@ -24,6 +24,6 @@ Pod::Spec.new do |spec|
   spec.source_files  = "Sources/**/*.{h,m,swift}"
   spec.exclude_files = "Sources/Exclude"
 
-  spec.dependency "HaishinKit", "1.6.1"
+  spec.dependency "HaishinKit", "1.7.1"
 
 end

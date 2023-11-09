@@ -57,10 +57,10 @@ public class ApiVideoLiveStream {
     /// Getter and Setter for the Bitrate number for the video
     public var videoBitrate: Int {
         get {
-            Int(self.rtmpStream.videoSettings.bitRate)
+            self.rtmpStream.videoSettings.bitRate
         }
         set(newValue) {
-            self.rtmpStream.videoSettings.bitRate = UInt32(newValue)
+            self.rtmpStream.videoSettings.bitRate = newValue
         }
     }
 
@@ -326,8 +326,8 @@ public class ApiVideoLiveStream {
         
         self.rtmpStream.videoSettings = VideoCodecSettings(
             videoSize: CGSize(width: width, height: height),
+          bitRate: videoConfig.bitrate,
           profileLevel: kVTProfileLevel_H264_Baseline_5_2 as String,
-          bitRate: UInt32(videoConfig.bitrate),
           maxKeyFrameIntervalDuration: Int32(videoConfig.gopDuration)
         )
 
