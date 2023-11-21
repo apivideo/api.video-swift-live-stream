@@ -125,5 +125,3 @@ Also feel free to test our [Sample app].
 [Issues]: <https://github.com/apivideo/api.video-swift-live-stream/issues>
 [HaishinKit]: <https://github.com/shogo4405/HaishinKit.swift>
 [Sample app]: <https://github.com/apivideo/api.video-swift-live-stream/Example>
-
-
