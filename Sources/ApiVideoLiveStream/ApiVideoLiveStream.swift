@@ -117,7 +117,7 @@ public class ApiVideoLiveStream {
             }
             do {
                 try device.lockForConfiguration()
-                device.ramp(toVideoZoomFactor: newValue, withRate: 5.0)
+                device.videoZoomFactor = newValue
                 device.unlockForConfiguration()
             } catch let error as NSError {
                 print("Error while locking device for zoom ramp: \(error)")
@@ -291,12 +291,12 @@ public class ApiVideoLiveStream {
             print(error)
             self.delegate?.videoError(error)
         }
-        // This lockQueue waits for attachCamera to be completed and sync operation on the same queue
-        self.rtmpStream.lockQueue.async {
-            guard let capture = self.rtmpStream.videoCapture(for: 0) else {
-                return
-            }
 
+        guard let capture = self.rtmpStream.videoCapture(for: 0) else {
+            return
+        }
+        
+        self.rtmpStream.lockQueue.async {
             guard let device = capture.device else {
                 return
             }
