@@ -281,9 +281,14 @@ public class ApiVideoLiveStream {
 
     private func attachCamera(_ camera: AVCaptureDevice?) {
         self.lastCamera = camera
+        let capture = self.rtmpStream.videoCapture(for: 0)
+
         if let camera = camera {
-            // rtmpStream.videoCapture(for: 0)?.preferredVideoStabilizationMode = AVCaptureVideoStabilizationMode.auto // Add latency to video
-            rtmpStream.videoCapture(for: 0)?.isVideoMirrored = camera.position == .front
+            #if os(iOS)
+            // capture.preferredVideoStabilizationMode = AVCaptureVideoStabilizationMode
+            //   .auto // Add latency to video
+            #endif
+            capture?.isVideoMirrored = camera.position == .front
         }
 
         self.rtmpStream.attachCamera(camera) { error in
@@ -292,12 +297,8 @@ public class ApiVideoLiveStream {
             self.delegate?.videoError(error)
         }
 
-        guard let capture = self.rtmpStream.videoCapture(for: 0) else {
-            return
-        }
-        
         self.rtmpStream.lockQueue.async {
-            guard let device = capture.device else {
+            guard let device = capture?.device else {
                 return
             }
             do {
@@ -318,17 +319,17 @@ public class ApiVideoLiveStream {
     private func prepareVideo(videoConfig: VideoConfig) {
         self.rtmpStream.frameRate = videoConfig.fps
         self.rtmpStream.sessionPreset = AVCaptureSession.Preset.high
-        
+
         let width = self.rtmpStream.videoOrientation.isLandscape ? videoConfig.resolution.size.width : videoConfig
             .resolution.size.height
         let height = self.rtmpStream.videoOrientation.isLandscape ? videoConfig.resolution.size.height : videoConfig
             .resolution.size.width
-        
+
         self.rtmpStream.videoSettings = VideoCodecSettings(
             videoSize: CGSize(width: width, height: height),
-          bitRate: videoConfig.bitrate,
-          profileLevel: kVTProfileLevel_H264_Baseline_5_2 as String,
-          maxKeyFrameIntervalDuration: Int32(videoConfig.gopDuration)
+            bitRate: videoConfig.bitrate,
+            profileLevel: kVTProfileLevel_H264_Baseline_5_2 as String,
+            maxKeyFrameIntervalDuration: Int32(videoConfig.gopDuration)
         )
 
         self.isVideoConfigured = true
@@ -447,10 +448,10 @@ public class ApiVideoLiveStream {
                 )
                 self.rtmpStream.videoSettings.videoSize = CGSize(
                     width:
-                        self.rtmpStream.videoOrientation.isLandscape ?
+                    self.rtmpStream.videoOrientation.isLandscape ?
                         resolution.size.width : resolution.size.height,
                     height:
-                        self.rtmpStream.videoOrientation.isLandscape ?
+                    self.rtmpStream.videoOrientation.isLandscape ?
                         resolution.size.height : resolution.size.width
                 )
             } catch {
