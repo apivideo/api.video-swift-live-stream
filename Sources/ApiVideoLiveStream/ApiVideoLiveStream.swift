@@ -403,22 +403,26 @@ public class ApiVideoLiveStream {
     private func rtmpStatusHandler(_ notification: Notification) {
         let e = Event.from(notification)
         guard let data: ASObject = e.data as? ASObject,
-              let code: String = data["code"] as? String else
+              let code: String = data["code"] as? String,
+              let level: String = data["level"] as? String else
         {
+            print("rtmpStatusHandler: failed to parse event: \(e)")
             return
         }
         switch code {
         case RTMPConnection.Code.connectSuccess.rawValue:
-            self.delegate?.connectionSuccess()
             self.rtmpStream.publish(self.streamKey)
 
-        case RTMPConnection.Code.connectFailed.rawValue:
-            self.delegate?.connectionFailed(code)
+        case RTMPStream.Code.publishStart.rawValue:
+            self.delegate?.connectionSuccess()
 
         case RTMPConnection.Code.connectClosed.rawValue:
             self.delegate?.disconnection()
 
         default:
+            if level == "error" {
+                self.delegate?.connectionFailed(code)
+            }
             break
         }
     }
