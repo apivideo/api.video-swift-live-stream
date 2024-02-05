@@ -246,7 +246,7 @@ public class ApiVideoLiveStream {
     ///   - initialVideoConfig: The ApiVideoLiveStream's new VideoConfig
     ///   - initialCamera: The ApiVideoLiveStream's initial camera device
     public convenience init(
-        preview: NetStreamDrawable,
+        preview: IOStreamDrawable,
         initialAudioConfig: AudioConfig? = AudioConfig(),
         initialVideoConfig: VideoConfig? = VideoConfig(),
         initialCamera: AVCaptureDevice? = AVCaptureDevice.default(
@@ -281,37 +281,39 @@ public class ApiVideoLiveStream {
 
     private func attachCamera(_ camera: AVCaptureDevice?) {
         self.lastCamera = camera
-        let capture = self.rtmpStream.videoCapture(for: 0)
 
-        if let camera = camera {
-            #if os(iOS)
-            // capture.preferredVideoStabilizationMode = AVCaptureVideoStabilizationMode
-            //   .auto // Add latency to video
-            #endif
-            capture?.isVideoMirrored = camera.position == .front
-        }
-
-        self.rtmpStream.attachCamera(camera) { error in
-            print("======== Camera error ==========")
-            print(error)
-            self.delegate?.videoError(error)
-        }
-
-        self.rtmpStream.lockQueue.async {
-            guard let device = capture?.device else {
+        self.rtmpStream.attachCamera(camera, channel: 0) { videoCaptureUnit, error in
+            if let error {
+                print("======== Camera error ==========")
+                print(error)
+                self.delegate?.videoError(error)
                 return
             }
-            do {
-                try device.lockForConfiguration()
-                if device.isExposureModeSupported(.continuousAutoExposure) {
-                    device.exposureMode = .continuousAutoExposure
+
+            if let camera {
+                videoCaptureUnit?.isVideoMirrored = camera.position == .front
+            }
+            #if os(iOS)
+            // videoCaptureUnit.preferredVideoStabilizationMode = AVCaptureVideoStabilizationMode
+            //   .auto // Add latency to video
+            #endif
+
+            guard let device = videoCaptureUnit?.device else {
+                return
+            }
+            self.rtmpStream.lockQueue.async {
+                do {
+                    try device.lockForConfiguration()
+                    if device.isExposureModeSupported(.continuousAutoExposure) {
+                        device.exposureMode = .continuousAutoExposure
+                    }
+                    if device.isFocusModeSupported(.continuousAutoFocus) {
+                        device.focusMode = .continuousAutoFocus
+                    }
+                    device.unlockForConfiguration()
+                } catch {
+                    print("Could not lock device for exposure and focus: \(error)")
                 }
-                if device.isFocusModeSupported(.continuousAutoFocus) {
-                    device.focusMode = .continuousAutoFocus
-                }
-                device.unlockForConfiguration()
-            } catch {
-                print("Could not lock device for exposure and focus: \(error)")
             }
         }
     }
@@ -395,7 +397,7 @@ public class ApiVideoLiveStream {
     }
 
     public func stopPreview() {
-        self.rtmpStream.attachCamera(nil)
+        self.rtmpStream.attachCamera(nil, channel: 0)
         self.rtmpStream.attachAudio(nil)
     }
 
@@ -423,7 +425,6 @@ public class ApiVideoLiveStream {
             if level == "error" {
                 self.delegate?.connectionFailed(code)
             }
-            break
         }
     }
 
