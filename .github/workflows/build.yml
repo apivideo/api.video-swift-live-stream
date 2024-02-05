@@ -5,11 +5,11 @@ on: [ push ]
 jobs:
   build-swift:
     name: Build with swift
-    runs-on: macos-latest
+    runs-on: macos-14
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: xcode version
         uses: maxim-lobanov/setup-xcode@v1
         with:
@@ -19,11 +19,11 @@ jobs:
 
   build-xcodebuild:
     name: Build with xcodebuild
-    runs-on: macos-latest
+    runs-on: macos-14
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: xcode version
         uses: maxim-lobanov/setup-xcode@v1
         with:
@@ -50,11 +50,11 @@ jobs:
   verify_cocoapods:
     name: Verify cocoapods podspec
     needs: [ build-xcodebuild, build-swift ]
-    runs-on: macos-latest
+    runs-on: macos-14
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: xcode version
         uses: maxim-lobanov/setup-xcode@v1
         with:
@@ -65,14 +65,16 @@ jobs:
   lint:
     name: Running swiftlint
     needs: verify_cocoapods
-    runs-on: macos-latest
+    runs-on: macos-14
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: xcode version
         uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: latest-stable
+      - name: Install swiftlint
+        run: brew install swiftlint
       - name: Run swiftlint
         run: swiftlint
