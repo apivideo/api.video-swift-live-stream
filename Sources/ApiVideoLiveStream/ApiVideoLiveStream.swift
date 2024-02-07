@@ -372,9 +372,7 @@ public class ApiVideoLiveStream {
         self.streamKey = streamKey
         self.url = url
 
-        self.rtmpStream.lockQueue.sync {
-            rtmpConnection.connect(url)
-        }
+        self.rtmpConnection.connect(url)
     }
 
     /// Stop your livestream
