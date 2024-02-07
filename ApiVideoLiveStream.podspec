@@ -17,7 +17,7 @@ Pod::Spec.new do |spec|
   spec.social_media_url   = "https://x.com/api_video"
 
   spec.platform     = :ios, "12.0"  
-  spec.ios.deployment_target = "11.0"
+  spec.ios.deployment_target = "12.0"
 
   spec.source       = { :git => "https://github.com/apivideo/api.video-swift-live-stream.git", :tag => "v" + spec.version.to_s }
 
