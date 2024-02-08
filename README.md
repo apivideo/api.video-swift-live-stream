@@ -48,7 +48,7 @@ https://github.com/api.video-swift-live-stream
 Or add this in your Package.swift
 ```
   dependencies: [
-        .package(url: "https://github.com/api.video-swift-live-stream.git", from: "1.3.5"),
+        .package(url: "https://github.com/api.video-swift-live-stream.git", from: "1.3.6"),
     ],
 ```
 
@@ -56,14 +56,14 @@ Or add this in your Package.swift
 
 1. Add the following entry to your Podfile:
 ```swift
-pod 'ApiVideoLiveStream', '1.3.5'
+pod 'ApiVideoLiveStream', '1.3.6'
 ```
 2. Then run `pod install`
 3. Don’t forget to import `ApiVideoLiveStream` in every file you’d like to use api.video live stream library
 
 #### Carthage
 ```
-github "apivideo/ApiVideoLiveStream.swift" ~> 1.3.5
+github "apivideo/ApiVideoLiveStream.swift" ~> 1.3.6
 ```
 
 ### Permissions
