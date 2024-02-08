@@ -333,7 +333,7 @@
 				DEVELOPMENT_TEAM = GBC36KP98K;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ExampleUIKit/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = UpstreamExample;
+				INFOPLIST_KEY_CFBundleDisplayName = LiveStreamExample;
 				INFOPLIST_KEY_NSCameraUsageDescription = "This application requires to capture your camera stream";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This application requires to capture your microphone stream";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -348,7 +348,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = video.api.upstream.Example;
+				PRODUCT_BUNDLE_IDENTIFIER = video.api.livestream.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -366,7 +366,7 @@
 				DEVELOPMENT_TEAM = GBC36KP98K;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ExampleUIKit/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = UpstreamExample;
+				INFOPLIST_KEY_CFBundleDisplayName = LiveStreamExample;
 				INFOPLIST_KEY_NSCameraUsageDescription = "This application requires to capture your camera stream";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "This application requires to capture your microphone stream";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -381,7 +381,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = video.api.upstream.Example;
+				PRODUCT_BUNDLE_IDENTIFIER = video.api.livestream.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
