@@ -23,7 +23,6 @@ public class ApiVideoLiveStream {
     /// The delegate of the ApiVideoLiveStream
     public weak var delegate: ApiVideoLiveStreamDelegate?
 
-    // swiftlint:disable force_cast
     ///  Getter and Setter for an AudioConfig
     public var audioConfig: AudioConfig {
         get {
@@ -34,13 +33,12 @@ public class ApiVideoLiveStream {
         }
     }
 
-    // swiftlint:disable force_cast force_try
     /// Getter and Setter for a VideoConfig
     public var videoConfig: VideoConfig {
         get {
-            try! VideoConfig(
+            VideoConfig(
                 bitrate: Int(self.rtmpStream.videoSettings.bitRate),
-                resolution: Resolution.getResolution(
+                resolution: CGSize(
                     width: Int(self.rtmpStream.videoSettings.videoSize.width),
                     height: Int(self.rtmpStream.videoSettings.videoSize.height)
                 ),
@@ -53,7 +51,6 @@ public class ApiVideoLiveStream {
         }
     }
 
-    // swiftlint:disable force_cast
     /// Getter and Setter for the Bitrate number for the video
     public var videoBitrate: Int {
         get {
@@ -100,7 +97,6 @@ public class ApiVideoLiveStream {
     }
 
     #if os(iOS)
-    // swiftlint:disable implicit_return
     /// Zoom on the video capture
     public var zoomRatio: CGFloat {
         get {
@@ -322,10 +318,10 @@ public class ApiVideoLiveStream {
         self.rtmpStream.frameRate = videoConfig.fps
         self.rtmpStream.sessionPreset = AVCaptureSession.Preset.high
 
-        let width = self.rtmpStream.videoOrientation.isLandscape ? videoConfig.resolution.size.width : videoConfig
-            .resolution.size.height
-        let height = self.rtmpStream.videoOrientation.isLandscape ? videoConfig.resolution.size.height : videoConfig
-            .resolution.size.width
+        let width = self.rtmpStream.videoOrientation.isLandscape ? videoConfig.resolution.width : videoConfig
+            .resolution.height
+        let height = self.rtmpStream.videoOrientation.isLandscape ? videoConfig.resolution.height : videoConfig
+            .resolution.width
 
         self.rtmpStream.videoSettings = VideoCodecSettings(
             videoSize: CGSize(width: width, height: height),
@@ -444,22 +440,16 @@ public class ApiVideoLiveStream {
 
         self.rtmpStream.lockQueue.async {
             self.rtmpStream.videoOrientation = orientation
-            do {
-                let resolution = try Resolution.getResolution(
-                    width: Int(self.rtmpStream.videoSettings.videoSize.width),
-                    height: Int(self.rtmpStream.videoSettings.videoSize.height)
-                )
-                self.rtmpStream.videoSettings.videoSize = CGSize(
-                    width:
-                    self.rtmpStream.videoOrientation.isLandscape ?
-                        resolution.size.width : resolution.size.height,
-                    height:
-                    self.rtmpStream.videoOrientation.isLandscape ?
-                        resolution.size.height : resolution.size.width
-                )
-            } catch {
-                print("Failed to set resolution to orientation \(orientation)")
-            }
+
+            let videoSize = self.rtmpStream.videoSettings.videoSize
+            self.rtmpStream.videoSettings.videoSize = CGSize(
+                width:
+                self.rtmpStream.videoOrientation.isLandscape ?
+                    videoSize.width : videoSize.height,
+                height:
+                self.rtmpStream.videoOrientation.isLandscape ?
+                    videoSize.height : videoSize.width
+            )
         }
     }
     #endif

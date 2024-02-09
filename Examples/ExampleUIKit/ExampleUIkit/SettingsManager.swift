@@ -20,10 +20,10 @@ enum SettingsManager {
 
     private static var resolution: Resolution {
         do {
-            return try UserDefaults.standard.string(forKey: "Resolution")?.toResolution() ?? Resolution.RESOLUTION_720
+            return try UserDefaults.standard.string(forKey: "Resolution")?.toResolution() ?? Resolution
+                .RESOLUTION_16_9_720P
         } catch {
-            print("Can't get resolution from user defaults")
-            return Resolution.RESOLUTION_720
+            fatalError("Can't get resolution from user defaults")
         }
     }
 
@@ -57,13 +57,18 @@ extension String {
         guard let height = Int(resolutionArray[1]) else {
             throw ParameterError.Invalid("Height is invalid")
         }
-        return try Resolution.getResolution(width: width, height: height)
+        let resolution = Resolution(rawValue: CGSize(width: width, height: height))
+        if let resolution {
+            return resolution
+        } else {
+            throw ParameterError.Invalid("Resolution is invalid for \(width)x\(height)")
+        }
     }
 }
 
 extension Resolution {
     func toString() -> String {
-        "\(size.width)x\(size.height)"
+        "\(rawValue.width)x\(rawValue.height)"
     }
 }
 

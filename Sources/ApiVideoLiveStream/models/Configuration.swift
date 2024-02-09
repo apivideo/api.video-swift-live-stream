@@ -1,3 +1,4 @@
+import CoreGraphics
 import Foundation
 import Network
 
@@ -14,9 +15,43 @@ public struct AudioConfig {
 
 public struct VideoConfig {
     public let bitrate: Int
-    public let resolution: Resolution
+    public let resolution: CGSize
     public let fps: Float64
     public let gopDuration: TimeInterval
+
+    /// Creates a video configuration object with explicit video bitrate and CGSize resolution
+    /// - Parameters:
+    ///   - bitrate: The video bitrate in bits per second
+    ///   - resolution: The video resolution
+    ///   - fps: The video framerate
+    ///   - gopDuration: The time interval between two key frames
+    public init(
+        bitrate: Int,
+        resolution: CGSize = CGSize(width: 1_280, height: 720),
+        fps: Float64 = 30,
+        gopDuration: TimeInterval = 1.0
+    ) {
+        self.bitrate = bitrate
+        self.resolution = resolution
+        self.fps = fps
+        self.gopDuration = gopDuration
+    }
+
+    /// Creates a video configuration object with default video bitrate and CGSize resolution
+    /// - Parameters:
+    ///   - resolution: The video resolution
+    ///   - fps: The video framerate
+    ///   - gopDuration: The time interval between two key frames
+    public init(
+        resolution: CGSize = CGSize(width: 1_280, height: 720),
+        fps: Float64 = 30,
+        gopDuration: TimeInterval = 1.0
+    ) {
+        self.bitrate = VideoConfig.getDefaultBitrate(resolution)
+        self.resolution = resolution
+        self.fps = fps
+        self.gopDuration = gopDuration
+    }
 
     /// Creates a video configuration object with default video bitrate
     /// - Parameters:
@@ -24,14 +59,11 @@ public struct VideoConfig {
     ///   - fps: The video framerate
     ///   - gopDuration: The time interval between two key frames
     public init(
-        resolution: Resolution = Resolution.RESOLUTION_720,
+        resolution: Resolution,
         fps: Float64 = 30,
         gopDuration: TimeInterval = 1.0
     ) {
-        self.bitrate = VideoConfig.getDefaultBitrate(resolution: resolution)
-        self.resolution = resolution
-        self.fps = fps
-        self.gopDuration = gopDuration
+        self.init(resolution: resolution.rawValue, fps: fps, gopDuration: gopDuration)
     }
 
     /// Creates a video configuration object with explicit video bitrate
@@ -42,23 +74,21 @@ public struct VideoConfig {
     ///   - gopDuration: The time interval between two key frames
     public init(
         bitrate: Int,
-        resolution: Resolution = Resolution.RESOLUTION_720,
+        resolution: Resolution,
         fps: Float64 = 30,
         gopDuration: TimeInterval = 1.0
     ) {
-        self.bitrate = bitrate
-        self.resolution = resolution
-        self.fps = fps
-        self.gopDuration = gopDuration
+        self.init(bitrate: bitrate, resolution: resolution.rawValue, fps: fps, gopDuration: gopDuration)
     }
 
-    static func getDefaultBitrate(resolution: Resolution) -> Int {
-        switch resolution {
-        case Resolution.RESOLUTION_240: return 800_000
-        case Resolution.RESOLUTION_360: return 1_000_000
-        case Resolution.RESOLUTION_480: return 1_300_000
-        case Resolution.RESOLUTION_720: return 2_000_000
-        case Resolution.RESOLUTION_1080: return 3_500_000
+    static func getDefaultBitrate(_ size: CGSize) -> Int {
+        let numOfPixels = size.width * size.height
+        switch numOfPixels {
+        case 0 ... 102_240: return 800_000 // for 4/3 and 16/9 240p
+        case 102_241 ... 230_400: return 1_000_000 // for 16/9 360p
+        case 230_401 ... 409_920: return 1_300_000 // for 4/3 and 16/9 480p
+        case 409_921 ... 921_600: return 2_000_000 // for 4/3 600p, 4/3 768p and 16/9 720p
+        default: return 3_000_000 // for 16/9 1080p
         }
     }
 }

@@ -48,24 +48,22 @@
 			<key>Key</key>
 			<string>Resolution</string>
 			<key>DefaultValue</key>
-			<string>858x480</string>
+			<string>854x480</string>
 			<key>Values</key>
 			<array>
-				<string>352x240</string>
+				<string>426x240</string>
 				<string>480x360</string>
-				<string>858x480</string>
+				<string>854x480</string>
 				<string>1280x720</string>
 				<string>1920x1080</string>
-				<string>3840x2160</string>
 			</array>
 			<key>Titles</key>
 			<array>
-				<string>352x240</string>
+				<string>426x240</string>
 				<string>480x360</string>
-				<string>858x480</string>
+				<string>854x480</string>
 				<string>1280x720</string>
 				<string>1920x1080</string>
-				<string>3840x2160</string>
 			</array>
 		</dict>
 		<dict>
