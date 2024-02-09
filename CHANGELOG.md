@@ -1,6 +1,9 @@
 # Changelog
 All changes to this project will be documented in this file.
 
+## [1.4.0] - 2024-02-09
+- Improve the way Resolution are handled to avoid misusage.
+
 ## [1.3.6] - 2024-02-08
 - Improve RTMP error handling
 - Avoid disptaching `connect` because it is slower
