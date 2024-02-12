@@ -1,6 +1,9 @@
 # Changelog
 All changes to this project will be documented in this file.
 
+## [1.4.1] - 2024-02-12
+- Fix regression on device orientation
+
 ## [1.4.0] - 2024-02-09
 - Improve the way Resolution are handled to avoid misusage.
 
