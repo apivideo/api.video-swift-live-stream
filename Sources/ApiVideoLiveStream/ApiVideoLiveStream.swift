@@ -318,10 +318,11 @@ public class ApiVideoLiveStream {
         self.rtmpStream.frameRate = videoConfig.fps
         self.rtmpStream.sessionPreset = AVCaptureSession.Preset.high
 
-        let width = self.rtmpStream.videoOrientation.isLandscape ? videoConfig.resolution.width : videoConfig
-            .resolution.height
-        let height = self.rtmpStream.videoOrientation.isLandscape ? videoConfig.resolution.height : videoConfig
-            .resolution.width
+        let resolution = videoConfig.resolution
+        let width = self.rtmpStream.videoOrientation
+            .isLandscape ? max(resolution.width, resolution.height) : min(resolution.width, resolution.height)
+        let height = self.rtmpStream.videoOrientation
+            .isLandscape ? min(resolution.width, resolution.height) : max(resolution.width, resolution.height)
 
         self.rtmpStream.videoSettings = VideoCodecSettings(
             videoSize: CGSize(width: width, height: height),
@@ -441,15 +442,20 @@ public class ApiVideoLiveStream {
         self.rtmpStream.lockQueue.async {
             self.rtmpStream.videoOrientation = orientation
 
-            let videoSize = self.rtmpStream.videoSettings.videoSize
-            self.rtmpStream.videoSettings.videoSize = CGSize(
-                width:
-                self.rtmpStream.videoOrientation.isLandscape ?
-                    videoSize.width : videoSize.height,
-                height:
-                self.rtmpStream.videoOrientation.isLandscape ?
-                    videoSize.height : videoSize.width
-            )
+            let currentVideoSize = self.rtmpStream.videoSettings.videoSize
+            var newVideoSize: CGSize
+            if self.rtmpStream.videoOrientation.isLandscape {
+                newVideoSize = CGSize(
+                    width: max(currentVideoSize.width, currentVideoSize.height),
+                    height: min(currentVideoSize.width, currentVideoSize.height)
+                )
+            } else {
+                newVideoSize = CGSize(
+                    width: min(currentVideoSize.width, currentVideoSize.height),
+                    height: max(currentVideoSize.width, currentVideoSize.height)
+                )
+            }
+            self.rtmpStream.videoSettings.videoSize = newVideoSize
         }
     }
     #endif
