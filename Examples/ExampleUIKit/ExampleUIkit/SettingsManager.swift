@@ -15,7 +15,7 @@ enum SettingsManager {
     // MARK: Video
 
     private static var videoBitrate: Int {
-        UserDefaults.standard.integer(forKey: "VideoBitrate")
+        UserDefaults.standard.integer(forKey: "VideoBitrateValue")
     }
 
     private static var resolution: Resolution {
