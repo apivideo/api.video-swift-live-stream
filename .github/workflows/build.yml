@@ -1,12 +1,29 @@
 name: Build
-
-on: [ push ]
-
+on:
+  - push
 jobs:
-  build-swift:
+  find_schemes:
+    name: Find xcode schemes
+    runs-on: macos-14
+    outputs:
+      schemes: ${{ steps.getSchemes.outputs.schemes}}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: xcode version
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+      - name: Get schemes
+        id: getSchemes
+        run: |
+          TARGETS=$(xcodebuild -list -json | tr -d "\n")
+          SCHEMES=$(echo $TARGETS | ruby -e "require 'json'; puts JSON.generate(:scheme => JSON.parse(STDIN.gets)['project']['schemes'])")
+          echo Found schemes: $SCHEMES
+          echo "schemes=$SCHEMES" >> $GITHUB_OUTPUT
+  swift_build:
     name: Build with swift
     runs-on: macos-14
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -16,11 +33,12 @@ jobs:
           xcode-version: latest-stable
       - name: Build Package with swift
         run: swift build
-
-  build-xcodebuild:
-    name: Build with xcodebuild
+  xcode_build:
+    name: Build with xcode
+    needs: find_schemes
     runs-on: macos-14
-
+    strategy:
+      matrix: ${{ fromJson(needs.find_schemes.outputs.schemes) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -28,30 +46,11 @@ jobs:
         uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: latest-stable
-      - name: Set Default Scheme
-        run: |
-          scheme_list=$(xcodebuild -list -json | tr -d "\n")
-          default=$(echo $scheme_list | ruby -e "require 'json'; puts JSON.parse(STDIN.gets)['workspace']['schemes'][0]")
-          echo $default | cat >default
-          echo Using default scheme: $default
-      - name: Build Package with xcodebuild
-        env:
-          scheme: ${{ 'default' }}
-        run: |
-          if [ $scheme = default ]; then scheme=$(cat default); fi
-          xcodebuild -scheme $scheme  -destination 'platform=iOS Simulator,name=iPhone 13'
-      - name: Build Example
-        env:
-          scheme: ${{ 'default' }}
-        run: |
-          if [ $scheme = default ]; then scheme=$(cat default); fi
-          xcodebuild clean build -project Examples/ExampleUIKit/ExampleUIKit.xcodeproj -scheme $scheme -sdk iphoneos
-
-  verify_cocoapods:
-    name: Verify cocoapods podspec
-    needs: [ build-xcodebuild, build-swift ]
+      - name: Build ${{matrix.scheme}}
+        run: xcodebuild clean build -project ApiVideoLiveStream.xcodeproj -scheme "${{matrix.scheme}}" -sdk iphoneos CODE_SIGNING_ALLOWED=NO
+  verify:
+    name: Verify package sanity
     runs-on: macos-14
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -61,20 +60,7 @@ jobs:
           xcode-version: latest-stable
       - name: Verify cocoapods
         run: pod lib lint --allow-warnings
-
-  lint:
-    name: Running swiftlint
-    needs: verify_cocoapods
-    runs-on: macos-14
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: xcode version
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: latest-stable
       - name: Install swiftlint
         run: brew install swiftlint
-      - name: Run swiftlint
+      - name: Execute swiftlint
         run: swiftlint
