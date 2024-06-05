@@ -1,4 +1,5 @@
 {
+  "originHash" : "b8db540652b5bd5eb3916830a8f5e215a161e6b759d8633d4f84752129aa75e2",
   "pins" : [
     {
       "identity" : "haishinkit.swift",
@@ -14,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/futuretap/InAppSettingsKit.git",
       "state" : {
-        "revision" : "1c5122f51206ea86b2301ea8a93e7703617a9b40",
-        "version" : "3.3.6"
+        "revision" : "5b6a33cd5d227d71f79bf8e43be2049d981c6aad",
+        "version" : "3.7.1"
       }
     },
     {
@@ -23,10 +24,10 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/shogo4405/Logboard.git",
       "state" : {
-        "revision" : "6a7cbf54553936103084ed72cfb6d6f836758229",
-        "version" : "2.4.1"
+        "revision" : "c6328f9751627287bcddcf0106eb54e5ca6b9ef8",
+        "version" : "2.4.2"
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }
