@@ -89,10 +89,10 @@ public class ApiVideoLiveStream {
     /// Mutes or unmutes audio capture.
     public var isMuted: Bool {
         get {
-            !self.rtmpStream.hasAudio
+            !self.rtmpStream.audioMixerSettings.isMuted
         }
         set(newValue) {
-            self.rtmpStream.hasAudio = !newValue
+            self.rtmpStream.audioMixerSettings.isMuted = !newValue
         }
     }
 
@@ -242,7 +242,7 @@ public class ApiVideoLiveStream {
     ///   - initialVideoConfig: The ApiVideoLiveStream's new VideoConfig
     ///   - initialCamera: The ApiVideoLiveStream's initial camera device
     public convenience init(
-        preview: IOStreamDrawable,
+        preview: IOStreamView,
         initialAudioConfig: AudioConfig? = AudioConfig(),
         initialVideoConfig: VideoConfig? = VideoConfig(),
         initialCamera: AVCaptureDevice? = AVCaptureDevice.default(
@@ -278,7 +278,7 @@ public class ApiVideoLiveStream {
     private func attachCamera(_ camera: AVCaptureDevice?) {
         self.lastCamera = camera
 
-        self.rtmpStream.attachCamera(camera, channel: 0) { videoCaptureUnit, error in
+        self.rtmpStream.attachCamera(camera) { videoCaptureUnit, error in
             if let error {
                 print("======== Camera error ==========")
                 print(error)
@@ -335,17 +335,17 @@ public class ApiVideoLiveStream {
     }
 
     private func attachAudio() {
-        self.rtmpStream.attachAudio(AVCaptureDevice.default(for: AVMediaType.audio)) { error in
-            print("======== Audio error ==========")
-            print(error)
-            self.delegate?.audioError(error)
+        self.rtmpStream.attachAudio(AVCaptureDevice.default(for: AVMediaType.audio)) { _, error in
+            if let error {
+                print("======== Audio error ==========")
+                print(error)
+                self.delegate?.audioError(error)
+            }
         }
     }
 
     private func prepareAudio(audioConfig: AudioConfig) {
-        self.rtmpStream.audioSettings = AudioCodecSettings(
-            bitRate: audioConfig.bitrate
-        )
+        self.rtmpStream.audioSettings.bitRate = audioConfig.bitrate
 
         self.isAudioConfigured = true
     }
@@ -392,7 +392,7 @@ public class ApiVideoLiveStream {
     }
 
     public func stopPreview() {
-        self.rtmpStream.attachCamera(nil, channel: 0)
+        self.rtmpStream.attachCamera(nil)
         self.rtmpStream.attachAudio(nil)
     }
 
