@@ -1,6 +1,11 @@
 # Changelog
 All changes to this project will be documented in this file.
 
+## [1.4.2] - 2024-06-07
+- Fix settings keys on iOS example
+- Upgrade HaishinKit to 1.8.1
+- Create a global pbxproj
+
 ## [1.4.1] - 2024-02-12
 - Fix regression on device orientation
 
