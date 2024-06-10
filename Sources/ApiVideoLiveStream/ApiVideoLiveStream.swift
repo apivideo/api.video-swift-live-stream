@@ -369,6 +369,7 @@ public class ApiVideoLiveStream {
         self.streamKey = streamKey
         self.url = url
 
+        self.rtmpStream.fcPublishName = streamKey
         self.rtmpConnection.connect(url)
     }
 
