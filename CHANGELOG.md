@@ -1,6 +1,9 @@
 # Changelog
 All changes to this project will be documented in this file.
 
+## [1.4.3] - 2024-06-10
+- Add publish name to the stream to trigger `FCUnpublish`
+
 ## [1.4.2] - 2024-06-07
 - Fix settings keys on iOS example
 - Upgrade HaishinKit to 1.8.1
