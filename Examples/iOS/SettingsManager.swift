@@ -5,7 +5,11 @@ enum SettingsManager {
     // MARK: Endpoint
 
     static var rtmpUrl: String {
-        UserDefaults.standard.string(forKey: "RtmpUrl") ?? "rtmp://broadcast.api.video/s/"
+        UserDefaults.standard.string(forKey: "RtmpUrl") ?? "rtmp://192.168.1.12/s/"
+    }
+
+    static var srtUrl: String {
+        UserDefaults.standard.string(forKey: "SrtUrl") ?? "srt://192.168.1.12:9998"
     }
 
     static var streamKey: String {
