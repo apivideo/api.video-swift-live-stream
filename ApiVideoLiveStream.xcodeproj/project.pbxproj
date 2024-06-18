@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		2102CD142BA9E0E700D0EBAD /* ApiVideoLiveStream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2102CD092BA9E0E700D0EBAD /* ApiVideoLiveStream.framework */; };
+		2192709F2C202CD90028BFFF /* RtmpLiveStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2192709E2C202CD90028BFFF /* RtmpLiveStream.swift */; };
+		219270A12C202D020028BFFF /* LiveStreamProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219270A02C202D020028BFFF /* LiveStreamProtocol.swift */; };
+		219270A32C202FA30028BFFF /* IOLiveStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219270A22C202FA30028BFFF /* IOLiveStream.swift */; };
+		219270A52C2039910028BFFF /* SrtLiveStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219270A42C2039910028BFFF /* SrtLiveStream.swift */; };
+		219270A72C203A360028BFFF /* SRTHaishinKit in Frameworks */ = {isa = PBXBuildFile; productRef = 219270A62C203A360028BFFF /* SRTHaishinKit */; };
+		219270AA2C2064280028BFFF /* LiveStreamError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219270A92C2064280028BFFF /* LiveStreamError.swift */; };
+		219270AC2C20644D0028BFFF /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219270AB2C20644D0028BFFF /* Extensions.swift */; };
 		21BF485B2C10B54300EAEB5B /* HaishinKit in Frameworks */ = {isa = PBXBuildFile; productRef = 21BF485A2C10B54300EAEB5B /* HaishinKit */; };
 		21BF485E2C10BAAF00EAEB5B /* InAppSettingsKit in Frameworks */ = {isa = PBXBuildFile; productRef = 21BF485D2C10BAAF00EAEB5B /* InAppSettingsKit */; };
 		21CCD6A02BBC44EE00E58F5D /* ApiVideoLiveStream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2102CD092BA9E0E700D0EBAD /* ApiVideoLiveStream.framework */; };
@@ -86,7 +93,12 @@
 		2126C5152BCD4D6E006BEDF3 /* create-documentation-pr.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = "create-documentation-pr.yml"; sourceTree = "<group>"; };
 		2126C5162BCD4D6E006BEDF3 /* create-release-from-changelog.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = "create-release-from-changelog.yml"; sourceTree = "<group>"; };
 		2126C5172BCD4D6E006BEDF3 /* release.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = release.yml; sourceTree = "<group>"; };
-		21E3585C2C10A27000D856D9 /* Cartfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
+		2192709E2C202CD90028BFFF /* RtmpLiveStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RtmpLiveStream.swift; sourceTree = "<group>"; };
+		219270A02C202D020028BFFF /* LiveStreamProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveStreamProtocol.swift; sourceTree = "<group>"; };
+		219270A22C202FA30028BFFF /* IOLiveStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IOLiveStream.swift; sourceTree = "<group>"; };
+		219270A42C2039910028BFFF /* SrtLiveStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SrtLiveStream.swift; sourceTree = "<group>"; };
+		219270A92C2064280028BFFF /* LiveStreamError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveStreamError.swift; sourceTree = "<group>"; };
+		219270AB2C20644D0028BFFF /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		21E3585D2C10A27000D856D9 /* ApiVideoLiveStream.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = ApiVideoLiveStream.podspec; sourceTree = "<group>"; };
 		21E358802C10A35300D856D9 /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		21E358812C10A35300D856D9 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -110,6 +122,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				219270A72C203A360028BFFF /* SRTHaishinKit in Frameworks */,
 				21BF485B2C10B54300EAEB5B /* HaishinKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -145,7 +158,6 @@
 				2117CBD02BB1EBCA00B85BF0 /* CONTRIBUTING.md */,
 				2126C5132BCD47DA006BEDF3 /* LICENSE.md */,
 				2117CBD12BB1EBCA00B85BF0 /* README.md */,
-				21E3585C2C10A27000D856D9 /* Cartfile */,
 				21E3585D2C10A27000D856D9 /* ApiVideoLiveStream.podspec */,
 				2117CC072BB1F1F900B85BF0 /* Package.swift */,
 				2102CD0A2BA9E0E700D0EBAD /* Products */,
@@ -180,6 +192,26 @@
 				2126C51A2BCD4D6E006BEDF3 /* workflows */,
 			);
 			path = .github;
+			sourceTree = "<group>";
+		};
+		2192709D2C202C9B0028BFFF /* IOStream */ = {
+			isa = PBXGroup;
+			children = (
+				2192709E2C202CD90028BFFF /* RtmpLiveStream.swift */,
+				219270A42C2039910028BFFF /* SrtLiveStream.swift */,
+				219270A22C202FA30028BFFF /* IOLiveStream.swift */,
+				219270A02C202D020028BFFF /* LiveStreamProtocol.swift */,
+			);
+			path = IOStream;
+			sourceTree = "<group>";
+		};
+		219270A82C20640D0028BFFF /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				219270A92C2064280028BFFF /* LiveStreamError.swift */,
+				219270AB2C20644D0028BFFF /* Extensions.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		21CCD69F2BBC44EE00E58F5D /* Frameworks */ = {
@@ -239,19 +271,21 @@
 			path = Tests;
 			sourceTree = "<group>";
 		};
-		21E358A12C10A39400D856D9 /* models */ = {
+		21E358A12C10A39400D856D9 /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
 				21E3589F2C10A39400D856D9 /* Configuration.swift */,
 				21E358A02C10A39400D856D9 /* Resolution.swift */,
 			);
-			path = models;
+			path = Configuration;
 			sourceTree = "<group>";
 		};
 		21E358A32C10A39400D856D9 /* ApiVideoLiveStream */ = {
 			isa = PBXGroup;
 			children = (
-				21E358A12C10A39400D856D9 /* models */,
+				219270A82C20640D0028BFFF /* Utils */,
+				2192709D2C202C9B0028BFFF /* IOStream */,
+				21E358A12C10A39400D856D9 /* Configuration */,
 				21E358A22C10A39400D856D9 /* ApiVideoLiveStream.swift */,
 			);
 			path = ApiVideoLiveStream;
@@ -294,6 +328,7 @@
 			name = ApiVideoLiveStream;
 			packageProductDependencies = (
 				21BF485A2C10B54300EAEB5B /* HaishinKit */,
+				219270A62C203A360028BFFF /* SRTHaishinKit */,
 			);
 			productName = Databus;
 			productReference = 2102CD092BA9E0E700D0EBAD /* ApiVideoLiveStream.framework */;
@@ -418,9 +453,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				219270A12C202D020028BFFF /* LiveStreamProtocol.swift in Sources */,
+				219270AC2C20644D0028BFFF /* Extensions.swift in Sources */,
+				219270A32C202FA30028BFFF /* IOLiveStream.swift in Sources */,
 				21E358A52C10A39400D856D9 /* Configuration.swift in Sources */,
 				21E358A62C10A39400D856D9 /* Resolution.swift in Sources */,
+				219270A52C2039910028BFFF /* SrtLiveStream.swift in Sources */,
 				21E358A72C10A39400D856D9 /* ApiVideoLiveStream.swift in Sources */,
+				219270AA2C2064280028BFFF /* LiveStreamError.swift in Sources */,
+				2192709F2C202CD90028BFFF /* RtmpLiveStream.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -846,6 +887,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		219270A62C203A360028BFFF /* SRTHaishinKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 21E358A82C10A54D00D856D9 /* XCRemoteSwiftPackageReference "HaishinKit" */;
+			productName = SRTHaishinKit;
+		};
 		21BF485A2C10B54300EAEB5B /* HaishinKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 21E358A82C10A54D00D856D9 /* XCRemoteSwiftPackageReference "HaishinKit" */;

@@ -56,13 +56,14 @@ class MainViewController: UIViewController {
     }()
 
     private func callAlert(_ message: String, title: String = "Error", action: @escaping () -> Void = {}) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
-            action()
-        }
-
-        alert.addAction(okAction)
         DispatchQueue.main.async {
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+                action()
+            }
+
+            alert.addAction(okAction)
+
             self.present(alert, animated: true, completion: nil)
         }
     }
@@ -149,7 +150,8 @@ class MainViewController: UIViewController {
                     return
                 }
 
-                try self.liveStream.startStreaming(streamKey: SettingsManager.streamKey, url: SettingsManager.rtmpUrl)
+                // try self.liveStream.startStreaming(streamKey: SettingsManager.streamKey, url: SettingsManager.rtmpUrl)
+                try self.liveStream.startStreaming(streamKey: SettingsManager.streamKey, url: SettingsManager.srtUrl)
 
                 self.streamingButton.setTitle("Stop", for: [])
                 self.streamingButton.isSelected = true

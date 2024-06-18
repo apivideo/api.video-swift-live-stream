@@ -26,7 +26,8 @@ let package = Package(
         .target(
             name: "ApiVideoLiveStream",
             dependencies: [
-                .product(name: "HaishinKit", package: "HaishinKit.swift")
+                .product(name: "HaishinKit", package: "HaishinKit.swift"),
+                .product(name: "SRTHaishinKit", package: "HaishinKit.swift")
             ]
         ),
         .testTarget(

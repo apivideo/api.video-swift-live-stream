@@ -24,5 +24,9 @@ Pod::Spec.new do |spec|
   spec.exclude_files = "Sources/Exclude"
 
   spec.dependency "HaishinKit", "1.9.3"
+  spec.dependency "SRTHaishinKit", "1.9.3"
+  
+  spec.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'x86_64'}
+  spec.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'x86_64'}
 
 end
