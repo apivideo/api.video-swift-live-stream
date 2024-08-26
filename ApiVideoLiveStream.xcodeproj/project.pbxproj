@@ -840,7 +840,7 @@
 			repositoryURL = "https://github.com/shogo4405/HaishinKit.swift";
 			requirement = {
 				kind = exactVersion;
-				version = 1.9.0;
+				version = 1.9.3;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
