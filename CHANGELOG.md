@@ -1,6 +1,9 @@
 # Changelog
 All changes to this project will be documented in this file.
 
+## [1.4.4] - 2024-09-11
+- Upgrade HaishinKit to 1.9.3
+
 ## [1.4.3] - 2024-06-10
 - Add publish name to the stream to trigger `FCUnpublish`
 
