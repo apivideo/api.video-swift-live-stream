@@ -97,6 +97,13 @@ public class ApiVideoLiveStream {
     }
 
     #if os(iOS)
+    public var zoomRatioRange: Range<CGFloat> {
+        guard let device = rtmpStream.videoCapture(for: 0)?.device else {
+            return 1.0 ..< 1.0
+        }
+        return 1.0 ..< device.activeFormat.videoMaxZoomFactor
+    }
+
     /// Zoom on the video capture
     public var zoomRatio: CGFloat {
         get {
