@@ -114,7 +114,7 @@ public class ApiVideoLiveStream {
         }
         set(newValue) {
             guard let device = rtmpStream.videoCapture(for: 0)?.device, newValue >= 1,
-                  newValue < device.activeFormat.videoMaxZoomFactor else
+                  newValue <= device.activeFormat.videoMaxZoomFactor else
             {
                 return
             }
