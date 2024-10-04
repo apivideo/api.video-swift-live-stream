@@ -1,6 +1,10 @@
 # Changelog
 All changes to this project will be documented in this file.
 
+## [1.4.5] - 2024-10-04
+- Add an API to get the zoom ratio range
+- Fix zoom ratio max value
+
 ## [1.4.4] - 2024-09-11
 - Upgrade HaishinKit to 1.9.3
 
