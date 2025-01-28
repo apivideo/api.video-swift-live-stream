@@ -89,10 +89,10 @@ public class ApiVideoLiveStream {
     /// Mutes or unmutes audio capture.
     public var isMuted: Bool {
         get {
-            !self.rtmpStream.audioMixerSettings.isMuted
+            self.rtmpStream.audioMixerSettings.isMuted
         }
         set(newValue) {
-            self.rtmpStream.audioMixerSettings.isMuted = !newValue
+            self.rtmpStream.audioMixerSettings.isMuted = newValue
         }
     }
 
