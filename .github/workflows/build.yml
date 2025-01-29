@@ -4,7 +4,7 @@ on:
 jobs:
   find_schemes:
     name: Find xcode schemes
-    runs-on: macos-14
+    runs-on: macos-latest
     outputs:
       schemes: ${{ steps.getSchemes.outputs.schemes}}
     steps:
@@ -23,7 +23,7 @@ jobs:
           echo "schemes=$SCHEMES" >> $GITHUB_OUTPUT
   swift_build:
     name: Build with swift
-    runs-on: macos-14
+    runs-on: macos-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,7 +36,7 @@ jobs:
   xcode_build:
     name: Build with xcode
     needs: find_schemes
-    runs-on: macos-14
+    runs-on: macos-latest
     strategy:
       matrix: ${{ fromJson(needs.find_schemes.outputs.schemes) }}
     steps:
@@ -47,10 +47,12 @@ jobs:
         with:
           xcode-version: latest-stable
       - name: Build ${{matrix.scheme}}
-        run: xcodebuild clean build -project ApiVideoLiveStream.xcodeproj -scheme "${{matrix.scheme}}" -sdk iphoneos CODE_SIGNING_ALLOWED=NO
+        run: |
+          xcodebuild -downloadPlatform iOS
+          xcodebuild clean build -project ApiVideoLiveStream.xcodeproj -scheme "${{matrix.scheme}}" -sdk iphoneos CODE_SIGNING_ALLOWED=NO
   verify:
     name: Verify package sanity
-    runs-on: macos-14
+    runs-on: macos-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -59,7 +61,9 @@ jobs:
         with:
           xcode-version: latest-stable
       - name: Verify cocoapods
-        run: pod lib lint --allow-warnings
+        run: |
+          xcodebuild -downloadPlatform iOS
+          pod lib lint --allow-warnings
       - name: Install swiftlint
         run: brew install swiftlint
       - name: Execute swiftlint
